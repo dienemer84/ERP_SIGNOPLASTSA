@@ -828,6 +828,132 @@ Public Function FindAllEnCartera(Optional ByRef filter2 As String, Optional ByRe
 End Function
 
 
+Public Function FindAllEnCarteraAl( _
+    ByVal fechaCorte As Date, _
+    Optional ByRef filter2 As String = vbNullString, _
+    Optional ByRef orderBy As String = vbNullString) As Collection
+
+    Dim criterio As String
+    Dim sqlFechaCorte As String
+    Dim resultado As Collection
+
+    sqlFechaCorte = conectar.Escape( _
+                        Format$(fechaCorte, "yyyy-mm-dd"))
+
+    '--------------------------------------------------
+    'FECHA DE ENTRADA A CARTERA
+    '--------------------------------------------------
+
+    'El cheque debe haber sido recibido antes o durante
+    'la fecha de corte seleccionada.
+    criterio = "DATE(COALESCE(rec.fecha, " & _
+               "cheq.fecha_recibido)) <= " & _
+               sqlFechaCorte
+
+    '--------------------------------------------------
+    'FECHA DE SALIDA DE CARTERA
+    '--------------------------------------------------
+
+    'Se incluye cuando actualmente sigue en cartera
+    'o cuando fue utilizado después de la fecha de corte.
+    criterio = criterio & _
+               " AND (cheq.en_cartera = 1 "
+
+    'Orden de pago
+    criterio = criterio & _
+        "OR (IFNULL(cheq.orden_pago_origen, 0) > 0 " & _
+        "AND DATE(op.fecha) > " & _
+        sqlFechaCorte & ") "
+
+    'Liquidación de caja
+    criterio = criterio & _
+        "OR (IFNULL(cheq.liquidacion_caja_origen, 0) > 0 " & _
+        "AND DATE(liq.fecha) > " & _
+        sqlFechaCorte & ") "
+
+    'Pago a cuenta
+    criterio = criterio & _
+        "OR (IFNULL(cheq.pago_a_cuenta_origen, 0) > 0 " & _
+        "AND DATE(pac.fecha) > " & _
+        sqlFechaCorte & ") "
+
+    'Movimiento de caja y bancos
+    criterio = criterio & _
+        "OR (IFNULL(cheq.movimiento_origen, 0) > 0 " & _
+        "AND DATE(mov.fecha) > " & _
+        sqlFechaCorte & ") "
+
+    '--------------------------------------------------
+    'CHEQUES DEPOSITADOS
+    '--------------------------------------------------
+
+    criterio = criterio & _
+        "OR ((IFNULL(cheq.depositado, 0) = 1 "
+
+    criterio = criterio & _
+        "OR EXISTS (" & _
+            "SELECT 1 " & _
+            "FROM cheques_depositos cd_estado " & _
+            "WHERE cd_estado.id_cheque = cheq.id" & _
+        ")) "
+
+    'La fecha puede estar en la boleta o, para registros
+    'antiguos, en la operación bancaria.
+    criterio = criterio & _
+        "AND DATE(COALESCE("
+
+    'Fecha de la boleta de depósito
+    criterio = criterio & _
+        "(" & _
+            "SELECT bd_corte.fecha_deposito " & _
+            "FROM cheques_depositos cd_corte " & _
+            "LEFT JOIN boleta_deposito bd_corte " & _
+                "ON bd_corte.id = cd_corte.id_boleta " & _
+            "WHERE cd_corte.id_cheque = cheq.id " & _
+            "ORDER BY cd_corte.id DESC " & _
+            "LIMIT 1" & _
+        "), "
+
+    'Fecha de la operación bancaria
+    criterio = criterio & _
+        "(" & _
+            "SELECT op_corte.fecha_operacion " & _
+            "FROM cheques_depositos cd_corte2 " & _
+            "LEFT JOIN operaciones op_corte " & _
+                "ON op_corte.id = cd_corte2.id_operacion " & _
+            "WHERE cd_corte2.id_cheque = cheq.id " & _
+            "ORDER BY cd_corte2.id DESC " & _
+            "LIMIT 1" & _
+        ")"
+
+    'Cerrar COALESCE, DATE, condición de depósito
+    'y condición general de cartera.
+    criterio = criterio & _
+        ")) > " & sqlFechaCorte & "))"
+
+    '--------------------------------------------------
+    'EJECUTAR CONSULTA
+    '--------------------------------------------------
+
+    Set resultado = FindAll( _
+                        criterio, _
+                        filter2, _
+                        orderBy)
+
+    If resultado Is Nothing Then
+
+        Err.Raise vbObjectError + 1201, _
+                  "DAOCheques.FindAllEnCarteraAl", _
+                  "No se pudo consultar la cartera " & _
+                  "a la fecha indicada."
+
+    End If
+
+    Set FindAllEnCarteraAl = resultado
+
+End Function
+
+
 Public Function FindAllEnCarteraDeTerceros() As Collection
     Set FindAllEnCarteraDeTerceros = FindAll(DAOCheques.CAMPO_EN_CARTERA & " = 1 and " & DAOCheques.CAMPO_PROPIO & " = 0")
 End Function

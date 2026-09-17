@@ -642,6 +642,204 @@ End Sub
 
 Private Sub btnExportarExcel_Click()
 
+    On Error GoTo err1
+
+    Dim xlApp As Object
+    Dim xlLibro As Object
+    Dim xlHoja As Object
+
+    Dim cuenta As clsCuentaContable
+
+    Dim fila As Long
+    Dim ultimaFila As Long
+
+    Dim ruta As String
+    Dim carpeta As String
+
+    Dim numeroError As Long
+    Dim descripcionError As String
+
+    '---------------------------------------------
+    ' Validar que existan resultados
+    '---------------------------------------------
+    If TotalesCuentas.count = 0 Then
+
+        MsgBox "No hay cuentas contables para exportar." & _
+               vbCrLf & _
+               "Realice una búsqueda primero.", _
+               vbExclamation, _
+               "Exportar a Excel"
+
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------
+    ' Crear Excel
+    '---------------------------------------------
+    Set xlApp = CreateObject("Excel.Application")
+
+    xlApp.Visible = False
+    xlApp.DisplayAlerts = False
+
+    Set xlLibro = xlApp.Workbooks.Add
+    Set xlHoja = xlLibro.Worksheets(1)
+
+    xlHoja.Name = "Resumen Cuentas"
+
+    '---------------------------------------------
+    ' Título
+    '---------------------------------------------
+    With xlHoja.Range("A1:B1")
+
+        .Merge
+        .value = "RESUMEN POR CUENTA CONTABLE"
+        .Font.Bold = True
+        .Font.Size = 14
+        .HorizontalAlignment = -4108
+
+    End With
+
+    xlHoja.Cells(2, 1).value = _
+        "Fecha de exportación: " & _
+        Format$(Now, "dd/mm/yyyy hh:nn")
+
+    xlHoja.Cells(3, 1).value = _
+        "Ingresos (+) / Egresos (-)"
+
+    '---------------------------------------------
+    ' Encabezados
+    '---------------------------------------------
+    xlHoja.Cells(5, 1).value = "Cuenta Contable"
+    xlHoja.Cells(5, 2).value = "Total"
+
+    With xlHoja.Range("A5:B5")
+
+        .Font.Bold = True
+        .Interior.Color = &HC0C0C0
+        .HorizontalAlignment = -4108
+
+    End With
+
+    '---------------------------------------------
+    ' Exportar datos
+    '---------------------------------------------
+    fila = 6
+
+    For Each cuenta In TotalesCuentas
+
+        'Cuenta contable
+        xlHoja.Cells(fila, 1).value = _
+            cuenta.codigo & " | " & cuenta.nombre
+
+        'Importe numérico real
+        xlHoja.Cells(fila, 2).value = _
+            CDbl(cuenta.TotalAcumulado)
+
+        fila = fila + 1
+
+    Next cuenta
+
+    ultimaFila = fila - 1
+
+    '---------------------------------------------
+    ' Formato de importes
+    '---------------------------------------------
+    With xlHoja.Range("B6:B" & ultimaFila)
+
+        .NumberFormat = "#,##0.00;[Red]-#,##0.00"
+        .HorizontalAlignment = -4152
+
+    End With
+
+    '---------------------------------------------
+    ' Bordes
+    '---------------------------------------------
+    xlHoja.Range( _
+        xlHoja.Cells(5, 1), _
+        xlHoja.Cells(ultimaFila, 2)).Borders.LineStyle = 1
+
+    '---------------------------------------------
+    ' Ancho de columnas
+    '---------------------------------------------
+    xlHoja.Columns("A").ColumnWidth = 48
+    xlHoja.Columns("B").ColumnWidth = 20
+
+    '---------------------------------------------
+    ' Filtro automático en encabezados
+    '---------------------------------------------
+    xlHoja.Range( _
+        "A5:B" & ultimaFila).AutoFilter
+
+    '---------------------------------------------
+    ' Preparar ruta
+    '---------------------------------------------
+    carpeta = Environ$("TEMP")
+
+    If LenB(carpeta) = 0 Then
+        carpeta = Environ$("TMP")
+    End If
+
+    If LenB(carpeta) = 0 Then
+        carpeta = App.path
+    End If
+
+    If Right$(carpeta, 1) <> "\" Then
+        carpeta = carpeta & "\"
+    End If
+
+    ruta = carpeta & _
+           "Resumen_Cuentas_Contables_" & _
+           Format$(Now, "yyyymmdd_hhnnss") & _
+           ".xls"
+
+    '---------------------------------------------
+    ' Guardar archivo Excel 97-2003
+    '---------------------------------------------
+    xlLibro.SaveAs ruta, 56
+
+    xlLibro.Close False
+    xlApp.Quit
+
+    '---------------------------------------------
+    ' Liberar objetos
+    '---------------------------------------------
+    Set xlHoja = Nothing
+    Set xlLibro = Nothing
+    Set xlApp = Nothing
+
+    '---------------------------------------------
+    ' Abrir archivo generado
+    '---------------------------------------------
+    ShellExecute -1, "open", ruta, "", "", 4
+
+    Exit Sub
+
+err1:
+
+    numeroError = Err.Number
+    descripcionError = Err.Description
+
+    On Error Resume Next
+
+    If Not xlLibro Is Nothing Then
+        xlLibro.Close False
+    End If
+
+    If Not xlApp Is Nothing Then
+        xlApp.Quit
+    End If
+
+    Set xlHoja = Nothing
+    Set xlLibro = Nothing
+    Set xlApp = Nothing
+
+    MsgBox "Error al exportar el resumen." & vbCrLf & _
+           "Error Nº: " & numeroError & vbCrLf & _
+           descripcionError, _
+           vbCritical, _
+           "Exportar a Excel"
+
 End Sub
 
 Private Sub cmdBuscar_Click()

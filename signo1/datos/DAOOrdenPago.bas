@@ -1503,7 +1503,7 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Dim maxw As Single
     Dim c As Long
     Dim d As Long
-    
+    Dim i As Long
     Dim mtxt As String
     Dim tttxt As String
     Dim textw As Single
@@ -1627,70 +1627,180 @@ Public Function PrintOP(Orden As OrdenPago) As Boolean
     Printer.FontBold = False
     Printer.FontSize = 8
         
-    ' Definir el ancho de las columnas
+    '=========================================
+    ' TABLA DE COMPROBANTES ASOCIADOS
+    '=========================================
     Dim colWidth(1 To 6) As Single
-    colWidth(1) = 2000
-    colWidth(2) = 800
-    colWidth(3) = 800
-    colWidth(4) = 2000
-    colWidth(5) = 500
-    colWidth(6) = 3000
-    
-    ' Dibujar encabezados de la tabla
-    Printer.CurrentX = lmargin
-    Printer.FontBold = True
-    Printer.Print "Número";
-    Printer.CurrentX = lmargin + colWidth(1)
-    Printer.Print "Fecha";
-    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + 500
-    Printer.Print "Moneda";
-    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + 1500
-    Printer.Print "Monto";
-    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4)
-    
-    Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) + colWidth(5)
-    Printer.Print "Proveedor";
-    Printer.FontBold = False
-    
-    Dim totalWidth As Single, i As Integer
-    totalWidth = 0
+    Dim xCol(0 To 6) As Single
+
+    Dim yTabla As Single
+    Dim yEncabezadoFin As Single
+    Dim yFilaInicio As Single
+    Dim yFilaFin As Single
+
+    Dim altoEncabezado As Single
+    Dim altoFila As Single
+    Dim margenCelda As Single
+
+    Dim montoTotalFactura As Double
+    Dim importeAbonadoOP As Double
+    Dim montoTotalStr As String
+    Dim abonadoStr As String
+
+    margenCelda = 80
+    altoEncabezado = 380
+    altoFila = 360
+
+    'Ancho de cada columna
+    colWidth(1) = 2100    'Número
+    colWidth(2) = 1200    'Fecha
+    colWidth(3) = 800     'Moneda
+    colWidth(4) = 1500    'Monto Total
+    colWidth(5) = 1500    'Abonado
+
+    'Proveedor ocupa todo el espacio restante
+    colWidth(6) = maxw - _
+                  colWidth(1) - _
+                  colWidth(2) - _
+                  colWidth(3) - _
+                  colWidth(4) - _
+                  colWidth(5)
+
+    'Posiciones horizontales de las columnas
+    xCol(0) = lmargin
+
     For i = 1 To 6
-        totalWidth = totalWidth + colWidth(i)
-    Next
-    
-    Printer.Line (lmargin, Printer.CurrentY + 200)-(lmargin + totalWidth, Printer.CurrentY + 200)
+        xCol(i) = xCol(i - 1) + colWidth(i)
+    Next i
 
-    Set Orden.FacturasProveedor = DAOFacturaProveedor.FindAllByOrdenPago(Orden.Id)
-    
+    yTabla = Printer.CurrentY + 80
+    yEncabezadoFin = yTabla + altoEncabezado
+
+    '-----------------------------------------
+    ' Bordes del encabezado
+    '-----------------------------------------
+    Printer.Line _
+        (xCol(0), yTabla)- _
+        (xCol(6), yTabla)
+
+    Printer.Line _
+        (xCol(0), yEncabezadoFin)- _
+        (xCol(6), yEncabezadoFin)
+
+    For i = 0 To 6
+        Printer.Line _
+            (xCol(i), yTabla)- _
+            (xCol(i), yEncabezadoFin)
+    Next i
+
+    '-----------------------------------------
+    ' Textos del encabezado
+    '-----------------------------------------
+    Printer.FontSize = 8
+    Printer.FontBold = True
+    Printer.CurrentY = yTabla + 90
+
+    Printer.CurrentX = xCol(0) + margenCelda
+    Printer.Print "Número";
+
+    Printer.CurrentX = xCol(1) + margenCelda
+    Printer.Print "Fecha";
+
+    Printer.CurrentX = xCol(2) + margenCelda
+    Printer.Print "Moneda";
+
+    Printer.CurrentX = xCol(3) + margenCelda
+    Printer.Print "Monto Total";
+
+    Printer.CurrentX = xCol(4) + margenCelda
+    Printer.Print "Abonado";
+
+    Printer.CurrentX = xCol(5) + margenCelda
+    Printer.Print "Proveedor";
+
+    Printer.FontBold = False
+
+    '-----------------------------------------
+    ' Filas de comprobantes
+    '-----------------------------------------
     c = 0
-    
-    For Each F In Orden.FacturasProveedor
-        c = c + 1
-        
-        Printer.CurrentX = lmargin
-        Printer.Print F.NumeroFormateado;
-        
-        Printer.CurrentX = lmargin + colWidth(1)
-        Printer.Print F.FEcha;
-        
-        Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) - Printer.TextWidth(F.moneda.NombreCorto)
-        Printer.Print F.moneda.NombreCorto;
-        
-        Dim totalStr As String
-        Dim totalComprobantes As Double
-        Dim DetalleComprobante As clsDetalleComprobante
-        Dim colDetallesOP As New Collection
-        
-        totalComprobantes = DAOOrdenPago.GetImporteAbonadoOP(F.Id, Orden.Id)
- 
-        totalStr = Replace(FormatCurrency(funciones.FormatearDecimales(totalComprobantes)), "$", "")
+    yFilaInicio = yEncabezadoFin
 
-        Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) - Printer.TextWidth(totalStr)
-        Printer.Print totalStr;
-            
-        Printer.CurrentX = lmargin + colWidth(1) + colWidth(2) + colWidth(3) + colWidth(4) + colWidth(5)
-        Printer.Print UCase(F.Proveedor.RazonSocial)
+    For Each F In Orden.FacturasProveedor
+
+        c = c + 1
+        yFilaFin = yFilaInicio + altoFila
+
+        montoTotalFactura = F.total
+
+        importeAbonadoOP = _
+            DAOOrdenPago.GetImporteAbonadoOP( _
+                F.Id, _
+                Orden.Id)
+
+        montoTotalStr = Replace( _
+            FormatCurrency( _
+                funciones.FormatearDecimales( _
+                    montoTotalFactura)), _
+            "$", "")
+
+        abonadoStr = Replace( _
+            FormatCurrency( _
+                funciones.FormatearDecimales( _
+                    importeAbonadoOP)), _
+            "$", "")
+
+        'Borde inferior de la fila
+        Printer.Line _
+            (xCol(0), yFilaFin)- _
+            (xCol(6), yFilaFin)
+
+        'Bordes verticales de la fila
+        For i = 0 To 6
+            Printer.Line _
+                (xCol(i), yFilaInicio)- _
+                (xCol(i), yFilaFin)
+        Next i
+
+        Printer.CurrentY = yFilaInicio + 80
+
+        'Número
+        Printer.CurrentX = xCol(0) + margenCelda
+        Printer.Print F.NumeroFormateado;
+
+        'Fecha
+        Printer.CurrentX = xCol(1) + margenCelda
+        Printer.Print Format$(F.FEcha, "dd/mm/yyyy");
+
+        'Moneda
+        Printer.CurrentX = xCol(2) + margenCelda
+        Printer.Print F.moneda.NombreCorto;
+
+        'Monto total, alineado a la derecha
+        Printer.CurrentX = xCol(4) - _
+                           margenCelda - _
+                           Printer.TextWidth(montoTotalStr)
+
+        Printer.Print montoTotalStr;
+
+        'Abonado, alineado a la derecha
+        Printer.CurrentX = xCol(5) - _
+                           margenCelda - _
+                           Printer.TextWidth(abonadoStr)
+
+        Printer.Print abonadoStr;
+
+        'Proveedor
+        Printer.CurrentX = xCol(5) + margenCelda
+        Printer.Print UCase$(F.Proveedor.RazonSocial);
+
+        yFilaInicio = yFilaFin
+
     Next F
+
+    'Continuar la impresión debajo de la tabla
+    Printer.CurrentY = yFilaInicio + 150
+    Printer.CurrentX = lmargin
   
     If c = 0 Then
         Printer.CurrentX = lmargin + TAB1 + TAB2

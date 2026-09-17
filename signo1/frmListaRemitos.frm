@@ -518,7 +518,7 @@ Dim m_Archivos As Dictionary
 
 Private Sub AnularRto_Click()
     Dim A As Long
-    A = Me.grilla.RowIndex(Me.grilla.row)
+    A = Me.grilla.rowIndex(Me.grilla.row)
     If MsgBox("¿Está seguro de anular el remito?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.Anular(tmpRto) Then
             MsgBox "Remito anulado con éxito!", vbExclamation, "Información"
@@ -610,7 +610,7 @@ Private Sub endRto_Click()
     Dim A As Long
     Dim rtoNro As Long
     rtoNro = tmpRto.Id
-    A = Me.grilla.RowIndex(Me.grilla.row)
+    A = Me.grilla.rowIndex(Me.grilla.row)
     If MsgBox("¿Desea aprobar el remito seleccionado?", vbYesNo, "Confirmación") = vbYes Then
         If DAORemitoS.aprobar(tmpRto) Then
             If MsgBox("El remito se aprobó correctamente." & Chr(10) & "¿Desea imprimirlo ahora?", vbYesNo, "Confirmación") = vbYes Then
@@ -924,7 +924,7 @@ Private Sub grilla_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
     GridEXHelper.ColumnHeaderClick grilla, Column
 End Sub
 
-Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
+Private Sub grilla_FetchIcon(ByVal rowIndex As Long, ByVal ColIndex As Integer, ByVal RowBookmark As Variant, ByVal IconIndex As GridEX20.JSRetInteger)
     On Error Resume Next
     If ColIndex = 10 And m_Archivos.item(tmpRto.Id) > 0 Then
         IconIndex = 1
@@ -932,7 +932,7 @@ Private Sub grilla_FetchIcon(ByVal RowIndex As Long, ByVal ColIndex As Integer, 
 End Sub
 Private Sub grilla_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim row As Long
-    row = grilla.RowIndex(grilla.row)
+    row = grilla.rowIndex(grilla.row)
     If row > 0 Then
         If Button = 2 Then
             grilla_SelectionChange
@@ -986,8 +986,8 @@ End Sub
 
 
 Private Sub grilla_RowFormat(RowBuffer As GridEX20.JSRowData)
-    If RowBuffer.RowIndex > 0 Then
-        Set tmpRto = remitos(RowBuffer.RowIndex)
+    If RowBuffer.rowIndex > 0 Then
+        Set tmpRto = remitos(RowBuffer.rowIndex)
 
         If tmpRto.estado = RemitoAnulado Then
             RowBuffer.RowStyle = "Anulado"
@@ -1018,7 +1018,7 @@ End Sub
 
 
 Private Sub grilla_SelectionChange()
-    Dim it As Long: it = grilla.RowIndex(grilla.row)
+    Dim it As Long: it = grilla.rowIndex(grilla.row)
     If it > 0 Then
         Set tmpRto = remitos.item(it)
     Else
@@ -1027,24 +1027,24 @@ Private Sub grilla_SelectionChange()
 End Sub
 
 
-Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, _
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, _
                                    ByVal Bookmark As Variant, _
                                    ByVal Values As GridEX20.JSRowData)
 
     On Error Resume Next
 
-    Set tmpRto = remitos.item(RowIndex)
+    Set tmpRto = remitos.item(rowIndex)
 
     With Values
         .value(1) = tmpRto.numero
         .value(6) = tmpRto.detalle
         .value(3) = tmpRto.FEcha
         .value(4) = enums.EnumEstadoRemito(tmpRto.estado)
-        .value(5) = tmpRto.usuarioCreador.usuario
+        .value(5) = tmpRto.usuarioCreador.Usuario
 
         If IsSomething(tmpRto.Cliente) Then .value(2) = tmpRto.Cliente.razon
         If IsSomething(tmpRto.usuarioAprobador) Then
-            .value(7) = tmpRto.usuarioAprobador.usuario
+            .value(7) = tmpRto.usuarioAprobador.Usuario
         Else
             .value(7) = vbNullString
 
@@ -1060,7 +1060,7 @@ Private Sub grilla_UnboundReadData(ByVal RowIndex As Long, _
 
         End If
 
-        .value(10) = "(" & Val(m_Archivos.item(tmpRto.Id)) & ")"
+        .value(10) = "(" & val(m_Archivos.item(tmpRto.Id)) & ")"
 
     End With
 
@@ -1149,7 +1149,7 @@ End Sub
 
 Private Sub mnuNoFacturable_Click()
     Dim A As Long
-    A = grilla.RowIndex(grilla.row)
+    A = grilla.rowIndex(grilla.row)
     DAORemitoS.CambiarEstadoFacturable tmpRto
 
     grilla.RefreshRowIndex A
@@ -1295,10 +1295,10 @@ Me.ProgressBar.max = remitos.count
             
             xlWorksheet.Cells(idx, 4).value = Remito.FEcha
 
-            xlWorksheet.Cells(idx, 5).value = Remito.usuarioCreador.usuario
+            xlWorksheet.Cells(idx, 5).value = Remito.usuarioCreador.Usuario
             
             If IsSomething(Remito.usuarioAprobador) Then
-                xlWorksheet.Cells(idx, 6).value = Remito.usuarioAprobador.usuario
+                xlWorksheet.Cells(idx, 6).value = Remito.usuarioAprobador.Usuario
             Else
                 xlWorksheet.Cells(idx, 6).value = vbNullString
             End If
@@ -1312,7 +1312,7 @@ Me.ProgressBar.max = remitos.count
                 End If
             End If
 
-            xlWorksheet.Cells(idx, 9).value = "(" & Val(m_Archivos.item(Remito.Id)) & ")"
+            xlWorksheet.Cells(idx, 9).value = "(" & val(m_Archivos.item(Remito.Id)) & ")"
 
         
         idx = idx + 1

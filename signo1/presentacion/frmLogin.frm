@@ -466,8 +466,8 @@ Private Sub Form_Load()
     If Me.cboServidor.ListCount > 0 Then Me.cboServidor.ListIndex = 0
 
     If funciones.InIDE Then
-        Me.Text1.Text = "nicolasba"
-        Me.Text2.Text = "022916"
+        Me.Text1.Text = "diegonr"
+        Me.Text2.Text = "data745896"
         'Command1_Click
 
     Else

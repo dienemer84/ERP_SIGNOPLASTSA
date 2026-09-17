@@ -29,7 +29,6 @@ Begin VB.Form frmAdminCheques
       PaintManager.BoldSelected=   -1  'True
       PaintManager.ShowIcons=   -1  'True
       ItemCount       =   4
-      SelectedItem    =   3
       Item(0).Caption =   "Cartera"
       Item(0).ControlCount=   3
       Item(0).Control(0)=   "Frame3"
@@ -483,11 +482,10 @@ Begin VB.Form frmAdminCheques
             Strikethrough   =   0   'False
          EndProperty
          Height          =   3015
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   86
          Top             =   360
-         Visible         =   0   'False
-         Width           =   18735
+         Width           =   15135
          Begin VB.TextBox txtNumeroChequeCartera 
             Alignment       =   1  'Right Justify
             Height          =   315
@@ -551,6 +549,31 @@ Begin VB.Form frmAdminCheques
                _ExtentY        =   661
                _StockProps     =   93
                Appearance      =   6
+            End
+            Begin XtremeSuiteControls.DateTimePicker dtpFechaCorteCartera 
+               Height          =   315
+               Left            =   2280
+               TabIndex        =   165
+               Top             =   360
+               Width           =   1470
+               _Version        =   786432
+               _ExtentX        =   2593
+               _ExtentY        =   556
+               _StockProps     =   68
+               Format          =   1
+               CurrentDate     =   46282.4121296296
+            End
+            Begin XtremeSuiteControls.Label lblFechaCorteCartera 
+               Height          =   255
+               Left            =   120
+               TabIndex        =   164
+               Top             =   390
+               Width           =   2175
+               _Version        =   786432
+               _ExtentX        =   3836
+               _ExtentY        =   450
+               _StockProps     =   79
+               Caption         =   "Fecha de corte de la cartera:"
             End
          End
          Begin VB.TextBox txtOrigen 
@@ -641,7 +664,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
             Height          =   1215
             Index           =   1
-            Left            =   5400
+            Left            =   3480
             TabIndex        =   98
             Top             =   240
             Width           =   4695
@@ -755,7 +778,7 @@ Begin VB.Form frmAdminCheques
          Begin XtremeSuiteControls.GroupBox GroFechaComprobante 
             Height          =   1335
             Index           =   0
-            Left            =   5400
+            Left            =   3480
             TabIndex        =   105
             Top             =   1560
             Width           =   4695
@@ -905,9 +928,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.GroupBox GroupBox3 
          Height          =   3855
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   28
          Top             =   360
+         Visible         =   0   'False
          Width           =   18735
          _Version        =   786432
          _ExtentX        =   33046
@@ -2257,9 +2281,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grdCheques3eros 
          Height          =   4665
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   123
          Top             =   4560
+         Visible         =   0   'False
          Width           =   18735
          _ExtentX        =   33046
          _ExtentY        =   8229
@@ -2349,10 +2374,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin GridEX20.GridEX grid_cartera_cheques 
          Height          =   4665
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   142
          Top             =   3720
-         Visible         =   0   'False
          Width           =   15135
          _ExtentX        =   26696
          _ExtentY        =   8229
@@ -2423,10 +2447,9 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.Label lbContadorChequesEnCartera 
          Height          =   375
-         Left            =   -69880
+         Left            =   120
          TabIndex        =   146
          Top             =   3360
-         Visible         =   0   'False
          Width           =   5415
          _Version        =   786432
          _ExtentX        =   9551
@@ -2436,9 +2459,10 @@ Begin VB.Form frmAdminCheques
       End
       Begin XtremeSuiteControls.Label lbContador3erosUtilizados 
          Height          =   375
-         Left            =   120
+         Left            =   -69880
          TabIndex        =   145
          Top             =   4200
+         Visible         =   0   'False
          Width           =   6375
          _Version        =   786432
          _ExtentX        =   11245
@@ -2550,6 +2574,7 @@ Private chequesPendientesConciliar As Dictionary
 Private procesandoSeleccionConciliacion As Boolean
 Private procesandoCambioChequeraUsada As Boolean
 Private indiceSolapaActual As Long
+Private fechaCorteCarteraActual As Date
 
 
 Private Sub btnBorrarBanco_Click()
@@ -2605,6 +2630,7 @@ Private Sub btnBuscar_Click_1()
     GridEXHelper.AutoSizeColumns Me.grdCheques3eros
 
 End Sub
+
 Private Sub btnBuscarEnCartera_Click()
     MostrarCartera
 End Sub
@@ -3590,6 +3616,16 @@ End Sub
 
 Private Sub btnExportarCartera_Click(Index As Integer)
 
+    If cartera Is Nothing Then
+    
+        MsgBox "Primero debe buscar la cartera que desea exportar.", _
+               vbInformation, _
+               "Exportar cartera"
+    
+        Exit Sub
+    
+    End If
+
     If (cartera.count > 0) Then
         Me.ProgressBar(0).min = 0
         Me.ProgressBar(0).max = cartera.count
@@ -3613,7 +3649,8 @@ Private Sub btnExportarCartera_Click(Index As Integer)
         xlWorksheet.Activate
         
         Dim titulo As String
-            titulo = "Reporte de Cheques en Cartera"
+            titulo = "Reporte de Cheques en Cartera al " & _
+            Format$(fechaCorteCarteraActual, "dd/mm/yyyy")
     
         With xlWorksheet.Range("A1:H1")
             .Merge
@@ -4031,6 +4068,11 @@ Private Sub Form_Load()
     Set chequesPendientesConciliar = New Dictionary
     
     Me.dtFechaConciliar.value = Date
+    
+    'La cartera se consulta inicialmente a la fecha actual
+    Me.dtpFechaCorteCartera.value = Date
+    fechaCorteCarteraActual = Date
+
 
     'SOLAPA CARTERA
     DAOBancos.llenarComboXtremeSuite Me.cboBancoCartera
@@ -4288,7 +4330,7 @@ Private Sub AcomodarGrillas()
     On Error GoTo salir
 
     Const MARGEN As Long = 120
-    Const SEPARACION As Long = 120
+    Const separacion As Long = 120
     Const MARGEN_INFERIOR As Long = 240
     Const ESPACIO_CONTADOR As Long = 345
     Const ESPACIO_NOTA As Long = 600
@@ -4374,7 +4416,7 @@ Private Sub AcomodarGrillas()
     '--------------------------------------------------
     'Administrar Chequeras
     '--------------------------------------------------
-    anchoAdministrar = anchoDisponible - SEPARACION
+    anchoAdministrar = anchoDisponible - separacion
 
     anchoChequeras = _
         CLng(anchoAdministrar * 0.43)
@@ -4383,7 +4425,7 @@ Private Sub AcomodarGrillas()
         anchoAdministrar - anchoChequeras
 
     izquierdaCheques = _
-        MARGEN + anchoChequeras + SEPARACION
+        MARGEN + anchoChequeras + separacion
 
     Me.GroupBox1.Width = anchoChequeras
     Me.GroupBox4.Width = anchoCheques
@@ -4621,58 +4663,202 @@ End Sub
 
 Private Sub MostrarCartera()
 
+    On Error GoTo err1
+
     Dim filter2 As String
     Dim Orden As String
+    Dim fechaCorte As Date
 
+    '--------------------------------------------------
+    'VALIDAR FECHA DE CORTE
+    '--------------------------------------------------
+
+    If IsNull(Me.dtpFechaCorteCartera.value) Then
+
+        MsgBox "Ingrese una fecha de corte válida.", _
+               vbExclamation, _
+               "Cartera histórica"
+
+        Exit Sub
+
+    End If
+
+    If Not IsDate(Me.dtpFechaCorteCartera.value) Then
+
+        MsgBox "Ingrese una fecha de corte válida.", _
+               vbExclamation, _
+               "Cartera histórica"
+
+        Exit Sub
+
+    End If
+
+    fechaCorte = DateValue( _
+                    CDate(Me.dtpFechaCorteCartera.value))
+
+    '--------------------------------------------------
+    'FILTROS GENERALES
+    '--------------------------------------------------
 
     filter2 = "1 = 1"
-    
+
+    'Origen
     If LenB(Me.txtOrigen.Text) > 0 Then
-        filter2 = filter2 & " AND cheq.origen like '%" & Trim(Me.txtOrigen.Text) & "%'"
+
+        filter2 = filter2 & _
+                  " AND cheq.origen LIKE '%" & _
+                  Trim$(Me.txtOrigen.Text) & "%'"
+
     End If
 
+    'Número de cheque
     If LenB(Me.txtNumeroChequeCartera.Text) > 0 Then
-        filter2 = filter2 & " AND cheq.numero like '%" & Trim(Me.txtNumeroChequeCartera.Text) & "%'"
+
+        filter2 = filter2 & _
+                  " AND cheq.numero LIKE '%" & _
+                  Trim$(Me.txtNumeroChequeCartera.Text) & "%'"
+
     End If
+
+    '--------------------------------------------------
+    'FECHA DE VENCIMIENTO
+    '--------------------------------------------------
 
     If Not IsNull(Me.dtpDesdeVtoCartera(1).value) Then
-        filter2 = filter2 & " AND cheq.fecha_vencimiento >= " & conectar.Escape(Me.dtpDesdeVtoCartera(1).value)
+
+        filter2 = filter2 & _
+                  " AND cheq.fecha_vencimiento >= " & _
+                  conectar.Escape( _
+                      Format$( _
+                          Me.dtpDesdeVtoCartera(1).value, _
+                          "yyyy-mm-dd"))
+
     End If
 
     If Not IsNull(Me.dtpHastaVtoCartera(1).value) Then
-        filter2 = filter2 & " AND cheq.fecha_vencimiento <= " & conectar.Escape(dtpHastaVtoCartera(1).value)
+
+        filter2 = filter2 & _
+                  " AND cheq.fecha_vencimiento <= " & _
+                  conectar.Escape( _
+                      Format$( _
+                          Me.dtpHastaVtoCartera(1).value, _
+                          "yyyy-mm-dd"))
+
     End If
 
+    '--------------------------------------------------
+    'FECHA DE RECEPCIÓN
+    '--------------------------------------------------
+
     If Not IsNull(Me.dtpDesdeRboCartera(2).value) Then
-        filter2 = filter2 & " AND rec.fecha >= " & conectar.Escape(Me.dtpDesdeRboCartera(2).value)
+
+        filter2 = filter2 & _
+                  " AND COALESCE(" & _
+                      "rec.fecha, " & _
+                      "cheq.fecha_recibido" & _
+                  ") >= " & _
+                  conectar.Escape( _
+                      Format$( _
+                          Me.dtpDesdeRboCartera(2).value, _
+                          "yyyy-mm-dd"))
+
     End If
 
     If Not IsNull(Me.dtpHastaRboCartera(2).value) Then
-        filter2 = filter2 & " AND rec.fecha <= " & conectar.Escape(Me.dtpHastaRboCartera(2).value)
+
+        filter2 = filter2 & _
+                  " AND COALESCE(" & _
+                      "rec.fecha, " & _
+                      "cheq.fecha_recibido" & _
+                  ") <= " & _
+                  conectar.Escape( _
+                      Format$( _
+                          Me.dtpHastaRboCartera(2).value, _
+                          "yyyy-mm-dd"))
+
     End If
+
+    '--------------------------------------------------
+    'BANCO
+    '--------------------------------------------------
 
     If Me.cboBancoCartera.ListIndex > -1 Then
-        filter2 = filter2 & " and cheq.id_banco=" & Me.cboBancoCartera.ItemData(Me.cboBancoCartera.ListIndex)
+
+        filter2 = filter2 & _
+                  " AND cheq.id_banco = " & _
+                  Me.cboBancoCartera.ItemData( _
+                      Me.cboBancoCartera.ListIndex)
+
     End If
 
+    '--------------------------------------------------
+    'CLASIFICACIÓN
+    '--------------------------------------------------
+
     If Me.cboClasificacion.ListIndex > -1 Then
-        If Me.cboClasificacion.ListIndex = 0 Then    'propio
-            filter2 = filter2 & " AND cheq.propio = 1 AND cheq.teceros_propio = 0 "
-        ElseIf Me.cboClasificacion.ListIndex = 1 Then    'terceros
-            filter2 = filter2 & " AND cheq.propio = 0 AND cheq.teceros_propio = 0 "
-        ElseIf Me.cboClasificacion.ListIndex = 2 Then    'terceros propio
-            filter2 = filter2 & " AND cheq.propio = 0 AND cheq.teceros_propio = 1 "
-        End If
+
+        Select Case Me.cboClasificacion.ListIndex
+
+            Case 0      'Propio
+
+                filter2 = filter2 & _
+                    " AND cheq.propio = 1 " & _
+                    "AND cheq.teceros_propio = 0 "
+
+            Case 1      'Tercero
+
+                filter2 = filter2 & _
+                    " AND cheq.propio = 0 " & _
+                    "AND cheq.teceros_propio = 0 "
+
+            Case 2      'Tercero propio
+
+                filter2 = filter2 & _
+                    " AND cheq.propio = 0 " & _
+                    "AND cheq.teceros_propio = 1 "
+
+        End Select
+
     End If
+
+    '--------------------------------------------------
+    'CONSULTAR CARTERA A LA FECHA INDICADA
+    '--------------------------------------------------
 
     Orden = "cheq.id DESC"
 
-    Set cartera = DAOCheques.FindAllEnCartera(filter2, Orden)
+    Set cartera = DAOCheques.FindAllEnCarteraAl( _
+                        fechaCorte, _
+                        filter2, _
+                        Orden)
+
+    If cartera Is Nothing Then
+        Set cartera = New Collection
+    End If
+
+    fechaCorteCarteraActual = fechaCorte
+
+    '--------------------------------------------------
+    'ACTUALIZAR GRILLA
+    '--------------------------------------------------
 
     Me.grid_cartera_cheques.ItemCount = 0
     Me.grid_cartera_cheques.ItemCount = cartera.count
-    
-    Me.lbContadorChequesEnCartera.caption = "Cheques encontrados: [ " & cartera.count & " ]"
+    Me.grid_cartera_cheques.Refresh
+
+    Me.lbContadorChequesEnCartera.caption = _
+        "Cheques en cartera al " & _
+        Format$(fechaCorte, "dd/mm/yyyy") & _
+        ": [ " & cartera.count & " ]"
+
+    Exit Sub
+
+err1:
+
+    MsgBox "No se pudo obtener la cartera histórica." & _
+           vbCrLf & Err.Description, _
+           vbExclamation, _
+           "Cartera histórica"
 
 End Sub
 

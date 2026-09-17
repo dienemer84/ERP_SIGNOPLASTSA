@@ -3192,20 +3192,95 @@ Private Sub gridRetenciones_UnboundReadData(ByVal RowIndex As Long, ByVal Bookma
 End Sub
 
 
-Private Sub gridRetenciones_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If alicuotas.count >= RowIndex Then
-        Set alicuotaRetencion = alicuotas.item(RowIndex)
-        alicuotaRetencion.alicuotaRetencion = Values(2)
-        If Not IsNumeric(Values(3)) Then
-            alicuotaRetencion.Importe = 0
-            alicuotaRetencion.certificados = "-"
-        Else
-            alicuotaRetencion.Importe = Values(3)
-            alicuotaRetencion.certificados = Values(4)
-        End If
-        Totalizar
+Private Sub gridRetenciones_UnboundUpdate( _
+        ByVal RowIndex As Long, _
+        ByVal Bookmark As Variant, _
+        ByVal Values As GridEX20.JSRowData)
+
+    On Error GoTo ManejaError
+
+    'Evitar posiciones inválidas de la grilla
+    If RowIndex < 1 Then Exit Sub
+    If RowIndex > alicuotas.count Then Exit Sub
+
+    Set alicuotaRetencion = alicuotas.item(RowIndex)
+
+    '-----------------------------------------
+    ' Alícuota de retención
+    '-----------------------------------------
+    If IsNull(Values(2)) Or IsEmpty(Values(2)) Then
+
+        alicuotaRetencion.alicuotaRetencion = 0
+
+    ElseIf LenB(Trim$(CStr(Values(2)))) = 0 Then
+
+        alicuotaRetencion.alicuotaRetencion = 0
+
+    ElseIf IsNumeric(Values(2)) Then
+
+        alicuotaRetencion.alicuotaRetencion = _
+            CDbl(Values(2))
+
+    Else
+
+        alicuotaRetencion.alicuotaRetencion = 0
 
     End If
+
+    '-----------------------------------------
+    ' Importe retenido
+    '-----------------------------------------
+    If IsNull(Values(3)) Or IsEmpty(Values(3)) Then
+
+        alicuotaRetencion.Importe = 0
+
+    ElseIf LenB(Trim$(CStr(Values(3)))) = 0 Then
+
+        alicuotaRetencion.Importe = 0
+
+    ElseIf IsNumeric(Values(3)) Then
+
+        alicuotaRetencion.Importe = _
+            CDbl(Values(3))
+
+    Else
+
+        alicuotaRetencion.Importe = 0
+
+    End If
+
+    '-----------------------------------------
+    ' Número de certificado
+    '-----------------------------------------
+    If IsNull(Values(4)) Or IsEmpty(Values(4)) Then
+
+        alicuotaRetencion.certificados = "-"
+
+    ElseIf LenB(Trim$(CStr(Values(4)))) = 0 Then
+
+        alicuotaRetencion.certificados = "-"
+
+    Else
+
+        alicuotaRetencion.certificados = _
+            Trim$(CStr(Values(4)))
+
+    End If
+
+    Totalizar
+    Exit Sub
+
+ManejaError:
+
+    MsgBox _
+        "No se pudo actualizar la retención." & _
+        vbCrLf & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Retenciones"
+
+    Err.Clear
+
 End Sub
 
 

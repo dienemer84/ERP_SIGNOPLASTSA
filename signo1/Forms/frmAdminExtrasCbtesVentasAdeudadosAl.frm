@@ -456,11 +456,11 @@ Dim m_Archivos As Dictionary
 
 Private Sub btnExportar_Click()
     Me.progreso.Visible = True
-    Dim FechaFIn As String
-    FechaFIn = Me.dtpHastaFIN(1).value
+    Dim FechaFin As String
+    FechaFin = Me.dtpHastaFIN(1).value
     
     If IsSomething(facturas) Then
-        If Not DAOFactura.ExportarColeccionTotalizadores(facturas, Me.progreso, FechaFIn) Then GoTo err1
+        If Not DAOFactura.ExportarColeccionTotalizadores(facturas, Me.progreso, FechaFin) Then GoTo err1
     End If
 
     Me.progreso.Visible = False
@@ -478,13 +478,43 @@ End Sub
 
 
 Private Sub btnBuscar_Click()
-    If IsNull(dtpHastaFIN(1).value) Then
-                MsgBox ("Tiene que selecionar una fecha de fin de cobro!")
-                    Else
-                       
-        llenarGrilla
+
+    If IsNull(Me.dtpHastaFIN(1).value) Then
+        MsgBox "Tiene que seleccionar una fecha de fin de cobro.", _
+               vbExclamation, _
+               "Fecha requerida"
+        Exit Sub
+    End If
+
+    If Not IsNull(Me.dtpDesde(0).value) _
+       And Not IsNull(Me.dtpHasta(0).value) Then
+
+        If DateValue(Me.dtpDesde(0).value) > _
+           DateValue(Me.dtpHasta(0).value) Then
+
+            MsgBox "La fecha Desde no puede ser posterior a la fecha Hasta.", _
+                   vbExclamation, _
+                   "Rango incorrecto"
+            Exit Sub
+        End If
 
     End If
+
+    If Not IsNull(Me.dtpHasta(0).value) Then
+
+        If DateValue(Me.dtpHasta(0).value) > _
+           DateValue(Me.dtpHastaFIN(1).value) Then
+
+            MsgBox "La fecha final de los comprobantes no puede ser posterior " & _
+                   "a la fecha de corte de pagos y cancelaciones.", _
+                   vbExclamation, _
+                   "Fecha de corte incorrecta"
+            Exit Sub
+        End If
+
+    End If
+
+    llenarGrilla
 
 End Sub
 
@@ -529,10 +559,20 @@ End Sub
 Public Sub llenarGrilla()
     
     Dim filtro As String
-    Dim FechaFIn As String
+    Dim FechaFin As String
 
     Me.grilla.ItemCount = 0
+    
     filtro = "1=1"
+    
+    'Incluir solamente comprobantes válidos para la cuenta corriente.
+    filtro = filtro & _
+        " AND AdminFacturas.estado IN (" & _
+        EstadoFacturaCliente.Aprobada & ", " & _
+        EstadoFacturaCliente.CanceladaNC & ", " & _
+        EstadoFacturaCliente.CanceladaNCParcial & ", " & _
+        EstadoFacturaCliente.AplicadaND & ", " & _
+        EstadoFacturaCliente.AplicadaACbte & ")"
 
     If Me.cboClientes.ListIndex >= 0 Then
         filtro = filtro & " and AdminFacturas.idCliente=" & cboClientes.ItemData(Me.cboClientes.ListIndex)
@@ -550,57 +590,87 @@ Public Sub llenarGrilla()
         filtro = filtro & " AND AdminFacturas.FechaEmision <= " & conectar.Escape(Me.dtpHasta(0).value)
     End If
 
-    If Not IsNull(dtpHastaFIN(1).value) Then
-        FechaFIn = conectar.Escape(dtpHastaFIN(1).value)
+    If Not IsNull(Me.dtpHastaFIN(1).value) Then
+    
+        FechaFin = conectar.Escape(Me.dtpHastaFIN(1).value)
+    
+        'Un reporte al corte no puede contener comprobantes
+        'emitidos después de esa fecha.
+        filtro = filtro & _
+            " AND AdminFacturas.FechaEmision <= " & FechaFin
+    
     End If
     
-    Set facturas = DAOFactura.FindAllTotalizadores(filtro, , , FechaFIn)
+    Set facturas = DAOFactura.FindAllTotalizadores(filtro, , , FechaFin)
     
     ''''''''''''''''    ''''''''''''''''    ''''''''''''''''
     
     Dim F As Factura
-    Dim C As Integer
-    Dim j As Integer
-    Dim total As Double
+    Dim Signo As Integer
     
-    total = 0
-     j = 0
+    Dim TotalFiltrado As Double
+    Dim NuevoSaldo As Double
+    
+    Dim TotalComprobante As Double
+    Dim TotalCobrado As Double
+    Dim TotalNotasCredito As Double
+    Dim SaldoFactura As Double
+    
+    TotalFiltrado = 0
+    NuevoSaldo = 0
     
     For Each F In facturas
-        
-        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then C = -1 Else C = 1
-
-        total = total + MonedaConverter.ConvertirForzado2(F.TotalEstatico.total * C, MonedaConverter.Patron.Id, F.moneda.Id, F.CambioAPatron)
-        
-    Next
     
-    Dim SaldinString As String
-    Dim NuevoSaldo As Double
-    Saldin = 0
-    NuevoSaldo = 0
-
+        If F.TipoDocumento = tipoDocumentoContable.notaCredito Then
+            Signo = -1
+        Else
+            Signo = 1
+        End If
+    
+        'Total del comprobante convertido a moneda patrón.
+        TotalComprobante = funciones.RedondearDecimales( _
+            F.TotalEstatico.total * F.CambioAPatron, 2)
+    
+        'Total neto de los comprobantes filtrados.
+        TotalFiltrado = TotalFiltrado + _
+                        (TotalComprobante * Signo)
+    
+        If F.TipoDocumento <> tipoDocumentoContable.notaCredito Then
+    
+            'Recibos aprobados aplicados hasta la fecha de corte.
+            TotalCobrado = funciones.RedondearDecimales( _
+                F.MontoCobrado * F.CambioAPatron, 2)
+    
+            'Suma de todas las notas de crédito aplicadas.
+            TotalNotasCredito = funciones.RedondearDecimales( _
+                F.CbteAsociadoMonto, 2)
+    
+            'Saldo definitivo de la factura.
+            SaldoFactura = funciones.RedondearDecimales( _
+                TotalComprobante - _
+                TotalCobrado - _
+                TotalNotasCredito, 2)
+    
+            NuevoSaldo = NuevoSaldo + SaldoFactura
+    
+        End If
+    
+    Next F
+    
+    TotalFiltrado = funciones.RedondearDecimales( _
+        TotalFiltrado, 2)
+    
+    NuevoSaldo = funciones.RedondearDecimales( _
+        NuevoSaldo, 2)
+    
     Me.grilla.ItemCount = facturas.count
-    
-    For Each Factura In facturas
-             j = j + 1
-             
-            SaldinString = grilla.GetRowData(j).GetSubTotal(17, jgexSum)
-            SaldinString = Replace(SaldinString, ".", "")
-            SaldinString = Replace(SaldinString, ",", ".")
-            
-            Dim SaldinDouble As Double
-            SaldinDouble = CDbl(SaldinString)
-            
-            NuevoSaldo = NuevoSaldo + SaldinString
-    
-    Next
 
     GridEXHelper.AutoSizeColumns Me.grilla, True
     
     Me.caption = "Cbtes. filtrados [Cantidad: " & facturas.count & "]"
     
-    Me.lbl(2).caption = FormatCurrency(funciones.FormatearDecimales(total))
-    lblTotalNuevoSaldo(1) = FormatCurrency(funciones.FormatearDecimales(NuevoSaldo))
+    Me.lbl(2).caption = FormatCurrency(TotalFiltrado)
+    Me.lblTotalNuevoSaldo(1).caption = FormatCurrency(NuevoSaldo)
     
 End Sub
 
@@ -629,112 +699,123 @@ Private Sub grilla_DblClick()
 End Sub
 
 
-Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub grilla_UnboundReadData(ByVal rowIndex As Long, _
+                                   ByVal Bookmark As Variant, _
+                                   ByVal Values As GridEX20.JSRowData)
 
     Set Factura = facturas.item(rowIndex)
-    
-    Dim i As Integer
 
-    Dim ValorCero As Double
-    Dim TotalSaldoDefinitivo As Double
-
-    ValorCero = "0"
+    Dim Signo As Integer
+    Dim TotalComprobante As Double
+    Dim TotalCobrado As Double
+    Dim SaldoComprobante As Double
+    Dim TotalNotasCredito As Double
+    Dim NuevoSaldo As Double
 
     With Factura
 
-        Values(1) = Factura.Id
-        Values(2) = Factura.cliente.razon
-        Values(3) = Factura.cliente.Cuit
+        Values(1) = .Id
+        Values(2) = .Cliente.razon
+        Values(3) = .Cliente.cuit
 
-        If Factura.esCredito Then
-            Values(4) = Factura.GetShortDescription(True, False) & " " & "(FCE)"
+        If .esCredito Then
+            Values(4) = .GetShortDescription(True, False) & " (FCE)"
         Else
-            Values(4) = Factura.GetShortDescription(True, False)
+            Values(4) = .GetShortDescription(True, False)
         End If
 
-        If IsSomething(Factura.Tipo) Then
-            Values(5) = Factura.Tipo.TipoFactura.Tipo
-        End If
+        If IsSomething(.Tipo) Then
+            Values(5) = .Tipo.TipoFactura.Tipo
 
-        If Factura.Tipo.PuntoVenta.EsElectronico And Not Factura.AprobadaAFIP And Factura.estado <> EstadoFacturaCliente.EnProceso Then
-            Values(6) = "Nro. Pendiente"
-        Else
-            Values(6) = Factura.NumeroFormateado
-        End If
+            If .Tipo.PuntoVenta.EsElectronico _
+               And Not .AprobadaAFIP _
+               And .estado <> EstadoFacturaCliente.EnProceso Then
 
-        Values(7) = Factura.FechaEmision
-
-        Values(8) = Factura.moneda.NombreCorto
-
-        If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
-            i = -1
-        Else
-            i = 1
-        End If
-
-        'MONTO TOTAL
-        Dim TotalComprobante As Double
-        TotalComprobante = (Factura.TotalEstatico.total * Factura.CambioAPatron)
-        Values(9) = Replace(FormatCurrency(funciones.FormatearDecimales(TotalComprobante) * i), "$", "")
-
-        'MONTO COBRADO
-        Dim TotalCobrado As Double
-        TotalCobrado = Factura.MontoCobrado * Factura.CambioAPatron
-        Values(10) = Replace(FormatCurrency(funciones.FormatearDecimales(TotalCobrado) * i), "$", "")
-
-        'SALDO
-        Dim saldoComprobante As Double
-        saldoComprobante = TotalComprobante - TotalCobrado
-        Values(11) = Replace(FormatCurrency(funciones.FormatearDecimales(saldoComprobante) * i), "$", "")
-
-
-        If Factura.TipoDocumento = tipoDocumentoContable.notaCredito Then
-            Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(ValorCero) * i), "$", "")
-
-
-        Else
-            If Factura.CbteAsociadoTipo <> "2" And Factura.CbteAsociadoTipo <> "5" And Factura.CbteAsociadoTipo <> "8" And Factura.CbteAsociadoTipo <> "16" And Factura.CbteAsociadoTipo <> "11" And Factura.CbteAsociadoTipo <> "22" Then
-
-                Values(12) = ""
-                Values(13) = ""
-                Values(14) = ""
-                Values(15) = ""
-                Values(16) = ""
-
-                Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(saldoComprobante) * i), "$", "")
-                'Values(17) = funciones.FormatearDecimales(saldoComprobante) * i
-
+                Values(6) = "Nro. Pendiente"
             Else
-
-                Values(12) = Factura.observaciones_cancela
-                Values(13) = Factura.CbteAsociadoID
-                Values(14) = Factura.CbteAsociado
-
-                Values(15) = Factura.CbteAsociadoFecha
-
-
-                If Factura.CbteAsociadoMonto = 0 Then
-                    Values(16) = ""
-                Else
-                    Values(16) = Replace(FormatCurrency(funciones.FormatearDecimales(Factura.CbteAsociadoMonto) * i), "$", "")
-                End If
-
-                TotalSaldoDefinitivo = TotalComprobante - Factura.CbteAsociadoMonto
-                Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(TotalSaldoDefinitivo) * i), "$", "")
-                'Values(17) = funciones.FormatearDecimales(TotalSaldoDefinitivo) * i
-
-                If Values(17) <> ValorCero And TotalCobrado <> 0 Then
-
-                    Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(saldoComprobante) * i), "$", "")
-
-                End If
+                Values(6) = .NumeroFormateado
             End If
+        Else
+            Values(5) = ""
+            Values(6) = .NumeroFormateado
         End If
-        
-        If Factura.Id = 14059 Or Factura.Id = 14262 Then
-            Values(17) = Replace(FormatCurrency(funciones.FormatearDecimales(ValorCero) * i), "$", "")
+
+        Values(7) = .FechaEmision
+        Values(8) = .moneda.NombreCorto
+
+        If .TipoDocumento = tipoDocumentoContable.notaCredito Then
+            Signo = -1
+        Else
+            Signo = 1
         End If
-        
+
+        'Importe original convertido a moneda patrón.
+        TotalComprobante = funciones.RedondearDecimales( _
+            .TotalEstatico.total * .CambioAPatron, 2)
+
+        'Recibos aprobados y aplicados hasta la fecha seleccionada.
+        TotalCobrado = funciones.RedondearDecimales( _
+            .MontoCobrado * .CambioAPatron, 2)
+
+        'Saldo sin considerar todavía las notas de crédito.
+        SaldoComprobante = funciones.RedondearDecimales( _
+            TotalComprobante - TotalCobrado, 2)
+
+        'Suma de todas las notas de crédito asociadas.
+        TotalNotasCredito = funciones.RedondearDecimales( _
+            .CbteAsociadoMonto, 2)
+
+        Values(9) = Replace(FormatCurrency( _
+            TotalComprobante * Signo), "$", "")
+
+        Values(10) = Replace(FormatCurrency( _
+            TotalCobrado * Signo), "$", "")
+
+        Values(11) = Replace(FormatCurrency( _
+            SaldoComprobante * Signo), "$", "")
+
+        'Inicializar datos del comprobante asociado.
+        Values(12) = ""
+        Values(13) = ""
+        Values(14) = ""
+        Values(15) = ""
+        Values(16) = ""
+
+        If .TipoDocumento = tipoDocumentoContable.notaCredito Then
+
+            'La NC ya se descuenta en la factura relacionada.
+            'No debe descontarse nuevamente en el Nuevo Saldo.
+            Values(17) = Replace(FormatCurrency(0), "$", "")
+
+        Else
+
+            If LenB(Trim$(.CbteAsociadoID)) > 0 Then
+
+                Values(12) = .observaciones_cancela
+                Values(13) = .CbteAsociadoID
+                Values(14) = .CbteAsociado
+
+                If .CbteAsociadoFecha > 0 Then
+                    Values(15) = .CbteAsociadoFecha
+                End If
+
+                If TotalNotasCredito <> 0 Then
+                    Values(16) = Replace(FormatCurrency( _
+                        TotalNotasCredito), "$", "")
+                End If
+
+            End If
+
+            'Fórmula definitiva:
+            'Total factura - cobros - notas de crédito.
+            NuevoSaldo = funciones.RedondearDecimales( _
+                SaldoComprobante - TotalNotasCredito, 2)
+
+            Values(17) = Replace(FormatCurrency( _
+                NuevoSaldo), "$", "")
+
+        End If
+
     End With
 
 End Sub

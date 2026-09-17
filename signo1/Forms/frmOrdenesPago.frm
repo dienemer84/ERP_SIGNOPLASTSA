@@ -1292,19 +1292,19 @@ Private Sub OrdenarMovimientosPorValor( _
 
     Dim i As Long
     Dim j As Long
-    Dim cantidad As Long
+    Dim Cantidad As Long
     Dim intercambiar As Boolean
 
-    cantidad = ordenes.count
+    Cantidad = ordenes.count
 
-    If cantidad <= 1 Then Exit Sub
+    If Cantidad <= 1 Then Exit Sub
 
-    ReDim arr(1 To cantidad)
+    ReDim arr(1 To Cantidad)
 
     '---------------------------------------------
     ' Pasar la colección a un array
     '---------------------------------------------
-    For i = 1 To cantidad
+    For i = 1 To Cantidad
         Set arr(i) = ordenes.item(i)
     Next i
 
@@ -1312,9 +1312,9 @@ Private Sub OrdenarMovimientosPorValor( _
     ' Ordenar por el valor NUMÉRICO REAL
     ' StaticTotalOrigenes es Double
     '---------------------------------------------
-    For i = 1 To cantidad - 1
+    For i = 1 To Cantidad - 1
 
-        For j = i + 1 To cantidad
+        For j = i + 1 To Cantidad
 
             If ascendente Then
 
@@ -1347,7 +1347,7 @@ Private Sub OrdenarMovimientosPorValor( _
     '---------------------------------------------
     Set ordenes = New Collection
 
-    For i = 1 To cantidad
+    For i = 1 To Cantidad
         ordenes.Add arr(i)
     Next i
 

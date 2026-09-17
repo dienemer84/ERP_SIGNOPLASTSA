@@ -24,6 +24,15 @@ Begin VB.Form frmCtaCte
    MinButton       =   0   'False
    ScaleHeight     =   6810
    ScaleWidth      =   9975
+   Begin VB.TextBox txtImporteMinimo 
+      Alignment       =   1  'Right Justify
+      Height          =   285
+      Left            =   4320
+      TabIndex        =   10
+      Text            =   "0"
+      Top             =   525
+      Width           =   1695
+   End
    Begin XtremeSuiteControls.PushButton button_ExportToXls 
       Height          =   435
       Left            =   2040
@@ -129,6 +138,28 @@ Begin VB.Form frmCtaCte
       Caption         =   "Ver"
       UseVisualStyle  =   -1  'True
    End
+   Begin XtremeSuiteControls.Label lblImporteMinimo 
+      Height          =   375
+      Left            =   2640
+      TabIndex        =   9
+      Top             =   480
+      Width           =   1575
+      _Version        =   786432
+      _ExtentX        =   2778
+      _ExtentY        =   661
+      _StockProps     =   79
+      Caption         =   "Importe mínimo:"
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Alignment       =   1
+   End
    Begin VB.Label lblSaldo 
       Alignment       =   1  'Right Justify
       BeginProperty Font 
@@ -141,10 +172,10 @@ Begin VB.Form frmCtaCte
          Strikethrough   =   0   'False
       EndProperty
       Height          =   285
-      Left            =   7440
+      Left            =   4200
       TabIndex        =   7
       Top             =   6360
-      Width           =   2385
+      Width           =   5625
    End
    Begin XtremeSuiteControls.Label Label6 
       Height          =   195
@@ -199,7 +230,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-Private detalles As Collection
+Private Detalles As Collection
 Private deta As DTODetalleCuentaCorriente
 Private saldo As Double
 Private saldos As New Dictionary
@@ -213,41 +244,80 @@ Private Sub button_ExportToXls_Click()
 End Sub
 
 Private Sub cmdVerCtaCte_Click()
-    If Me.cboClientes.ListIndex <> -1 Then
-        Dim fecha_hasta As String
-        If Not IsNull(Me.dtpHasta.value) Then
-            fecha_hasta = Format(Me.dtpHasta.value, "yyyy-mm-dd")
-        End If
 
-
-
-        Set detalles = DAOCuentaCorriente.FindAllDetalles(Me.cboClientes.ItemData(Me.cboClientes.ListIndex), , fecha_hasta)
-        saldo = 0
-
-
-
-        If IsSomething(detalles) Then
-            Me.lblSaldo = "Saldo: " & Replace(FormatCurrency(funciones.FormatearDecimales(DAOCuentaCorriente.GetSaldo(detalles))), "$", "")
-        End If
-        Set saldos = New Dictionary
-        saldo = 0
-        Me.gridDetalles.ItemCount = 0
-        Me.gridDetalles.ItemCount = detalles.count
+    If Me.cboClientes.ListIndex = -1 Then
+        MsgBox "Debe seleccionar un cliente.", _
+               vbExclamation + vbOKOnly, _
+               "Cuenta corriente"
+        Exit Sub
     End If
 
+    Dim importeMinimo As Double
+
+    If Not ObtenerImporteMinimo(importeMinimo) Then
+        Exit Sub
+    End If
+
+    Dim fecha_hasta As String
+
+    If Not IsNull(Me.dtpHasta.value) Then
+        fecha_hasta = Format$(Me.dtpHasta.value, "yyyy-mm-dd")
+    End If
+
+    Dim detallesCompletos As Collection
+
+    Set detallesCompletos = _
+        DAOCuentaCorriente.FindAllDetalles( _
+            Me.cboClientes.ItemData(Me.cboClientes.ListIndex), _
+            , _
+            fecha_hasta)
+
+    Set Detalles = FiltrarDetallesPorImporte( _
+        detallesCompletos, _
+        importeMinimo)
+
+    If IsSomething(detallesCompletos) Then
+
+        saldo = DAOCuentaCorriente.GetSaldo(detallesCompletos)
+
+        If importeMinimo > 0 Then
+            Me.lblSaldo.caption = _
+                "Saldo real: " & _
+                Replace(FormatCurrency( _
+                    funciones.FormatearDecimales(saldo)), "$", "")
+        Else
+            Me.lblSaldo.caption = _
+                "Saldo: " & _
+                Replace(FormatCurrency( _
+                    funciones.FormatearDecimales(saldo)), "$", "")
+        End If
+
+    Else
+        saldo = 0
+        Me.lblSaldo.caption = "Saldo: 0,00"
+    End If
+
+    Set saldos = New Dictionary
+
+    Me.gridDetalles.ItemCount = 0
+    Me.gridDetalles.ItemCount = Detalles.count
 
 End Sub
 
 
 
 Private Sub Form_Load()
+
     Customize Me
     GridEXHelper.CustomizeGrid Me.gridDetalles
 
     DAOCliente.llenarComboXtremeSuite Me.cboClientes
     Me.cboClientes.ListIndex = -1
 
+    Set Detalles = New Collection
+
     Me.gridDetalles.ItemCount = 0
+
 End Sub
 
 
@@ -256,7 +326,7 @@ Private Sub gridDetalles_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 Private Sub gridDetalles_DblClick()
-    Set deta = detalles.item(Me.gridDetalles.rowIndex(Me.gridDetalles.row))
+    Set deta = Detalles.item(Me.gridDetalles.RowIndex(Me.gridDetalles.row))
 
     If (deta.tipoComprobante = TipoComprobanteUsado.Factura_) Then
         Dim frm As New frmAdminFacturasEdicion
@@ -268,7 +338,7 @@ Private Sub gridDetalles_DblClick()
     If (deta.tipoComprobante = TipoComprobanteUsado.Recibo_ Or deta.tipoComprobante = TipoComprobanteUsado.Retencion_) Then
         Dim frm1 As New frmAdminCobranzasNuevoRecibo
         frm1.editar = False
-        frm1.reciboId = deta.IdComprobante
+        frm1.ReciboID = deta.IdComprobante
         frm1.Show
     End If
 
@@ -286,15 +356,15 @@ End Sub
 
 Private Sub gridDetalles_RowFormat(RowBuffer As GridEX20.JSRowData)
 
-    Set deta = detalles.item(RowBuffer.rowIndex)
+    Set deta = Detalles.item(RowBuffer.RowIndex)
     If deta.AtributoExtra Then
         RowBuffer.RowStyle = "saldado"
     End If
 End Sub
 
-Private Sub gridDetalles_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 And detalles.count > 0 Then
-        Set deta = detalles.item(rowIndex)
+Private Sub gridDetalles_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 And Detalles.count > 0 Then
+        Set deta = Detalles.item(RowIndex)
         Values(1) = deta.FEcha
         Values(2) = deta.Comprobante
         'Values(3) = deta.Debe
@@ -339,85 +409,217 @@ End Sub
 
 Public Function ExportToXls() As Boolean
 
-'Dim xlApplication As New Excel.Application
+    On Error GoTo ManejarError
+
+    ExportToXls = False
+
+    'Primero se controla que la colección exista
+    If Not IsSomething(Detalles) Then
+
+        MsgBox "No hay datos para exportar." & vbCrLf & _
+               "Seleccione un cliente y presione Ver.", _
+               vbInformation + vbOKOnly, _
+               "Exportar cuenta corriente"
+
+        Exit Function
+
+    End If
+
+    'Después se controla que tenga elementos
+    If Detalles.count = 0 Then
+
+        MsgBox "No hay movimientos para exportar." & vbCrLf & _
+               "Seleccione otro cliente o reduzca el importe mínimo.", _
+               vbInformation + vbOKOnly, _
+               "Exportar cuenta corriente"
+
+        Exit Function
+
+    End If
+
     Dim xlApplication As Object
-    Set xlApplication = CreateObject("Excel.Application")
-
-    'Dim xlWorkbook As New Excel.Workbook
     Dim xlWorkbook As Object
-    Set xlWorkbook = CreateObject("Excel.Application")
-
-    'Dim xlWorksheet As New Excel.Worksheet
     Dim xlWorksheet As Object
-    Set xlWorksheet = CreateObject("Excel.Application")
 
+    Set xlApplication = CreateObject("Excel.Application")
     Set xlWorkbook = xlApplication.Workbooks.Add
-
     Set xlWorksheet = xlWorkbook.Worksheets.item(1)
 
-    xlWorksheet.Activate
+    xlApplication.DisplayAlerts = False
+    xlApplication.ScreenUpdating = False
 
-    xlWorksheet.Range("A1:E1").Merge
-    xlWorksheet.Range("A2:E2").Merge
-    xlWorksheet.Range("A1:E3").Font.Bold = True
-    xlWorksheet.Cells(1, 1).value = "Resumen de Cuenta Corriente"
-    xlWorksheet.Cells(2, 1).value = "Cliente: " & Me.cboClientes.Text
-    xlWorksheet.Cells(3, 1).value = "Fecha"
-    xlWorksheet.Cells(3, 2).value = "Comprobante"
-    xlWorksheet.Cells(3, 3).value = "Debe"
-    xlWorksheet.Cells(3, 4).value = "Haber"
-    xlWorksheet.Cells(3, 5).value = "Saldo"
+    With xlWorksheet
 
-    Dim idx As Integer
+        .Range("A1:E1").Merge
+        .Range("A2:E2").Merge
+        .Range("A1:E3").Font.Bold = True
+
+        .Cells(1, 1).value = "Resumen de Cuenta Corriente"
+        .Cells(2, 1).value = "Cliente: " & Me.cboClientes.Text
+
+        .Cells(3, 1).value = "Fecha"
+        .Cells(3, 2).value = "Comprobante"
+        .Cells(3, 3).value = "Debe"
+        .Cells(3, 4).value = "Haber"
+        .Cells(3, 5).value = "Saldo"
+
+    End With
+
+    Dim idx As Long
+    Dim detalleActual As DTODetalleCuentaCorriente
+
     idx = 4
 
-    For Each deta In detalles
+    For Each detalleActual In Detalles
 
-
-        xlWorksheet.Cells(idx, 1).value = deta.FEcha
-        xlWorksheet.Cells(idx, 2).value = deta.Comprobante
-        xlWorksheet.Cells(idx, 3).value = deta.Debe
-        xlWorksheet.Cells(idx, 4).value = deta.Haber
-        xlWorksheet.Cells(idx, 5).value = deta.saldo
+        xlWorksheet.Cells(idx, 1).value = detalleActual.FEcha
+        xlWorksheet.Cells(idx, 2).value = detalleActual.Comprobante
+        xlWorksheet.Cells(idx, 3).value = detalleActual.Debe
+        xlWorksheet.Cells(idx, 4).value = detalleActual.Haber
+        xlWorksheet.Cells(idx, 5).value = detalleActual.saldo
 
         idx = idx + 1
 
-    Next
-
-    xlApplication.ScreenUpdating = False
-
-    Dim wkSt As String
-
-    wkSt = xlWorksheet.Name
+    Next detalleActual
 
     xlWorksheet.Cells.EntireColumn.AutoFit
 
-    xlWorkbook.Sheets(wkSt).Select
+    With xlWorksheet.PageSetup
 
-    xlApplication.ScreenUpdating = True
+        .Orientation = xlLandscape
+        .BottomMargin = xlApplication.CentimetersToPoints(1)
+        .TopMargin = xlApplication.CentimetersToPoints(1)
+        .LeftMargin = xlApplication.CentimetersToPoints(1)
+        .RightMargin = xlApplication.CentimetersToPoints(1)
 
-    xlWorksheet.PageSetup.Orientation = xlLandscape
-    xlWorksheet.PageSetup.BottomMargin = xlApplication.CentimetersToPoints(1)
-    xlWorksheet.PageSetup.TopMargin = xlApplication.CentimetersToPoints(1)
-    xlWorksheet.PageSetup.LeftMargin = xlApplication.CentimetersToPoints(1)
-    xlWorksheet.PageSetup.RightMargin = xlApplication.CentimetersToPoints(1)
+    End With
 
     Dim filename As String
-    filename = funciones.GetTmpPath() & "tmp_info " & Hour(Now) & Minute(Now) & Second(Now) & " .xlsx"
 
-    If Dir(filename) <> vbNullString Then Kill filename
+    filename = funciones.GetTmpPath() & _
+               "CuentaCorriente_" & _
+               Format$(Now, "yyyymmdd_hhnnss") & _
+               ".xlsx"
+
+    If Dir$(filename) <> vbNullString Then
+        Kill filename
+    End If
 
     xlWorkbook.SaveAs filename
 
     xlWorkbook.Saved = True
-    xlWorkbook.Close
-    xlApplication.Quit
+    xlWorkbook.Close False
 
-    funciones.ShellExecute 0, "open", filename, "", "", 0
+    xlApplication.ScreenUpdating = True
+    xlApplication.DisplayAlerts = True
+    xlApplication.Quit
 
     Set xlWorksheet = Nothing
     Set xlWorkbook = Nothing
     Set xlApplication = Nothing
 
+    funciones.ShellExecute 0, "open", filename, "", "", 0
+
+    ExportToXls = True
+    Exit Function
+
+ManejarError:
+
+    Dim descripcionError As String
+    descripcionError = Err.Description
+
+    On Error Resume Next
+
+    If Not xlWorkbook Is Nothing Then
+        xlWorkbook.Close False
+    End If
+
+    If Not xlApplication Is Nothing Then
+        xlApplication.DisplayAlerts = True
+        xlApplication.Quit
+    End If
+
+    Set xlWorksheet = Nothing
+    Set xlWorkbook = Nothing
+    Set xlApplication = Nothing
+
+    On Error GoTo 0
+
+    MsgBox "No se pudo exportar la cuenta corriente." & vbCrLf & _
+           descripcionError, _
+           vbCritical + vbOKOnly, _
+           "Error de exportación"
+
+    ExportToXls = False
 
 End Function
+
+
+Private Function ObtenerImporteMinimo( _
+    ByRef importeMinimo As Double) As Boolean
+
+    Dim texto As String
+
+    texto = Trim$(Me.txtImporteMinimo.Text)
+
+    If LenB(texto) = 0 Then
+        texto = "0"
+    End If
+
+    If Not IsNumeric(texto) Then
+        MsgBox "El importe mínimo debe ser un número válido.", _
+               vbExclamation + vbOKOnly, _
+               "Cuenta corriente"
+
+        Me.txtImporteMinimo.SetFocus
+        ObtenerImporteMinimo = False
+        Exit Function
+    End If
+
+    importeMinimo = CDbl(texto)
+
+    If importeMinimo < 0 Then
+        MsgBox "El importe mínimo no puede ser negativo.", _
+               vbExclamation + vbOKOnly, _
+               "Cuenta corriente"
+
+        Me.txtImporteMinimo.SetFocus
+        ObtenerImporteMinimo = False
+        Exit Function
+    End If
+
+    Me.txtImporteMinimo.Text = Format$(importeMinimo, "0.00")
+
+    ObtenerImporteMinimo = True
+
+End Function
+
+Private Function FiltrarDetallesPorImporte( _
+    ByVal detallesOrigen As Collection, _
+    ByVal importeMinimo As Double) As Collection
+
+    Dim resultado As New Collection
+    Dim detalleActual As DTODetalleCuentaCorriente
+
+    If Not IsSomething(detallesOrigen) Then
+        Set FiltrarDetallesPorImporte = resultado
+        Exit Function
+    End If
+
+    For Each detalleActual In detallesOrigen
+
+        If importeMinimo <= 0 _
+           Or Abs(CDbl(detalleActual.Debe)) >= importeMinimo _
+           Or Abs(CDbl(detalleActual.Haber)) >= importeMinimo Then
+
+            resultado.Add detalleActual
+
+        End If
+
+    Next detalleActual
+
+    Set FiltrarDetallesPorImporte = resultado
+
+End Function
+
+
