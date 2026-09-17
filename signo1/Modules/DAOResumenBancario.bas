@@ -152,8 +152,23 @@ Public Function FindAll( _
     End If
     
     If LenB(TipoMovimiento) > 0 Then
-    q = q & "AND movimientos.tipo_movimiento = " _
-              & conectar.Escape(TipoMovimiento) & " "
+    
+        If UCase$(Trim$(TipoMovimiento)) = "TRANSFERENCIA" Then
+    
+            'Las transferencias se identifican por su origen.
+            'Cada operación individual es INGRESO o EGRESO.
+    
+        q = q & "AND movimientos.origen IN (" _
+              & "'TRANSFERENCIA INTERBANCARIA', " _
+              & "'TRANSFERENCIA CON CHEQUE') "
+    
+        Else
+    
+            q = q & "AND movimientos.tipo_movimiento = " _
+                  & conectar.Escape(TipoMovimiento) & " "
+    
+        End If
+    
     End If
     
     If LenB(Origen) > 0 Then
@@ -1232,13 +1247,31 @@ Private Function SQLChequesIngresadosBanco() As String
     ' MOVIMIENTO
     '----------------------------------------------------------
     q = q & " 'EGRESO' AS tipo_movimiento,"
-    q = q & " 'CHEQUE PROPIO' AS origen,"
+    
+    q = q & " CASE " _
+      & " WHEN movcb.id IS NOT NULL " _
+      & " AND UPPER(IFNULL(movcb.tipo_movimiento, '')) = " _
+      & " 'TRANSFERENCIA' " _
+      & " THEN 'TRANSFERENCIA CON CHEQUE' " _
+      & " ELSE 'CHEQUE PROPIO' " _
+      & " END AS origen,"
 
-    ' ID interno = cheque.
-    q = q & " ch.id AS id_origen,"
+    q = q & " CASE " _
+          & " WHEN movcb.id IS NOT NULL " _
+          & " AND UPPER(IFNULL(movcb.tipo_movimiento, '')) = " _
+          & " 'TRANSFERENCIA' " _
+          & " THEN movcb.id " _
+          & " ELSE ch.id " _
+          & " END AS id_origen,"
 
     ' Lo que ve el usuario = número del cheque.
-    q = q & " CAST(ch.numero AS CHAR) AS numero_origen,"
+    q = q & " CASE " _
+      & " WHEN movcb.id IS NOT NULL " _
+      & " AND UPPER(IFNULL(movcb.tipo_movimiento, '')) = " _
+      & " 'TRANSFERENCIA' " _
+      & " THEN CAST(movcb.id AS CHAR) " _
+      & " ELSE CAST(ch.numero AS CHAR) " _
+      & " END AS numero_origen,"
 
     q = q & " ch.id AS id_operacion,"
 
@@ -1295,6 +1328,24 @@ Private Function SQLChequesIngresadosBanco() As String
 
     q = q & "LEFT JOIN liquidaciones_caja lc "
     q = q & " ON lc.id = ch.liquidacion_caja_origen "
+    
+    'Obtener el movimiento de Caja y Bancos asociado.
+    'La subconsulta devuelve una sola fila por cheque
+    'y evita duplicar su egreso por relaciones repetidas.
+    
+    q = q & "LEFT JOIN ( " _
+          & " SELECT id_cheque, " _
+          & " MIN(id_movimiento_caja_bancos) AS id_movimiento, " _
+          & " COUNT(DISTINCT id_movimiento_caja_bancos) AS cantidad " _
+          & " FROM movimientos_caja_bancos_cheques " _
+          & " GROUP BY id_cheque " _
+          & ") vincmov " _
+          & " ON vincmov.id_cheque = ch.id "
+    
+    q = q & "LEFT JOIN movimientos_caja_bancos movcb " _
+          & " ON movcb.id = vincmov.id_movimiento " _
+          & " AND vincmov.cantidad = 1 " _
+          & " AND movcb.estado = 1 "
 
     '----------------------------------------------------------
     ' SOLAMENTE CHEQUES PROPIOS QUE YA INGRESARON AL BANCO

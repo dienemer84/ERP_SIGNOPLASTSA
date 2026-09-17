@@ -38,6 +38,7 @@ End Function
 
 
 Public Function GetSaldo(col As Collection) As Double
+    
     Dim deta As DTODetalleCuentaCorriente
 
 
@@ -51,9 +52,450 @@ Public Function GetSaldo(col As Collection) As Double
             saldo = saldo - deta.Haber
         End If
     Next deta
+    
     GetSaldo = saldo
     
 End Function
+
+
+Public Function FindResumenSaldosProveedoresRapido( _
+    Optional ByVal FechaHasta As String = vbNullString) As Collection
+
+    On Error GoTo errHandler
+
+    Dim cn As ADODB.Connection
+    Dim rs As ADODB.Recordset
+    Dim resultado As Collection
+    Dim dto As DTONombreMonto
+    Dim q As String
+    Dim fechaSQL As String
+    Dim mensajeError As String
+
+    Set resultado = New Collection
+    Set cn = conectar.obternerConexion
+
+    If LenB(Trim$(FechaHasta)) > 0 Then
+        fechaSQL = conectar.Escape(FechaHasta)
+    Else
+        fechaSQL = conectar.Escape("9999-12-31")
+    End If
+
+    '=========================================================
+    ' TABLA TEMPORAL CON UN REGISTRO POR PROVEEDOR
+    '=========================================================
+
+    cn.execute "DROP TEMPORARY TABLE IF EXISTS tmp_resumen_proveedores"
+    cn.execute "DROP TEMPORARY TABLE IF EXISTS tmp_resumen_prov_mov"
+
+    q = "CREATE TEMPORARY TABLE tmp_resumen_proveedores ("
+    q = q & "id_proveedor BIGINT NOT NULL PRIMARY KEY, "
+    q = q & "razon VARCHAR(255), "
+    q = q & "saldo DOUBLE NOT NULL DEFAULT 0, "
+    q = q & "fecha_cierre DATE NOT NULL DEFAULT '1990-01-01')"
+
+    EjecutarPasoResumen cn, _
+    "1 - Crear tabla temporal de proveedores", q
+
+    q = "INSERT INTO tmp_resumen_proveedores "
+    q = q & "(id_proveedor, razon, saldo, fecha_cierre) "
+    q = q & "SELECT id, razon, 0, '1990-01-01' "
+    q = q & "FROM proveedores"
+
+    EjecutarPasoResumen cn, _
+    "2 - Cargar proveedores", q
+
+    '=========================================================
+    ' SALDOS HISTÓRICOS
+    '=========================================================
+
+    q = "UPDATE tmp_resumen_proveedores r "
+    q = q & "INNER JOIN ("
+    q = q & "SELECT h.id_persona AS id_proveedor, "
+    q = q & "SUM(IFNULL(hd.debe, 0) - IFNULL(hd.haber, 0)) AS importe, "
+    q = q & "MAX(hd.fecha) AS fecha_cierre "
+    q = q & "FROM cuenta_corriente_historic h "
+    q = q & "INNER JOIN cuenta_corriente_historic_detalle hd "
+    q = q & "ON hd.id_cuenta_corriente_historic = h.id "
+    q = q & "WHERE h.tipo_persona = " & CStr(TipoPersona.proveedor_) & " "
+    q = q & "AND hd.tipo_comprobante <> "
+    q = q & CStr(TipoComprobanteUsado.SaldoInicial_) & " "
+    q = q & "AND hd.fecha <= " & fechaSQL & " "
+    q = q & "GROUP BY h.id_persona"
+    q = q & ") h ON h.id_proveedor = r.id_proveedor "
+    q = q & "SET r.saldo = h.importe, "
+    q = q & "r.fecha_cierre = IFNULL(h.fecha_cierre, '1990-01-01')"
+
+    EjecutarPasoResumen cn, _
+    "3 - Calcular saldos históricos", q
+
+    '=========================================================
+    ' TABLA TEMPORAL DE MOVIMIENTOS POSTERIORES AL HISTÓRICO
+    '=========================================================
+
+    q = "CREATE TEMPORARY TABLE tmp_resumen_prov_mov ("
+    q = q & "id_proveedor BIGINT NOT NULL, "
+    q = q & "importe DOUBLE NOT NULL DEFAULT 0, "
+    q = q & "INDEX idx_proveedor (id_proveedor))"
+
+    EjecutarPasoResumen cn, _
+    "4 - Crear tabla temporal de movimientos", q
+
+    '=========================================================
+    ' FACTURAS, NOTAS DE DÉBITO Y NOTAS DE CRÉDITO
+    '=========================================================
+
+    '=========================================================
+    ' FACTURAS, NOTAS DE DÉBITO Y NOTAS DE CRÉDITO
+    '=========================================================
+
+    '---------------------------------------------------------
+    ' 5.1 - Crear tabla con las facturas que realmente entran
+    '       en el reporte.
+    '---------------------------------------------------------
+
+    q = "CREATE TEMPORARY TABLE tmp_resumen_facturas ("
+    q = q & "id_factura BIGINT NOT NULL PRIMARY KEY, "
+    q = q & "id_proveedor BIGINT NOT NULL, "
+    q = q & "tipo_doc_contable INT NOT NULL, "
+    q = q & "impuesto_interno DOUBLE NOT NULL DEFAULT 0, "
+    q = q & "redondeo_iva DOUBLE NOT NULL DEFAULT 0, "
+    q = q & "tipo_cambio DOUBLE NOT NULL DEFAULT 1, "
+    q = q & "id_moneda BIGINT, "
+    q = q & "INDEX idx_tmp_fact_proveedor (id_proveedor))"
+
+    EjecutarPasoResumen cn, _
+        "5.1 - Crear temporal de facturas", q
+
+    '---------------------------------------------------------
+    ' 5.2 - Cargar solamente las facturas del período.
+    '---------------------------------------------------------
+
+    q = "INSERT INTO tmp_resumen_facturas ("
+    q = q & "id_factura, "
+    q = q & "id_proveedor, "
+    q = q & "tipo_doc_contable, "
+    q = q & "impuesto_interno, "
+    q = q & "redondeo_iva, "
+    q = q & "tipo_cambio, "
+    q = q & "id_moneda) "
+
+    q = q & "SELECT "
+    q = q & "f.id, "
+    q = q & "f.id_proveedor, "
+    q = q & "f.tipo_doc_contable, "
+    q = q & "IFNULL(f.impuesto_interno, 0), "
+    q = q & "IFNULL(f.redondeo_iva, 0), "
+    q = q & "IFNULL(NULLIF(f.tipo_cambio, 0), 1), "
+    q = q & "f.id_moneda "
+
+    q = q & "FROM AdminComprasFacturasProveedores f "
+
+    q = q & "INNER JOIN tmp_resumen_proveedores r "
+    q = q & "ON r.id_proveedor = f.id_proveedor "
+
+    q = q & "WHERE f.estado IN ("
+    q = q & CStr(EstadoFacturaProveedor.Aprobada) & ", "
+    q = q & CStr(EstadoFacturaProveedor.Saldada) & ", "
+    q = q & CStr(EstadoFacturaProveedor.pagoParcial) & ") "
+
+    q = q & "AND f.fecha > r.fecha_cierre "
+    q = q & "AND f.fecha <= " & fechaSQL
+
+    EjecutarPasoResumen cn, _
+        "5.2 - Seleccionar facturas del reporte", q
+
+    '---------------------------------------------------------
+    ' 5.3 - Crear tabla para IVA y percepciones.
+    '---------------------------------------------------------
+
+    q = "CREATE TEMPORARY TABLE "
+    q = q & "tmp_resumen_factura_importes ("
+    q = q & "id_factura BIGINT NOT NULL, "
+    q = q & "neto DOUBLE NOT NULL DEFAULT 0, "
+    q = q & "iva DOUBLE NOT NULL DEFAULT 0, "
+    q = q & "percepcion DOUBLE NOT NULL DEFAULT 0, "
+    q = q & "INDEX idx_tmp_importe_factura (id_factura))"
+
+    EjecutarPasoResumen cn, _
+        "5.3 - Crear temporal de importes", q
+
+    '---------------------------------------------------------
+    ' 5.4 - Calcular neto e IVA únicamente para las facturas
+    '       seleccionadas.
+    '---------------------------------------------------------
+
+    q = "INSERT INTO tmp_resumen_factura_importes "
+    q = q & "(id_factura, neto, iva, percepcion) "
+
+    q = q & "SELECT "
+    q = q & "fi.id_factura_proveedor, "
+    q = q & "ROUND(SUM(IFNULL(fi.valor, 0)), 2), "
+    q = q & "ROUND(SUM("
+    q = q & "IFNULL(fi.valor, 0) * "
+    q = q & "(IFNULL(ali.alicuota, 0) / 100)"
+    q = q & "), 2), "
+    q = q & "0 "
+
+    q = q & "FROM tmp_resumen_facturas tf "
+
+    q = q & "INNER JOIN "
+    q = q & "AdminComprasFacturasProveedoresIva fi "
+    q = q & "ON fi.id_factura_proveedor = tf.id_factura "
+
+    q = q & "LEFT JOIN AdminConfigIvaAlicuotas ali "
+    q = q & "ON ali.id = fi.id_iva "
+
+    q = q & "GROUP BY fi.id_factura_proveedor"
+
+    EjecutarPasoResumen cn, _
+        "5.4 - Calcular neto e IVA", q
+
+    '---------------------------------------------------------
+    ' 5.5 - Calcular percepciones de las facturas seleccionadas.
+    '---------------------------------------------------------
+
+    q = "INSERT INTO tmp_resumen_factura_importes "
+    q = q & "(id_factura, neto, iva, percepcion) "
+
+    q = q & "SELECT "
+    q = q & "fp.id_factura_proveedor, "
+    q = q & "0, "
+    q = q & "0, "
+    q = q & "SUM(IFNULL(fp.valor, 0)) "
+
+    q = q & "FROM tmp_resumen_facturas tf "
+
+    q = q & "INNER JOIN "
+    q = q & "AdminComprasFacturasProveedoresPercepciones fp "
+    q = q & "ON fp.id_factura_proveedor = tf.id_factura "
+
+    q = q & "GROUP BY fp.id_factura_proveedor"
+
+    EjecutarPasoResumen cn, _
+        "5.5 - Calcular percepciones", q
+
+    '---------------------------------------------------------
+    ' 5.6 - Obtener el total de cada comprobante.
+    '---------------------------------------------------------
+
+    q = "INSERT INTO tmp_resumen_prov_mov "
+    q = q & "(id_proveedor, importe) "
+
+    q = q & "SELECT "
+    q = q & "tf.id_proveedor, "
+
+    q = q & "(CASE WHEN tf.tipo_doc_contable = "
+    q = q & CStr(tipoDocumentoContable.notaCredito)
+    q = q & " THEN -1 ELSE 1 END) * "
+
+    q = q & "ROUND("
+    q = q & "IFNULL(SUM(imp.neto), 0) + "
+    q = q & "IFNULL(tf.impuesto_interno, 0) + "
+    q = q & "IFNULL(tf.redondeo_iva, 0) + "
+    q = q & "IFNULL(SUM(imp.iva), 0) + "
+
+    q = q & "(IFNULL(SUM(imp.percepcion), 0) / "
+    q = q & "CASE "
+    q = q & "WHEN IFNULL(mon.patron, 0) = 1 THEN 1 "
+    q = q & "ELSE IFNULL(NULLIF(tf.tipo_cambio, 0), 1) "
+    q = q & "END), 2) "
+
+    q = q & "FROM tmp_resumen_facturas tf "
+
+    q = q & "LEFT JOIN tmp_resumen_factura_importes imp "
+    q = q & "ON imp.id_factura = tf.id_factura "
+
+    q = q & "LEFT JOIN AdminConfigMonedas mon "
+    q = q & "ON mon.id = tf.id_moneda "
+
+    q = q & "GROUP BY "
+    q = q & "tf.id_factura, "
+    q = q & "tf.id_proveedor, "
+    q = q & "tf.tipo_doc_contable, "
+    q = q & "tf.impuesto_interno, "
+    q = q & "tf.redondeo_iva, "
+    q = q & "tf.tipo_cambio, "
+    q = q & "mon.patron"
+
+    EjecutarPasoResumen cn, _
+        "5.6 - Consolidar comprobantes", q
+
+    ' Ya no necesitamos estas tablas.
+
+    cn.execute _
+        "DROP TEMPORARY TABLE IF EXISTS " & _
+        "tmp_resumen_factura_importes"
+
+    cn.execute _
+        "DROP TEMPORARY TABLE IF EXISTS " & _
+        "tmp_resumen_facturas"
+
+    '=========================================================
+    ' ÓRDENES DE PAGO
+    '=========================================================
+
+    q = "INSERT INTO tmp_resumen_prov_mov "
+    q = q & "(id_proveedor, importe) "
+    q = q & "SELECT f.id_proveedor, "
+    q = q & "CASE WHEN op.estado = "
+    q = q & CStr(EstadoOrdenPago.EstadoOrdenPago_Anulada)
+    q = q & " THEN 0 ELSE -ROUND("
+    q = q & "IFNULL(op.static_total_origen, 0) + "
+    q = q & "IFNULL(op.static_total_a_retener, 0), 2) END "
+    q = q & "FROM ordenes_pago op "
+    q = q & "INNER JOIN ordenes_pago_facturas opf "
+    q = q & "ON opf.id_orden_pago = op.id "
+    q = q & "INNER JOIN AdminComprasFacturasProveedores f "
+    q = q & "ON f.id = opf.id_factura_proveedor "
+    q = q & "INNER JOIN tmp_resumen_proveedores r "
+    q = q & "ON r.id_proveedor = f.id_proveedor "
+    q = q & "WHERE op.fecha > r.fecha_cierre "
+    q = q & "AND op.fecha <= " & fechaSQL & " "
+    q = q & "GROUP BY f.id_proveedor, op.id, op.estado, "
+    q = q & "op.static_total_origen, op.static_total_a_retener"
+
+    EjecutarPasoResumen cn, _
+    "6 - Calcular órdenes de pago", q
+
+    '=========================================================
+    ' PAGOS A CUENTA
+    '=========================================================
+
+    q = "INSERT INTO tmp_resumen_prov_mov "
+    q = q & "(id_proveedor, importe) "
+    q = q & "SELECT p.id_proveedor, "
+    q = q & "-ROUND(IFNULL(p.static_total_origen, 0), 2) "
+    q = q & "FROM pagos_a_cuenta p "
+    q = q & "INNER JOIN tmp_resumen_proveedores r "
+    q = q & "ON r.id_proveedor = p.id_proveedor "
+    q = q & "WHERE p.estado IN ("
+    q = q & CStr(EstadoPagoACuenta.Disponible) & ", "
+    q = q & CStr(EstadoPagoACuenta.Procesada) & ") "
+    q = q & "AND p.fecha > r.fecha_cierre "
+    q = q & "AND p.fecha <= " & fechaSQL
+
+    EjecutarPasoResumen cn, _
+    "7 - Calcular pagos a cuenta", q
+
+    '=========================================================
+    ' SUMAR LOS MOVIMIENTOS AL SALDO HISTÓRICO
+    '=========================================================
+
+    q = "UPDATE tmp_resumen_proveedores r "
+    q = q & "LEFT JOIN ("
+    q = q & "SELECT id_proveedor, SUM(importe) AS total "
+    q = q & "FROM tmp_resumen_prov_mov "
+    q = q & "GROUP BY id_proveedor"
+    q = q & ") mov ON mov.id_proveedor = r.id_proveedor "
+    q = q & "SET r.saldo = r.saldo + IFNULL(mov.total, 0)"
+
+    EjecutarPasoResumen cn, _
+    "8 - Consolidar saldos", q
+
+    '=========================================================
+    ' DEVOLVER ÚNICAMENTE PROVEEDORES CON SALDO
+    '=========================================================
+
+    q = "SELECT razon, saldo "
+    q = q & "FROM tmp_resumen_proveedores "
+    q = q & "WHERE saldo >= 0.01 OR saldo < -0.01 "
+    q = q & "ORDER BY razon"
+
+    Debug.Print Format$(Now, "hh:nn:ss") & _
+                " - INICIO: 9 - Leer resultados finales"
+    
+    DoEvents
+    
+    Set rs = cn.execute(q)
+    
+    Debug.Print Format$(Now, "hh:nn:ss") & _
+                " - FIN: 9 - Leer resultados finales"
+    
+    DoEvents
+
+    While Not rs.EOF
+
+        Set dto = New DTONombreMonto
+        dto.nombre = rs!razon
+        dto.Monto = rs!saldo
+
+        resultado.Add dto
+        rs.MoveNext
+
+    Wend
+
+finalizar:
+
+    On Error Resume Next
+
+    If Not rs Is Nothing Then rs.Close
+
+    If Not cn Is Nothing Then
+    
+        cn.execute _
+            "DROP TEMPORARY TABLE IF EXISTS " & _
+            "tmp_resumen_factura_importes"
+    
+        cn.execute _
+            "DROP TEMPORARY TABLE IF EXISTS " & _
+            "tmp_resumen_facturas"
+    
+        cn.execute _
+            "DROP TEMPORARY TABLE IF EXISTS " & _
+            "tmp_resumen_prov_mov"
+    
+        cn.execute _
+            "DROP TEMPORARY TABLE IF EXISTS " & _
+            "tmp_resumen_proveedores"
+    
+    End If
+
+    Set rs = Nothing
+    Set cn = Nothing
+
+    If LenB(mensajeError) > 0 Then
+        MsgBox mensajeError, vbCritical, "Resumen de saldos"
+    End If
+
+    Set FindResumenSaldosProveedoresRapido = resultado
+    Exit Function
+
+errHandler:
+
+    mensajeError = "No se pudo generar el resumen de saldos." & _
+                   vbCrLf & vbCrLf & Err.Description
+
+    Set resultado = New Collection
+    Resume finalizar
+
+End Function
+
+
+Private Sub EjecutarPasoResumen( _
+    ByVal cn As ADODB.Connection, _
+    ByVal nombrePaso As String, _
+    ByVal consulta As String)
+
+    Dim inicio As Double
+
+    inicio = GetTickCount
+
+    Debug.Print Format$(Now, "hh:nn:ss") & _
+                " - INICIO: " & nombrePaso
+
+    DoEvents
+
+    cn.execute consulta
+
+    Debug.Print Format$(Now, "hh:nn:ss") & _
+                " - FIN: " & nombrePaso & _
+                " - Tiempo: " & _
+                Format$((GetTickCount - inicio) / 1000, "0.00") & _
+                " segundos"
+
+    DoEvents
+
+End Sub
 
 
 Public Function CerrarPeriodoCtaCteProveedor(id_proveedor As Long, FechaHasta As String) As Boolean

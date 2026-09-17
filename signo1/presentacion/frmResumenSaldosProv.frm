@@ -4,7 +4,7 @@ Object = "{A8E5842E-102B-4289-9D57-3B3F5B5E15D3}#12.0#0"; "CODEJO~2.OCX"
 Begin VB.Form frmResumenSaldosProv 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Resúmen de Saldos de Proveedores"
-   ClientHeight    =   7665
+   ClientHeight    =   8250
    ClientLeft      =   45
    ClientTop       =   435
    ClientWidth     =   10170
@@ -12,14 +12,85 @@ Begin VB.Form frmResumenSaldosProv
    MaxButton       =   0   'False
    MDIChild        =   -1  'True
    MinButton       =   0   'False
-   ScaleHeight     =   7665
+   ScaleHeight     =   8250
    ScaleWidth      =   10170
    ShowInTaskbar   =   0   'False
+   Begin XtremeSuiteControls.GroupBox GroupBox2 
+      Height          =   495
+      Left            =   120
+      TabIndex        =   12
+      Top             =   720
+      Width           =   9855
+      _Version        =   786432
+      _ExtentX        =   17383
+      _ExtentY        =   873
+      _StockProps     =   79
+      Caption         =   "GroupBox2"
+      UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.DateTimePicker dtpDesde 
+         Height          =   315
+         Index           =   1
+         Left            =   2160
+         TabIndex        =   13
+         Top             =   120
+         Width           =   1470
+         _Version        =   786432
+         _ExtentX        =   2593
+         _ExtentY        =   556
+         _StockProps     =   68
+         CheckBox        =   -1  'True
+         Format          =   1
+      End
+      Begin XtremeSuiteControls.DateTimePicker dtpHasta2 
+         Height          =   315
+         Index           =   0
+         Left            =   4440
+         TabIndex        =   15
+         Top             =   120
+         Width           =   1470
+         _Version        =   786432
+         _ExtentX        =   2593
+         _ExtentY        =   556
+         _StockProps     =   68
+         CheckBox        =   -1  'True
+         Format          =   1
+      End
+      Begin XtremeSuiteControls.Label lblHasta 
+         Height          =   195
+         Index           =   0
+         Left            =   3840
+         TabIndex        =   16
+         Top             =   180
+         Width           =   420
+         _Version        =   786432
+         _ExtentX        =   741
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Hasta"
+         BackColor       =   12632256
+         AutoSize        =   -1  'True
+      End
+      Begin XtremeSuiteControls.Label lblDesde 
+         Height          =   195
+         Index           =   1
+         Left            =   1560
+         TabIndex        =   14
+         Top             =   180
+         Width           =   465
+         _Version        =   786432
+         _ExtentX        =   820
+         _ExtentY        =   344
+         _StockProps     =   79
+         Caption         =   "Desde"
+         BackColor       =   12632256
+         AutoSize        =   -1  'True
+      End
+   End
    Begin XtremeSuiteControls.GroupBox GroupBox1 
       Height          =   735
       Left            =   120
       TabIndex        =   9
-      Top             =   6840
+      Top             =   7440
       Width           =   9975
       _Version        =   786432
       _ExtentX        =   17595
@@ -43,7 +114,7 @@ Begin VB.Form frmResumenSaldosProv
          Height          =   480
          Left            =   8040
          TabIndex        =   11
-         Top             =   180
+         Top             =   240
          Width           =   1815
          _Version        =   786432
          _ExtentX        =   3201
@@ -71,7 +142,7 @@ Begin VB.Form frmResumenSaldosProv
       Height          =   5445
       Left            =   30
       TabIndex        =   0
-      Top             =   645
+      Top             =   1320
       Width           =   10020
       _ExtentX        =   17674
       _ExtentY        =   9604
@@ -113,6 +184,7 @@ Begin VB.Form frmResumenSaldosProv
    End
    Begin XtremeSuiteControls.DateTimePicker dtpHasta 
       Height          =   315
+      Index           =   0
       Left            =   2325
       TabIndex        =   4
       Top             =   225
@@ -150,11 +222,12 @@ Begin VB.Form frmResumenSaldosProv
       Height          =   435
       Left            =   7800
       TabIndex        =   6
-      Top             =   6360
+      Top             =   6960
       Width           =   2205
    End
    Begin XtremeSuiteControls.Label Label6 
       Height          =   195
+      Index           =   0
       Left            =   1800
       TabIndex        =   5
       Top             =   285
@@ -171,7 +244,7 @@ Begin VB.Form frmResumenSaldosProv
       Height          =   390
       Left            =   120
       TabIndex        =   1
-      Top             =   6360
+      Top             =   6960
       Width           =   7470
    End
 End
@@ -267,9 +340,14 @@ Private Sub Form_Load()
     GridEXHelper.CustomizeGrid Me.GridEX1, False, False
     Me.GridEX1.ItemCount = 0
 
+    'Desde es opcional.
+    Me.dtpDesde.value = Null
 
-
-
+    'Hasta queda seleccionado con la fecha actual.
+    If IsNull(Me.dtpHasta(1).value) Then
+        Me.dtpHasta(1).value = Date
+    End If
+    
 End Sub
 
 Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
@@ -284,92 +362,236 @@ Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Va
     Values(2) = funciones.FormatearDecimales(dto.Monto)
 End Sub
 
+
 Private Sub Obtener_Click()
-    enable = True
-    cmdParar.Enabled = enable
+
+    On Error GoTo ErrorHandler
+
     Dim tickStart As Double
     Dim tickend As Double
+
+    Dim Detalles As Collection
+    Dim rs As ADODB.Recordset
+
+    Dim itemResumen As DTONombreMonto
+
+    Dim fechaHastaResumen As String
+    Dim tipoResultado As String
+    Dim mensajeError As String
+
+    Dim c As Long
+    Dim d As Long
+    Dim totalResumen As Double
+
     tickStart = GetTickCount
+
+    enable = True
+    condition = vbNullString
+    fechaHastaResumen = vbNullString
+
+    Me.cmdParar.Enabled = True
     Me.lblCant.Visible = True
     Me.lblproceso.Visible = True
     Me.ProgressBar1.Visible = True
+
+    Me.lblCant = vbNullString
+    Me.lblproceso = "Preparando reporte..."
+    Me.lblTotal = vbNullString
+
     Me.GridEX1.ItemCount = 0
-    Dim detalles As Collection
-    Set detalles = New Collection
+
     Set col2 = New Collection
-    Dim c As Long
-    Dim rs As Recordset
+
+    '=========================================================
+    ' OBTENER FECHA HASTA
+    '=========================================================
+
+    If Not IsNull(Me.dtpHasta.value) Then
+
+        fechaHastaResumen = _
+            Format$(Me.dtpHasta.value, "yyyy-mm-dd")
+
+        condition = fechaHastaResumen
+
+    End If
+
+    '=========================================================
+    ' REPORTE RÁPIDO DE PROVEEDORES
+    '=========================================================
 
     If TipoPersonaCta = TipoPersona.proveedor_ Then
-        Set rs = conectar.RSFactory("SELECT * FROM proveedores  order  by razon asc ")
-    Else
-        Set rs = conectar.RSFactory("SELECT * FROM clientes  order by razon asc ")
-    End If
-    c = 0
-    While Not rs.EOF And Not rs.BOF
-        c = c + 1
-        rs.MoveNext
-    Wend
 
+        tipoResultado = "proveedores"
 
-    Dim dto As DTONombreMonto
+        Me.lblproceso = _
+            "Calculando saldos de proveedores..."
 
-    If c >= 1 Then rs.MoveFirst
+        Me.lblCant = vbNullString
+        Me.ProgressBar1.Visible = False
+        Me.cmdParar.Enabled = False
 
+        Screen.MousePointer = vbHourglass
 
-    Me.ProgressBar1.max = c
-    Dim d As Long
-    d = 0
-    While Not rs.EOF And Not rs.BOF
-        d = d + 1
-
-
-
-        If Not IsNull(Me.dtpHasta.value) Then
-            condition = conectar.Escape(Format(Me.dtpHasta.value, "yyyy-mm-dd"))
-        End If
-
-        If TipoPersonaCta = TipoPersona.proveedor_ Then
-
-            Set detalles = DAOCuentaCorriente.FindAllDetallesProveedor(rs!Id, , condition, True, False)
-
-        Else
-            If Not IsNull(Me.dtpHasta.value) Then
-                condition = Format(Me.dtpHasta.value, "yyyy-mm-dd")
-            End If
-            Set detalles = DAOCuentaCorriente.FindAllDetalles(rs!Id, , condition)
-        End If
-
-
-
-
-        Set dto = New DTONombreMonto
-        dto.Monto = DAOCuentaCorriente.GetSaldo(detalles)
-        dto.nombre = rs!razon
-        If (dto.Monto >= 0.01 Or dto.Monto < -0.01) Then
-            col2.Add dto
-        End If
-        Me.lblCant = CStr(d) & "/" & CStr(c)
-        Me.lblproceso = "Procesando " & rs!razon
-        Me.ProgressBar1.value = d
         DoEvents
-        rs.MoveNext
-        Me.GridEX1.ItemCount = col2.count
-        If Not enable Then Exit Sub
-    Wend
+
+        Set col2 = _
+            DAOCuentaCorriente.FindResumenSaldosProveedoresRapido( _
+                fechaHastaResumen)
+
+    Else
+
+        '=====================================================
+        ' REPORTE DE CLIENTES
+        ' Se conserva el funcionamiento anterior.
+        '=====================================================
+
+        tipoResultado = "clientes"
+
+        Set rs = conectar.RSFactory( _
+            "SELECT id, razon " & _
+            "FROM clientes " & _
+            "ORDER BY razon ASC")
+
+        c = 0
+
+        While Not rs.EOF And Not rs.BOF
+
+            c = c + 1
+            rs.MoveNext
+
+        Wend
+
+        If c > 0 Then
+
+            rs.MoveFirst
+            Me.ProgressBar1.max = c
+            Me.ProgressBar1.value = 0
+
+        End If
+
+        d = 0
+
+        While Not rs.EOF And Not rs.BOF
+
+            DoEvents
+
+            If Not enable Then
+                GoTo ProcesoCancelado
+            End If
+
+            d = d + 1
+
+            Me.lblCant = CStr(d) & "/" & CStr(c)
+
+            Me.lblproceso = _
+                "Procesando " & CStr(rs!razon)
+
+            Set Detalles = _
+                DAOCuentaCorriente.FindAllDetalles( _
+                    CLng(rs!Id), False, condition)
+
+            Set itemResumen = New DTONombreMonto
+
+            itemResumen.Monto = _
+                DAOCuentaCorriente.GetSaldo(Detalles)
+
+            itemResumen.nombre = CStr(rs!razon)
+
+            If itemResumen.Monto >= 0.01 Or _
+               itemResumen.Monto < -0.01 Then
+
+                col2.Add itemResumen
+
+            End If
+
+            Me.ProgressBar1.value = d
+
+            rs.MoveNext
+
+        Wend
+
+    End If
+
+    '=========================================================
+    ' MOSTRAR RESULTADOS
+    '=========================================================
 
     Me.GridEX1.ItemCount = col2.count
-    Me.ProgressBar1.Visible = False
-    Dim T As Double
+    Me.GridEX1.Refresh
 
-    For Each dto In col2
-        T = T + dto.Monto
-    Next
-    Me.lblTotal = "Total: " & funciones.FormatearDecimales(T)
+    totalResumen = 0
+
+    For Each itemResumen In col2
+
+        totalResumen = _
+            totalResumen + itemResumen.Monto
+
+    Next itemResumen
+
+    Me.lblTotal = _
+        "Total: " & _
+        funciones.FormatearDecimales(totalResumen)
+
+    Me.lblproceso = _
+        "Proceso finalizado: " & _
+        CStr(col2.count) & " " & _
+        tipoResultado & " con saldo."
+
     Me.lblCant.Visible = False
+    Me.ProgressBar1.Visible = False
+    Me.cmdParar.Enabled = False
+
+    Screen.MousePointer = vbDefault
+
     tickend = GetTickCount
-    'Debug.Print "Tiempo total  ", tickend - tickStart
+
+    Debug.Print _
+        "Tiempo total frmResumenSaldosProv: " & _
+        Format$((tickend - tickStart) / 1000, "0.00") & _
+        " segundos"
+
+    Set Detalles = Nothing
+    Set rs = Nothing
+
+    Exit Sub
+
+ProcesoCancelado:
+
+    Me.lblproceso = "Proceso cancelado por el usuario."
+    Me.lblCant.Visible = False
+    Me.ProgressBar1.Visible = False
+    Me.cmdParar.Enabled = False
+
+    Screen.MousePointer = vbDefault
+
+    Set Detalles = Nothing
+    Set rs = Nothing
+
+    Exit Sub
+
+ErrorHandler:
+
+    mensajeError = Err.Description
+
+    Screen.MousePointer = vbDefault
+
+    Me.lblCant.Visible = False
+    Me.ProgressBar1.Visible = False
+    Me.cmdParar.Enabled = False
+
+    Me.lblproceso = "No se pudo generar el reporte."
+
+    MsgBox "No se pudo generar el resumen de saldos." & _
+           vbCrLf & vbCrLf & _
+           mensajeError, _
+           vbCritical, _
+           "Resumen de saldos"
+
+    Set Detalles = Nothing
+    Set rs = Nothing
+
 End Sub
+
 
 Private Sub PushButton1_Click()
 
