@@ -734,6 +734,13 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
     
     qImportesOP = qImportesOP & _
         "GROUP BY opf.id_orden_pago"
+        
+        
+    Debug.Print "ID PROVEEDOR: " & CStr(id_proveedor)
+    Debug.Print "MAX_DESDE: " & max_desde
+    Debug.Print "CONDICION: " & condicion
+    Debug.Print "SQL IMPORTES OP:"
+    Debug.Print qImportesOP
     
     Set rsImportesOP = conectar.RSFactory(qImportesOP)
     
@@ -1046,14 +1053,20 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
         Else
         
             detalle.Haber = 0
-
+        
+            Debug.Print "OP=" & CStr(Orden.Id) & _
+                        " | EXISTE=" & _
+                        CStr(importesAplicadosOP.Exists(CStr(Orden.Id))) & _
+                        " | CANTIDAD DICCIONARIO=" & _
+                        CStr(importesAplicadosOP.count)
+        
             If importesAplicadosOP.Exists(CStr(Orden.Id)) Then
-            
+        
                 detalle.Haber = funciones.RedondearDecimales( _
                     CDbl(importesAplicadosOP.item(CStr(Orden.Id))))
-            
+        
             End If
-            
+        
         End If
         
         detalle.FEcha = Orden.FEcha
