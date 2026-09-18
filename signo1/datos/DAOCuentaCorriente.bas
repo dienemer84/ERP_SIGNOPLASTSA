@@ -1186,10 +1186,25 @@ qImportesOP = qImportesOP & _
     qLiq = qLiq & "lc.id, "
     qLiq = qLiq & "lc.numero_liq, "
     qLiq = qLiq & "lc.fecha, "
-    qLiq = qLiq & "ROUND(SUM("
-    qLiq = qLiq & "IFNULL(lcf.neto_gravado_liquidado, 0) + "
-    qLiq = qLiq & "IFNULL(lcf.otros_liquidado, 0)"
-    qLiq = qLiq & "), 2) AS importe "
+    
+    qLiq = qLiq & "ROUND(SUM(CASE "
+
+    qLiq = qLiq & _
+        "WHEN f.tipo_doc_contable = " & _
+        CStr(tipoDocumentoContable.notaCredito) & " "
+
+    qLiq = qLiq & _
+        "THEN -(" & _
+        "IFNULL(lcf.neto_gravado_liquidado, 0) + " & _
+        "IFNULL(lcf.otros_liquidado, 0)) "
+
+    qLiq = qLiq & _
+        "ELSE (" & _
+        "IFNULL(lcf.neto_gravado_liquidado, 0) + " & _
+        "IFNULL(lcf.otros_liquidado, 0)) "
+
+    qLiq = qLiq & "END), 2) AS importe "
+    
     qLiq = qLiq & "FROM liquidaciones_caja_facturas lcf "
     qLiq = qLiq & "INNER JOIN liquidaciones_caja lc "
     qLiq = qLiq & "ON lc.id = lcf.id_liquidacion_caja "
@@ -1248,16 +1263,46 @@ qImportesOP = qImportesOP & _
     Dim pagosacta As New Collection
     Dim PagoACta As clsPagoACta
     
-   If LenB(condicion) > 0 Then
-        cond1 = "and pagos_a_cuenta.fecha<=" & condicion
-    End If
-    
-    'Set pagosacta = DAOOrdenPago.FindAllByProveedor(id_proveedor, cond1 & "  and pagos_a_cuenta.fecha> " & max_desde, soloOp)
-    Set pagosacta = DAOPagoACta.FindAllByProveedor(id_proveedor, cond1 & "  and pagos_a_cuenta.fecha> " & max_desde, soloOp)
-    For Each PagoACta In pagosacta
-        'ver si solo mostrar las aprobadas (revisado) muestra las pendientes indicandolo en el estado
+        cond1 = ""
 
-        ' If Orden.estado <> EstadoOrdenPago_Anulada Then
+        cond1 = cond1 & _
+            " AND pagos_a_cuenta.fecha > " & max_desde & " "
+    
+        cond1 = cond1 & _
+            " AND pagos_a_cuenta.estado IN (" & _
+            CStr(EstadoPagoACuenta.Disponible) & ", " & _
+            CStr(EstadoPagoACuenta.Procesada) & ") "
+    
+        If LenB(condicion) > 0 Then
+            cond1 = cond1 & _
+                " AND pagos_a_cuenta.fecha <= " & condicion & " "
+        End If
+    
+        cond1 = cond1 & _
+            " AND NOT EXISTS (" & _
+            "SELECT 1 " & _
+            "FROM ordenes_pago_pagos_a_cuenta vinc " & _
+            "INNER JOIN ordenes_pago op " & _
+            "ON op.id = vinc.id_orden_pago " & _
+            "WHERE vinc.id_pago_a_cuenta = pagos_a_cuenta.id " & _
+            "AND op.estado = " & _
+            CStr(EstadoOrdenPago.EstadoOrdenPago_Aprobada) & " "
+    
+        If LenB(condicion) > 0 Then
+            cond1 = cond1 & _
+                "AND op.fecha <= " & condicion & " "
+        End If
+    
+        cond1 = cond1 & ")"
+    
+        Set pagosacta = DAOPagoACta.FindAllByProveedor( _
+            id_proveedor, _
+            cond1, _
+            soloOp)
+
+
+    For Each PagoACta In pagosacta
+
         Set detalle = New DTODetalleCuentaCorriente
         detalle.Comprobante = "PAGO A CUENTA-" & PagoACta.Id
 
