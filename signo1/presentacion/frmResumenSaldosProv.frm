@@ -555,9 +555,9 @@ Private Sub Obtener_Click()
 
 SalirPorValidacion:
 
-    Me.lblCant.Visible = False
-    Me.ProgressBar1.Visible = False
-    Me.cmdParar.Enabled = False
+    Me.lblCant.Visible = True
+    Me.ProgressBar1.Visible = True
+    Me.cmdParar.Enabled = True
 
     Screen.MousePointer = vbDefault
 

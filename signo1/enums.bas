@@ -193,7 +193,8 @@ Public Enum TipoComprobanteUsado
     SaldoInicial_ = 7
 
     ReciboAnticipo_ = 8
-
+    LiquidacionCajaProveedor_ = 9
+    
 End Enum
 
 
@@ -242,7 +243,7 @@ End Enum
 Public Enum EstadoRecibo
     Pendiente = 1
     Aprobado = 2
-    ReciboAnulado = 3
+    Reciboanulado = 3
 End Enum
 
 
@@ -602,7 +603,7 @@ Public Function LlenarArrays()
 
     estado_recibo(EstadoRecibo.Aprobado) = "Aprobado"
     estado_recibo(EstadoRecibo.Pendiente) = "Pendiente"
-    estado_recibo(EstadoRecibo.ReciboAnulado) = "Anulado"
+    estado_recibo(EstadoRecibo.Reciboanulado) = "Anulado"
 
     unidad(1) = "Kg"
     unidad(2) = "M2"

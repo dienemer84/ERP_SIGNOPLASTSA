@@ -674,7 +674,81 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
     End If
 
 
-    Set ordenes = DAOOrdenPago.FindAllByProveedor(id_proveedor, cond1 & "  and ordenes_pago.fecha> " & max_desde, soloOp)
+    Set ordenes = DAOOrdenPago.FindAllByProveedor( _
+    id_proveedor, _
+    cond1 & " AND ordenes_pago.fecha > " & max_desde, _
+    soloOp)
+    
+    
+    '------------------------------------------------------
+    ' IMPORTE REALMENTE APLICADO POR CADA ORDEN DE PAGO
+    '------------------------------------------------------
+    
+    qImportesOP = "SELECT opf.id_orden_pago, "
+    
+    qImportesOP = qImportesOP & _
+        "SUM(CASE "
+    
+    qImportesOP = qImportesOP & _
+        "WHEN f.tipo_doc_contable = " & _
+        CStr(tipoDocumentoContable.notaCredito) & " "
+    
+    qImportesOP = qImportesOP & _
+        "THEN -(IFNULL(opf.neto_gravado_abonado, 0) + " & _
+        "IFNULL(opf.otros_abonado, 0)) "
+    
+    qImportesOP = qImportesOP & _
+        "ELSE (IFNULL(opf.neto_gravado_abonado, 0) + " & _
+        "IFNULL(opf.otros_abonado, 0)) "
+    
+    qImportesOP = qImportesOP & _
+        "END) AS total_aplicado "
+    
+    qImportesOP = qImportesOP & _
+        "FROM ordenes_pago_facturas opf "
+    
+    qImportesOP = qImportesOP & _
+        "INNER JOIN ordenes_pago op " & _
+        "ON op.id = opf.id_orden_pago "
+    
+    qImportesOP = qImportesOP & _
+        "INNER JOIN AdminComprasFacturasProveedores f " & _
+        "ON f.id = opf.id_factura_proveedor "
+    
+    qImportesOP = qImportesOP & _
+        "WHERE f.id_proveedor = " & CStr(id_proveedor) & " "
+    
+    qImportesOP = qImportesOP & _
+        "AND op.estado = " & _
+        CStr(EstadoOrdenPago.EstadoOrdenPago_Aprobada) & " "
+    
+    qImportesOP = qImportesOP & _
+        "AND op.fecha > " & max_desde & " "
+    
+    If LenB(condicion) > 0 Then
+    
+        qImportesOP = qImportesOP & _
+            "AND op.fecha <= " & condicion & " "
+    
+    End If
+    
+    qImportesOP = qImportesOP & _
+        "GROUP BY opf.id_orden_pago"
+    
+    Set rsImportesOP = conectar.RSFactory(qImportesOP)
+    
+    Do While Not rsImportesOP.EOF
+    
+        importesAplicadosOP.Add _
+            CStr(rsImportesOP!id_orden_pago), _
+            CDbl(rsImportesOP!total_aplicado)
+    
+        rsImportesOP.MoveNext
+    
+    Loop
+    
+    Set rsImportesOP = Nothing
+    
     
     For Each Orden In ordenes
         'ver si solo mostrar las aprobadas (revisado) muestra las pendientes indicandolo en el estado
@@ -928,13 +1002,24 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
 
     Dim ordenes As New Collection
     Dim Orden As OrdenPago
+    Dim importesAplicadosOP As New Dictionary
+    Dim rsImportesOP As Recordset
+    Dim qImportesOP As String
 
     If LenB(condicion) > 0 Then
         cond1 = "and ordenes_pago.fecha<=" & condicion
     End If
 
 
-    Set ordenes = DAOOrdenPago.FindAllByProveedor(id_proveedor, cond1 & "  and ordenes_pago.fecha> " & max_desde, soloOp)
+    Set ordenes = DAOOrdenPago.FindAllByProveedor( _
+    id_proveedor, _
+    cond1 & _
+    " AND ordenes_pago.fecha > " & max_desde & _
+    " AND ordenes_pago.estado = " & _
+    CStr(EstadoOrdenPago.EstadoOrdenPago_Aprobada), _
+    soloOp)
+    
+    
     For Each Orden In ordenes
         'ver si solo mostrar las aprobadas (revisado) muestra las pendientes indicandolo en el estado
 
@@ -957,8 +1042,18 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
         If (Orden.estado = EstadoOrdenPago_Anulada) Then
 
             detalle.Haber = 0
+            
         Else
-            detalle.Haber = funciones.RedondearDecimales(Orden.TotalOrdenPago)          '.StaticTotalFacturas + Orden.TotalCompensatorios)
+        
+            detalle.Haber = 0
+
+            If importesAplicadosOP.Exists(CStr(Orden.Id)) Then
+            
+                detalle.Haber = funciones.RedondearDecimales( _
+                    CDbl(importesAplicadosOP.item(CStr(Orden.Id))))
+            
+            End If
+            
         End If
         
         detalle.FEcha = Orden.FEcha
@@ -1023,6 +1118,73 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
 
         Detalles.Add detalle
     Next fac
+
+    '=========================================================
+    ' LIQUIDACIONES DE CAJA APROBADAS
+    '=========================================================
+
+    Dim qLiq As String
+    Dim rsLiq As ADODB.Recordset
+
+    qLiq = "SELECT "
+    qLiq = qLiq & "lc.id, "
+    qLiq = qLiq & "lc.numero_liq, "
+    qLiq = qLiq & "lc.fecha, "
+    qLiq = qLiq & "ROUND(SUM("
+    qLiq = qLiq & "IFNULL(lcf.neto_gravado_liquidado, 0) + "
+    qLiq = qLiq & "IFNULL(lcf.otros_liquidado, 0)"
+    qLiq = qLiq & "), 2) AS importe "
+    qLiq = qLiq & "FROM liquidaciones_caja_facturas lcf "
+    qLiq = qLiq & "INNER JOIN liquidaciones_caja lc "
+    qLiq = qLiq & "ON lc.id = lcf.id_liquidacion_caja "
+    qLiq = qLiq & "INNER JOIN AdminComprasFacturasProveedores f "
+    qLiq = qLiq & "ON f.id = lcf.id_factura_proveedor "
+    qLiq = qLiq & "WHERE f.id_proveedor = "
+    qLiq = qLiq & CStr(id_proveedor) & " "
+    qLiq = qLiq & "AND lc.estado = "
+    qLiq = qLiq & _
+        CStr(EstadoLiquidacionCaja.EstadoLiquidacionCaja_Aprobada) & " "
+
+    'No usamos max_desde porque los cierres históricos actuales
+    'todavía no guardan liquidaciones de caja.
+    If LenB(condicion) > 0 Then
+        qLiq = qLiq & "AND lc.fecha <= " & condicion & " "
+    End If
+
+    qLiq = qLiq & _
+        "GROUP BY lc.id, lc.numero_liq, lc.fecha "
+
+    qLiq = qLiq & _
+        "ORDER BY lc.fecha, lc.id"
+
+    Set rsLiq = conectar.RSFactory(qLiq)
+
+    While Not rsLiq.EOF
+
+        Set detalle = New DTODetalleCuentaCorriente
+
+        detalle.Comprobante = _
+            "LIQ.CAJA-" & CStr(rsLiq!numero_liq)
+
+        detalle.IdComprobante = CLng(rsLiq!Id)
+
+        detalle.tipoComprobante = _
+            TipoComprobanteUsado.LiquidacionCajaProveedor_
+
+        detalle.FEcha = CDate(rsLiq!FEcha)
+
+        detalle.Debe = 0
+
+        detalle.Haber = funciones.RedondearDecimales( _
+            CDbl(rsLiq!Importe))
+
+        Detalles.Add detalle
+
+        rsLiq.MoveNext
+
+    Wend
+
+    Set rsLiq = Nothing
 
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
