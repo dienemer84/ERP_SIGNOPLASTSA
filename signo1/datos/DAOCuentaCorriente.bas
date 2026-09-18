@@ -687,22 +687,8 @@ Public Function FindAllDetallesProveedor(id_proveedor As Long, Optional sortColl
     qImportesOP = "SELECT opf.id_orden_pago, "
     
     qImportesOP = qImportesOP & _
-        "SUM(CASE "
-    
-    qImportesOP = qImportesOP & _
-        "WHEN f.tipo_doc_contable = " & _
-        CStr(tipoDocumentoContable.notaCredito) & " "
-    
-    qImportesOP = qImportesOP & _
-        "THEN -(IFNULL(opf.neto_gravado_abonado, 0) + " & _
-        "IFNULL(opf.otros_abonado, 0)) "
-    
-    qImportesOP = qImportesOP & _
-        "ELSE (IFNULL(opf.neto_gravado_abonado, 0) + " & _
-        "IFNULL(opf.otros_abonado, 0)) "
-    
-    qImportesOP = qImportesOP & _
-        "END) AS total_aplicado "
+        "SUM(IFNULL(opf.neto_gravado_abonado, 0) + " & _
+        "IFNULL(opf.otros_abonado, 0)) AS total_aplicado "
     
     qImportesOP = qImportesOP & _
         "FROM ordenes_pago_facturas opf "
@@ -1027,6 +1013,62 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
     soloOp)
     
     
+    '------------------------------------------------------
+    ' IMPORTE REALMENTE APLICADO POR CADA ORDEN DE PAGO
+    '------------------------------------------------------
+    
+    qImportesOP = "SELECT opf.id_orden_pago, "
+    
+    qImportesOP = qImportesOP & _
+        "SUM(IFNULL(opf.neto_gravado_abonado, 0) + " & _
+        "IFNULL(opf.otros_abonado, 0)) AS total_aplicado "
+    
+    qImportesOP = qImportesOP & _
+        "FROM ordenes_pago_facturas opf "
+
+    qImportesOP = qImportesOP & _
+        "INNER JOIN ordenes_pago op " & _
+        "ON op.id = opf.id_orden_pago "
+    
+    qImportesOP = qImportesOP & _
+        "INNER JOIN AdminComprasFacturasProveedores f " & _
+        "ON f.id = opf.id_factura_proveedor "
+    
+    qImportesOP = qImportesOP & _
+        "WHERE f.id_proveedor = " & CStr(id_proveedor) & " "
+    
+    qImportesOP = qImportesOP & _
+        "AND op.estado = " & _
+        CStr(EstadoOrdenPago.EstadoOrdenPago_Aprobada) & " "
+    
+    qImportesOP = qImportesOP & _
+        "AND op.fecha > " & max_desde & " "
+    
+    If LenB(condicion) > 0 Then
+    
+        qImportesOP = qImportesOP & _
+            "AND op.fecha <= " & condicion & " "
+    
+    End If
+    
+    qImportesOP = qImportesOP & _
+        "GROUP BY opf.id_orden_pago"
+    
+    Set rsImportesOP = conectar.RSFactory(qImportesOP)
+    
+    Do While Not rsImportesOP.EOF
+    
+        importesAplicadosOP.Add _
+            CStr(rsImportesOP!id_orden_pago), _
+            CDbl(rsImportesOP!total_aplicado)
+    
+        rsImportesOP.MoveNext
+    
+    Loop
+    
+    Set rsImportesOP = Nothing
+
+    
     For Each Orden In ordenes
         'ver si solo mostrar las aprobadas (revisado) muestra las pendientes indicandolo en el estado
 
@@ -1054,12 +1096,7 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
         
             detalle.Haber = 0
         
-            Debug.Print "OP=" & CStr(Orden.Id) & _
-                        " | EXISTE=" & _
-                        CStr(importesAplicadosOP.Exists(CStr(Orden.Id))) & _
-                        " | CANTIDAD DICCIONARIO=" & _
-                        CStr(importesAplicadosOP.count)
-        
+       
             If importesAplicadosOP.Exists(CStr(Orden.Id)) Then
         
                 detalle.Haber = funciones.RedondearDecimales( _
