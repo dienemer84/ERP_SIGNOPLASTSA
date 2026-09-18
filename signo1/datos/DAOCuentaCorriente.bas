@@ -1019,9 +1019,15 @@ Public Function FindAllDetallesProveedor2(id_proveedor As Long, Optional sortCol
     
     qImportesOP = "SELECT opf.id_orden_pago, "
     
-    qImportesOP = qImportesOP & _
-        "SUM(IFNULL(opf.neto_gravado_abonado, 0) + " & _
-        "IFNULL(opf.otros_abonado, 0)) AS total_aplicado "
+qImportesOP = qImportesOP & _
+    "SUM(CASE " & _
+    "WHEN f.tipo_doc_contable = " & _
+    CStr(tipoDocumentoContable.notaCredito) & " " & _
+    "THEN -(IFNULL(opf.neto_gravado_abonado, 0) + " & _
+    "IFNULL(opf.otros_abonado, 0)) " & _
+    "ELSE (IFNULL(opf.neto_gravado_abonado, 0) + " & _
+    "IFNULL(opf.otros_abonado, 0)) " & _
+    "END) AS total_aplicado "
     
     qImportesOP = qImportesOP & _
         "FROM ordenes_pago_facturas opf "
