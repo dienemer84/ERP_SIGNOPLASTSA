@@ -16,49 +16,51 @@ Begin VB.Form frmResumenSaldosProv
    ScaleWidth      =   10170
    ShowInTaskbar   =   0   'False
    Begin XtremeSuiteControls.GroupBox GroupBox2 
-      Height          =   495
+      Height          =   615
       Left            =   120
       TabIndex        =   10
       Top             =   720
       Width           =   9855
       _Version        =   786432
       _ExtentX        =   17383
-      _ExtentY        =   873
+      _ExtentY        =   1085
       _StockProps     =   79
       Caption         =   "Período de movimientos"
       UseVisualStyle  =   -1  'True
       Begin XtremeSuiteControls.DateTimePicker dtpDesde 
-         Height          =   255
-         Left            =   3000
+         Height          =   375
+         Left            =   3600
          TabIndex        =   13
-         Top             =   120
-         Width           =   1455
+         Top             =   60
+         Width           =   1575
          _Version        =   786432
-         _ExtentX        =   2566
-         _ExtentY        =   450
+         _ExtentX        =   2778
+         _ExtentY        =   661
          _StockProps     =   68
+         CheckBox        =   -1  'True
          Format          =   1
          CurrentDate     =   46282.6832175926
       End
       Begin XtremeSuiteControls.DateTimePicker dtpHasta 
-         Height          =   255
-         Left            =   5280
+         Height          =   375
+         Left            =   6120
          TabIndex        =   14
-         Top             =   120
+         Top             =   60
          Width           =   1455
          _Version        =   786432
          _ExtentX        =   2566
-         _ExtentY        =   450
+         _ExtentY        =   661
          _StockProps     =   68
+         CheckBox        =   -1  'True
          Format          =   1
          CurrentDate     =   46282.6835763889
       End
       Begin XtremeSuiteControls.Label lblHasta 
          Height          =   195
          Index           =   0
-         Left            =   4680
+         Left            =   5520
          TabIndex        =   12
-         Top             =   180
+         Top             =   150
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
@@ -71,9 +73,9 @@ Begin VB.Form frmResumenSaldosProv
       Begin XtremeSuiteControls.Label lblDesde 
          Height          =   195
          Index           =   1
-         Left            =   2400
+         Left            =   3000
          TabIndex        =   11
-         Top             =   180
+         Top             =   150
          Width           =   465
          _Version        =   786432
          _ExtentX        =   820
@@ -99,7 +101,7 @@ Begin VB.Form frmResumenSaldosProv
          Height          =   480
          Left            =   6120
          TabIndex        =   8
-         Top             =   180
+         Top             =   240
          Width           =   1815
          _Version        =   786432
          _ExtentX        =   3201
@@ -140,7 +142,7 @@ Begin VB.Form frmResumenSaldosProv
       Height          =   5445
       Left            =   30
       TabIndex        =   0
-      Top             =   1320
+      Top             =   1440
       Width           =   10020
       _ExtentX        =   17674
       _ExtentY        =   9604
@@ -168,27 +170,26 @@ Begin VB.Form frmResumenSaldosProv
       PrinterProperties=   "frmResumenSaldosProv.frx":0718
    End
    Begin XtremeSuiteControls.PushButton Obtener 
-      Height          =   360
+      Height          =   480
       Left            =   120
       TabIndex        =   2
-      Top             =   210
-      Width           =   1305
+      Top             =   130
+      Width           =   1545
       _Version        =   786432
-      _ExtentX        =   2302
-      _ExtentY        =   635
+      _ExtentX        =   2725
+      _ExtentY        =   847
       _StockProps     =   79
       Caption         =   "Obtener"
       UseVisualStyle  =   -1  'True
    End
    Begin XtremeSuiteControls.ProgressBar ProgressBar1 
       Height          =   300
-      Left            =   1695
+      Left            =   2775
       TabIndex        =   3
-      Top             =   225
-      Visible         =   0   'False
-      Width           =   7560
+      Top             =   220
+      Width           =   6480
       _Version        =   786432
-      _ExtentX        =   13335
+      _ExtentX        =   11430
       _ExtentY        =   529
       _StockProps     =   93
       Appearance      =   6
@@ -206,14 +207,14 @@ Begin VB.Form frmResumenSaldosProv
       Height          =   435
       Left            =   7800
       TabIndex        =   4
-      Top             =   6960
+      Top             =   7080
       Width           =   2205
    End
    Begin VB.Label lblproceso 
       Height          =   390
       Left            =   120
       TabIndex        =   1
-      Top             =   6960
+      Top             =   7080
       Width           =   7470
    End
 End
@@ -233,7 +234,7 @@ Public TipoPersonaCta As TipoPersona
 
 Private Sub btnExportarXLS_Click()
 
-    Dim xlApp As Object, xlBook As Object, xlSheet As Object
+    Dim xlApp As Object, xlBook As Object, xlsheet As Object
     Dim i As Long
     Dim ultimaFila As Long
     Dim sumaTotal As Double
@@ -241,25 +242,25 @@ Private Sub btnExportarXLS_Click()
     ' Crear Excel
     Set xlApp = CreateObject("Excel.Application")
     Set xlBook = xlApp.Workbooks.Add
-    Set xlSheet = xlBook.Worksheets(1)
+    Set xlsheet = xlBook.Worksheets(1)
     
     ' Configurar título
-    xlSheet.Range("A1:B1").Merge
-    xlSheet.Range("A1:B1").value = "Reporte de Saldos de Clientes al " & Format(Me.dtpHasta.value, "dd/mm/yyyy")
-    xlSheet.Range("A1:B1").HorizontalAlignment = xlLeft
-    xlSheet.Range("A1:B1").VerticalAlignment = xlCenter
-    xlSheet.Range("A1:B1").Font.Bold = True
+    xlsheet.Range("A1:B1").Merge
+    xlsheet.Range("A1:B1").value = "Reporte de Saldos de Proveedores al " & Format(Me.dtpHasta.value, "dd/mm/yyyy")
+    xlsheet.Range("A1:B1").HorizontalAlignment = xlLeft
+    xlsheet.Range("A1:B1").VerticalAlignment = xlCenter
+    xlsheet.Range("A1:B1").Font.Bold = True
 
     ' Escribir encabezados
-    xlSheet.Cells(3, 1).value = "Cliente / Proveedor"
-    xlSheet.Cells(3, 2).value = "Saldo"
-    xlSheet.rows(3).Font.Bold = True
+    xlsheet.Cells(3, 1).value = "Cliente / Proveedor"
+    xlsheet.Cells(3, 2).value = "Saldo"
+    xlsheet.rows(3).Font.Bold = True
     
     ' Calcular suma total mientras escribimos los datos
     sumaTotal = 0
     For i = 1 To col2.count
-        xlSheet.Cells(i + 3, 1).value = col2(i).nombre
-        xlSheet.Cells(i + 3, 2).value = funciones.FormatearDecimales(col2(i).Monto)
+        xlsheet.Cells(i + 3, 1).value = col2(i).nombre
+        xlsheet.Cells(i + 3, 2).value = funciones.FormatearDecimales(col2(i).Monto)
         sumaTotal = sumaTotal + col2(i).Monto
     Next i
     
@@ -268,32 +269,32 @@ Private Sub btnExportarXLS_Click()
     
     ' Aplicar formato a TODA la columna B (desde fila 4 hasta el final)
     ultimaFila = 3 + col2.count
-    xlSheet.Range("B4:B" & ultimaFila).NumberFormat = "#,##0.00"
+    xlsheet.Range("B4:B" & ultimaFila).NumberFormat = "#,##0.00"
     
     ' Agregar fila de totales
-    xlSheet.Cells(ultimaFila + 2, 1).value = "TOTAL:"
-    xlSheet.Cells(ultimaFila + 2, 2).value = funciones.FormatearDecimales(sumaTotal)
+    xlsheet.Cells(ultimaFila + 2, 1).value = "TOTAL:"
+    xlsheet.Cells(ultimaFila + 2, 2).value = funciones.FormatearDecimales(sumaTotal)
     
     ' Agregar esta línea después de poner el valor del total
-    xlSheet.Cells(ultimaFila + 2, 2).NumberFormat = "#,##0.00"
+    xlsheet.Cells(ultimaFila + 2, 2).NumberFormat = "#,##0.00"
     
     ' Formatear la fila de totales
-    With xlSheet.Range("A" & ultimaFila + 1 & ":B" & ultimaFila + 1)
+    With xlsheet.Range("A" & ultimaFila + 1 & ":B" & ultimaFila + 1)
         .Font.Bold = True
     End With
     
     ' Opcional: Agregar línea separadora antes del total
-    With xlSheet.Range("A" & ultimaFila & ":B" & ultimaFila)
+    With xlsheet.Range("A" & ultimaFila & ":B" & ultimaFila)
     End With
 
     ' Ajustar columnas
-    xlSheet.Columns("A:B").AutoFit
+    xlsheet.Columns("A:B").AutoFit
 
     ' Mostrar Excel
     xlApp.Visible = True
     
     ' Liberar objetos
-    Set xlSheet = Nothing
+    Set xlsheet = Nothing
     Set xlBook = Nothing
     Set xlApp = Nothing
 
@@ -361,7 +362,7 @@ Private Sub Obtener_Click()
     
     condition = vbNullString
     
-    fechaHastaResumen = vbNullString
+    fechaDesdeResumen = vbNullString
     fechaHastaResumen = vbNullString
     
     Me.cmdParar.Enabled = True
@@ -397,7 +398,7 @@ Private Sub Obtener_Click()
         MsgBox "Debe seleccionar una fecha Hasta.", _
                vbExclamation, _
                "Resumen de saldos"
-'        GoTo salir
+    GoTo SalirPorValidacion
     End If
     
     'Validar el orden de las fechas.
@@ -407,7 +408,7 @@ Private Sub Obtener_Click()
             MsgBox "La fecha Desde no puede ser posterior a la fecha Hasta.", _
                    vbExclamation, _
                    "Resumen de saldos"
-'            GoTo salir
+    GoTo SalirPorValidacion
         End If
     
     End If
@@ -550,6 +551,23 @@ Private Sub Obtener_Click()
 
     Set Detalles = Nothing
     Set rs = Nothing
+
+
+SalirPorValidacion:
+
+    Me.lblCant.Visible = False
+    Me.ProgressBar1.Visible = False
+    Me.cmdParar.Enabled = False
+
+    Screen.MousePointer = vbDefault
+
+    Me.lblproceso = "Revise el período seleccionado."
+
+    Set Detalles = Nothing
+    Set rs = Nothing
+
+    Exit Sub
+
 
     Exit Sub
 

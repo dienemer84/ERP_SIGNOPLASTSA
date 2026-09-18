@@ -76,7 +76,15 @@ Public Function FindResumenSaldosProveedoresRapido( _
 
     Set resultado = New Collection
     Set cn = conectar.obternerConexion
-
+    
+    'Preparar fecha Hasta.
+    If LenB(Trim$(FechaHasta)) > 0 Then
+        fechaSQL = conectar.Escape(FechaHasta)
+    Else
+        fechaSQL = conectar.Escape("9999-12-31")
+    End If
+    
+    'Preparar fecha Desde.
     If LenB(Trim$(FechaDesde)) > 0 Then
         fechaDesdeSQL = conectar.Escape(FechaDesde)
     Else
@@ -377,6 +385,33 @@ Public Function FindResumenSaldosProveedoresRapido( _
 
     EjecutarPasoResumen cn, _
     "6 - Calcular órdenes de pago", q
+    
+    
+    '=========================================================
+    ' LIQUIDACIONES DE CAJA APLICADAS A FACTURAS
+    '=========================================================
+
+    q = "INSERT INTO tmp_resumen_prov_mov "
+    q = q & "(id_proveedor, importe) "
+    q = q & "SELECT f.id_proveedor, "
+    q = q & "-ROUND(SUM("
+    q = q & "IFNULL(lcf.neto_gravado_liquidado, 0) + "
+    q = q & "IFNULL(lcf.otros_liquidado, 0)), 2) "
+    q = q & "FROM liquidaciones_caja_facturas lcf "
+    q = q & "INNER JOIN liquidaciones_caja lc "
+    q = q & "ON lc.id = lcf.id_liquidacion_caja "
+    q = q & "INNER JOIN AdminComprasFacturasProveedores f "
+    q = q & "ON f.id = lcf.id_factura_proveedor "
+    q = q & "INNER JOIN tmp_resumen_proveedores r "
+    q = q & "ON r.id_proveedor = f.id_proveedor "
+    q = q & "WHERE lc.estado = 1 "
+    q = q & "AND lc.fecha >= " & fechaDesdeSQL & " "
+    q = q & "AND lc.fecha > r.fecha_cierre "
+    q = q & "AND lc.fecha <= " & fechaSQL & " "
+    q = q & "GROUP BY f.id_proveedor"
+
+    EjecutarPasoResumen cn, _
+    "6.1 - Calcular liquidaciones de caja", q
 
     '=========================================================
     ' PAGOS A CUENTA
