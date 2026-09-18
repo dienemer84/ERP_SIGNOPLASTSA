@@ -158,16 +158,16 @@ Begin VB.Form frmResumenSaldosProv
       IntProp7        =   0
       ColumnsCount    =   2
       Column(1)       =   "frmResumenSaldosProv.frx":0000
-      Column(2)       =   "frmResumenSaldosProv.frx":0120
+      Column(2)       =   "frmResumenSaldosProv.frx":014C
       FormatStylesCount=   6
-      FormatStyle(1)  =   "frmResumenSaldosProv.frx":020C
-      FormatStyle(2)  =   "frmResumenSaldosProv.frx":0344
-      FormatStyle(3)  =   "frmResumenSaldosProv.frx":03F4
-      FormatStyle(4)  =   "frmResumenSaldosProv.frx":04A8
-      FormatStyle(5)  =   "frmResumenSaldosProv.frx":0580
-      FormatStyle(6)  =   "frmResumenSaldosProv.frx":0638
+      FormatStyle(1)  =   "frmResumenSaldosProv.frx":028C
+      FormatStyle(2)  =   "frmResumenSaldosProv.frx":03C4
+      FormatStyle(3)  =   "frmResumenSaldosProv.frx":0474
+      FormatStyle(4)  =   "frmResumenSaldosProv.frx":0528
+      FormatStyle(5)  =   "frmResumenSaldosProv.frx":0600
+      FormatStyle(6)  =   "frmResumenSaldosProv.frx":06B8
       ImageCount      =   0
-      PrinterProperties=   "frmResumenSaldosProv.frx":0718
+      PrinterProperties=   "frmResumenSaldosProv.frx":0798
    End
    Begin XtremeSuiteControls.PushButton Obtener 
       Height          =   480
@@ -260,7 +260,7 @@ Private Sub btnExportarXLS_Click()
     sumaTotal = 0
     For i = 1 To col2.count
         xlsheet.Cells(i + 3, 1).value = col2(i).nombre
-        xlsheet.Cells(i + 3, 2).value = funciones.FormatearDecimales(col2(i).Monto)
+        xlsheet.Cells(i + 3, 2).value = CDbl(col2(i).Monto)
         sumaTotal = sumaTotal + col2(i).Monto
     Next i
     
@@ -273,7 +273,7 @@ Private Sub btnExportarXLS_Click()
     
     ' Agregar fila de totales
     xlsheet.Cells(ultimaFila + 2, 1).value = "TOTAL:"
-    xlsheet.Cells(ultimaFila + 2, 2).value = funciones.FormatearDecimales(sumaTotal)
+    xlsheet.Cells(ultimaFila + 2, 2).value = CDbl(sumaTotal)
     
     ' Agregar esta línea después de poner el valor del total
     xlsheet.Cells(ultimaFila + 2, 2).NumberFormat = "#,##0.00"
@@ -310,6 +310,7 @@ Private Sub Form_Load()
     Customize Me
     GridEXHelper.CustomizeGrid Me.GridEX1, False, False
     Me.GridEX1.ItemCount = 0
+    Me.GridEX1.Columns("saldo").Format = "#,##0.00"
 
     'La fecha Desde queda desactivada inicialmente.
     Me.dtpDesde.value = Null
@@ -326,11 +327,13 @@ Private Sub GridEX1_ColumnHeaderClick(ByVal Column As GridEX20.JSColumn)
 End Sub
 
 Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+
     Set dto = col2(RowIndex)
 
-
     Values(1) = dto.nombre
-    Values(2) = funciones.FormatearDecimales(dto.Monto)
+    Values(2) = Replace(FormatCurrency(funciones.FormatearDecimales(dto.Monto)), "$", "")
+
+
 End Sub
 
 
@@ -527,9 +530,7 @@ Private Sub Obtener_Click()
 
     Next itemResumen
 
-    Me.lblTotal = _
-        "Total: " & _
-        funciones.FormatearDecimales(totalResumen)
+    Me.lblTotal = Replace(FormatCurrency(funciones.FormatearDecimales(totalResumen)), "$", "")
 
     Me.lblproceso = _
         "Proceso finalizado: " & _

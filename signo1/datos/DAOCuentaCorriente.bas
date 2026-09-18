@@ -171,10 +171,6 @@ Public Function FindResumenSaldosProveedoresRapido( _
     ' FACTURAS, NOTAS DE DÉBITO Y NOTAS DE CRÉDITO
     '=========================================================
 
-    '=========================================================
-    ' FACTURAS, NOTAS DE DÉBITO Y NOTAS DE CRÉDITO
-    '=========================================================
-
     '---------------------------------------------------------
     ' 5.1 - Crear tabla con las facturas que realmente entran
     '       en el reporte.
@@ -365,11 +361,16 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = "INSERT INTO tmp_resumen_prov_mov "
     q = q & "(id_proveedor, importe) "
     q = q & "SELECT f.id_proveedor, "
-    q = q & "CASE WHEN op.estado = "
-    q = q & CStr(EstadoOrdenPago.EstadoOrdenPago_Anulada)
-    q = q & " THEN 0 ELSE -ROUND("
-    q = q & "IFNULL(op.static_total_origen, 0) + "
-    q = q & "IFNULL(op.static_total_a_retener, 0), 2) END "
+    q = q & "-ROUND(SUM(CASE "
+    q = q & "WHEN f.tipo_doc_contable = "
+    q = q & CStr(tipoDocumentoContable.notaCredito) & " "
+    q = q & "THEN -("
+    q = q & "IFNULL(opf.neto_gravado_abonado, 0) + "
+    q = q & "IFNULL(opf.otros_abonado, 0)) "
+    q = q & "ELSE ("
+    q = q & "IFNULL(opf.neto_gravado_abonado, 0) + "
+    q = q & "IFNULL(opf.otros_abonado, 0)) "
+    q = q & "END), 2) "
     q = q & "FROM ordenes_pago op "
     q = q & "INNER JOIN ordenes_pago_facturas opf "
     q = q & "ON opf.id_orden_pago = op.id "
@@ -377,14 +378,15 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & "ON f.id = opf.id_factura_proveedor "
     q = q & "INNER JOIN tmp_resumen_proveedores r "
     q = q & "ON r.id_proveedor = f.id_proveedor "
-    q = q & "WHERE op.fecha >= " & fechaDesdeSQL & " "
+    q = q & "WHERE op.estado = "
+    q = q & CStr(EstadoOrdenPago.EstadoOrdenPago_Aprobada) & " "
+    q = q & "AND op.fecha >= " & fechaDesdeSQL & " "
     q = q & "AND op.fecha > r.fecha_cierre "
     q = q & "AND op.fecha <= " & fechaSQL & " "
-    q = q & "GROUP BY f.id_proveedor, op.id, op.estado, "
-    q = q & "op.static_total_origen, op.static_total_a_retener"
+    q = q & "GROUP BY f.id_proveedor, op.id"
 
     EjecutarPasoResumen cn, _
-    "6 - Calcular órdenes de pago", q
+        "6 - Calcular órdenes de pago", q
     
     
     '=========================================================
@@ -394,9 +396,16 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = "INSERT INTO tmp_resumen_prov_mov "
     q = q & "(id_proveedor, importe) "
     q = q & "SELECT f.id_proveedor, "
-    q = q & "-ROUND(SUM("
+    q = q & "-ROUND(SUM(CASE "
+    q = q & "WHEN f.tipo_doc_contable = "
+    q = q & CStr(tipoDocumentoContable.notaCredito) & " "
+    q = q & "THEN -("
     q = q & "IFNULL(lcf.neto_gravado_liquidado, 0) + "
-    q = q & "IFNULL(lcf.otros_liquidado, 0)), 2) "
+    q = q & "IFNULL(lcf.otros_liquidado, 0)) "
+    q = q & "ELSE ("
+    q = q & "IFNULL(lcf.neto_gravado_liquidado, 0) + "
+    q = q & "IFNULL(lcf.otros_liquidado, 0)) "
+    q = q & "END), 2) "
     q = q & "FROM liquidaciones_caja_facturas lcf "
     q = q & "INNER JOIN liquidaciones_caja lc "
     q = q & "ON lc.id = lcf.id_liquidacion_caja "
@@ -404,14 +413,14 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & "ON f.id = lcf.id_factura_proveedor "
     q = q & "INNER JOIN tmp_resumen_proveedores r "
     q = q & "ON r.id_proveedor = f.id_proveedor "
-    q = q & "WHERE lc.estado = 1 "
+    q = q & "WHERE lc.estado = "
+    q = q & CStr(EstadoLiquidacionCaja.EstadoLiquidacionCaja_Aprobada) & " "
     q = q & "AND lc.fecha >= " & fechaDesdeSQL & " "
-    q = q & "AND lc.fecha > r.fecha_cierre "
     q = q & "AND lc.fecha <= " & fechaSQL & " "
     q = q & "GROUP BY f.id_proveedor"
 
     EjecutarPasoResumen cn, _
-    "6.1 - Calcular liquidaciones de caja", q
+        "6.1 - Calcular liquidaciones de caja", q
 
     '=========================================================
     ' PAGOS A CUENTA
@@ -429,11 +438,19 @@ Public Function FindResumenSaldosProveedoresRapido( _
     q = q & CStr(EstadoPagoACuenta.Procesada) & ") "
     q = q & "AND p.fecha >= " & fechaDesdeSQL & " "
     q = q & "AND p.fecha > r.fecha_cierre "
-    q = q & "AND p.fecha <= " & fechaSQL
+    q = q & "AND p.fecha <= " & fechaSQL & " "
+    q = q & "AND NOT EXISTS ("
+    q = q & "SELECT 1 "
+    q = q & "FROM ordenes_pago_pagos_a_cuenta vinc "
+    q = q & "INNER JOIN ordenes_pago op "
+    q = q & "ON op.id = vinc.id_orden_pago "
+    q = q & "WHERE vinc.id_pago_a_cuenta = p.id "
+    q = q & "AND op.estado = "
+    q = q & CStr(EstadoOrdenPago.EstadoOrdenPago_Aprobada) & " "
+    q = q & "AND op.fecha <= " & fechaSQL & ")"
 
     EjecutarPasoResumen cn, _
-    "7 - Calcular pagos a cuenta", q
-
+        "7 - Calcular pagos a cuenta", q
     '=========================================================
     ' SUMAR LOS MOVIMIENTOS AL SALDO HISTÓRICO
     '=========================================================
