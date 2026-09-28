@@ -67,12 +67,40 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
             r = r & "<Nro>" & ca.NRO & "</Nro>"
 
             'Desactivado el 17.07.20 - dnemer
-            r = r & "<Cuit>" & ca.Cuit & "</Cuit>"
+            r = r & "<Cuit>" & ca.cuit & "</Cuit>"
 
             r = r & "</CbteAsoc>"
         Next
         r = r & "</CbtesAsoc>"
     End If
+
+    '-------------------------------------------------
+    ' PERIODO ASOCIADO PARA NC Y ND
+    ' SIN COMPROBANTE ASOCIADO
+    '-------------------------------------------------
+
+    With c.FeDetReq.FECAEDetRequest
+
+        If .CbtesAsoc.count = 0 Then
+
+            If Len(.PeriodoAsocDesde) = 8 And _
+               Len(.PeriodoAsocHasta) = 8 Then
+
+                r = r & "<PeriodoAsoc>"
+                r = r & "<FchDesde>" & _
+                    .PeriodoAsocDesde & "</FchDesde>"
+
+                r = r & "<FchHasta>" & _
+                    .PeriodoAsocHasta & "</FchHasta>"
+
+                r = r & "</PeriodoAsoc>"
+
+            End If
+
+        End If
+
+    End With
+
 
     If c.FeDetReq.FECAEDetRequest.Tributos.count > 0 Then
         Dim T As Tributo
@@ -111,7 +139,7 @@ Public Function CrearXMLFromCaeSolicitar(c As FeCAEReq) As String
         For Each ox In c.FeDetReq.FECAEDetRequest.Opcionales
             r = r & "<Opcional>"
             r = r & "<Id>" & ox.idOpcionalCambiar & "</Id>"
-            r = r & "<Valor>" & ox.Valor & "</Valor>"
+            r = r & "<Valor>" & ox.valor & "</Valor>"
             r = r & "</Opcional>"
         Next
 
@@ -189,7 +217,7 @@ Public Function CrearXMLFromCaeSolicitarEXP(c As FeCAEReqEXT) As String
             r = r & "<Nro>" & ca.NRO & "</Nro>"
 
             'Desactivado el 17.07.20 - dnemer
-            r = r & "<Cuit>" & ca.Cuit & "</Cuit>"
+            r = r & "<Cuit>" & ca.cuit & "</Cuit>"
 
             r = r & "</CbteAsoc>"
         Next
@@ -233,7 +261,7 @@ Public Function CrearXMLFromCaeSolicitarEXP(c As FeCAEReqEXT) As String
         For Each ox In c.FeDetReqEXT.FECAEDetRequestEXT.Opcionales
             r = r & "<Opcional>"
             r = r & "<Id>" & ox.idOpcionalCambiar & "</Id>"
-            r = r & "<Valor>" & ox.Valor & "</Valor>"
+            r = r & "<Valor>" & ox.valor & "</Valor>"
             r = r & "</Opcional>"
         Next
 

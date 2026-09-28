@@ -359,7 +359,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     
     req.Concepto = F.ConceptoIncluir
     req.DocTipo = F.Cliente.TipoDocumento
-    req.DocNro = F.Cliente.Cuit
+    req.DocNro = F.Cliente.cuit
     req.CbteDesde = F.numero
     req.CbteHasta = F.numero
 
@@ -446,6 +446,25 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
             End If
         End If
 
+        
+        '-------------------------------------------------
+        ' PERIODO ASOCIADO AUTOMATICO
+        ' Para NC y ND sin comprobante asociado
+        '-------------------------------------------------
+        
+        If Not IsSomething(ftmp) Then
+        
+            'Primer dia del mes de emision
+            req.PeriodoAsocDesde = _
+                Format$(DateSerial(Year(F.FechaEmision), _
+                Month(F.FechaEmision), 1), "yyyymmdd")
+        
+            'Fecha de emision del comprobante
+            req.PeriodoAsocHasta = _
+                Format$(F.FechaEmision, "yyyymmdd")
+        
+        End If
+
         If IsSomething(ftmp) Then
             Dim cbt As CbteAsoc
             Set cbt = New CbteAsoc
@@ -461,7 +480,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
             cbt.PtoVta = ftmp.Tipo.PuntoVenta.PuntoVenta
             cbt.Tipo = ftmp.Tipo.Id
             cbt.CbteFch = Format(ftmp.FechaEmision, "yyyymmdd")
-            cbt.Cuit = "30657604972"
+            cbt.cuit = "30657604972"
             req.CbtesAsoc.Add cbt
         End If
     End If
@@ -516,9 +535,9 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
             op27.idOpcionalCambiar = "27"
 
             If F.Opcional27 = 1 Then
-                op27.Valor = "SCA"
+                op27.valor = "SCA"
             ElseIf F.Opcional27 = 2 Then
-                op27.Valor = "ADC"
+                op27.valor = "ADC"
             End If
 
             req.Opcionales.Add op27
@@ -533,7 +552,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
 
             Dim op As New Opcional
             op.idOpcionalCambiar = "2101"
-            op.Valor = F.CBU
+            op.valor = F.CBU
             req.Opcionales.Add op
         End If
         
@@ -551,7 +570,7 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
 
             Set op = New Opcional
             op.idOpcionalCambiar = "22"
-            op.Valor = F.AnulacionAFIP
+            op.valor = F.AnulacionAFIP
             req.Opcionales.Add op
         End If
     End If
@@ -591,16 +610,16 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     For intx = 0 To UBound(m)
         m2 = Split(m(intx), "-")
 
-        If m2(0) = "ESTADO" Then resp.Resultado = m2(1)
+        If m2(0) = "ESTADO" Then resp.resultado = m2(1)
 
-        If resp.Resultado = "APROBADO" Then
+        If resp.resultado = "APROBADO" Then
             If m2(0) = "CAEVTO" Then resp.CAEVencimiento = m2(1)
             If m2(0) = "CAE" Then resp.CAE = m2(1)
             If m2(0) = "CBTE" Then resp.Comprobante = m2(1)
             If m2(0) = "FCHEMISION" Then resp.FechaEmision = m2(1)
             If m2(0) = "FCHPROC" Then resp.FechaProceso = m2(1)
             If m2(0) = "OBS" Then resp.Observaciones = m2(1)
-        ElseIf resp.Resultado = "RECHAZADO" Then
+        ElseIf resp.resultado = "RECHAZADO" Then
             resp.Errores = m2(0) & " - " & m2(1)
         End If
     Next intx
@@ -956,7 +975,7 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
     
     req.Concepto = CInt(F.ConceptoIncluir)
     req.DocTipo = CInt(F.Cliente.TipoDocumento)
-    req.DocNro = CLng(F.Cliente.Cuit)
+    req.DocNro = CLng(F.Cliente.cuit)
     req.CbteDesde = CLng(F.numero)
     req.CbteHasta = CLng(F.numero)
     
@@ -1026,7 +1045,7 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
             cbt.PtoVta = CInt(ftmp.Tipo.PuntoVenta.PuntoVenta)
             cbt.Tipo = CInt(ftmp.Tipo.Id)
             cbt.CbteFch = Format$(ftmp.FechaEmision, "yyyymmdd")
-            cbt.Cuit = "30657604972"
+            cbt.cuit = "30657604972"
             req.CbtesAsoc.Add cbt
         End If
     End If
@@ -1037,23 +1056,23 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
             Dim op27 As New Opcional
             op27.idOpcionalCambiar = 27
             If F.Opcional27 = 1 Then
-                op27.Valor = "SCA"
+                op27.valor = "SCA"
             ElseIf F.Opcional27 = 2 Then
-                op27.Valor = "ADC"
+                op27.valor = "ADC"
             End If
             req.Opcionales.Add op27
     
             If Len(F.CBU) <> 22 Then Err.Raise 222101, , "El CBU debe tener 22 caracteres"
             Dim op As New Opcional
             op.idOpcionalCambiar = 2101
-            op.Valor = F.CBU
+            op.valor = F.CBU
             req.Opcionales.Add op
         Else
             If Len(F.AnulacionAFIP) <> 1 Then Err.Raise 22221, , "El campo Anulación AFIP debe informarse"
             If F.AnulacionAFIP <> "N" And F.AnulacionAFIP <> "S" Then Err.Raise 22222, , "El campo Anulación AFIP debe ser S o N"
             Dim opAnu As New Opcional
             opAnu.idOpcionalCambiar = 22
-            opAnu.Valor = F.AnulacionAFIP
+            opAnu.valor = F.AnulacionAFIP
             req.Opcionales.Add opAnu
         End If
     End If
@@ -1093,8 +1112,8 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
     For intx = 0 To UBound(m)
         m2 = Split(m(intx), "-")
 
-        If m2(0) = "ESTADO" Then resp.Resultado = m2(1)
-        If resp.Resultado = "APROBADO" Then
+        If m2(0) = "ESTADO" Then resp.resultado = m2(1)
+        If resp.resultado = "APROBADO" Then
 
             If m2(0) = "CAEVTO" Then resp.CAEVencimiento = m2(1)
             If m2(0) = "CAE" Then resp.CAE = m2(1)
@@ -1102,7 +1121,7 @@ Public Function CreateFECaeSolicitarRequestEXP(F As Factura) As CAESolicitar
             If m2(0) = "FCHEMISION" Then resp.FechaEmision = m2(1)
             If m2(0) = "FCHPROC" Then resp.FechaProceso = m2(1)
             If m2(0) = "OBS" Then resp.Observaciones = m2(1)
-        ElseIf resp.Resultado = "RECHAZADO" Then
+        ElseIf resp.resultado = "RECHAZADO" Then
             resp.Errores = m2(0) & " - " & m2(1)
 
         End If

@@ -31,6 +31,9 @@ Public MonId As String
 Public MonCotiz As String
 Public CbtesAsoc As New Collection    'of cbteAsoc
 
+Public PeriodoAsocDesde As String
+Public PeriodoAsocHasta As String
+
 Public Tributos As New Collection    'of tributo
 Public Iva As New Collection    'of AlicIva
 Public Opcionales As New Collection    'of opcional
