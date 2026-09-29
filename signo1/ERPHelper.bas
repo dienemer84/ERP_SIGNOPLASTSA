@@ -436,6 +436,19 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
     If F.TipoDocumento = tipoDocumentoContable.notaCredito Or F.TipoDocumento = tipoDocumentoContable.notaDebito Then
         Dim ftmp As Factura
         Set ftmp = DAOFactura.FindById(F.Cancelada)
+        
+        Debug.Print "=== COMPROBANTE ASOCIADO ==="
+        Debug.Print "ID asociado: "; F.Cancelada
+        Debug.Print "Es MiPyME: "; F.esCredito
+        Debug.Print "Factura encontrada: "; IsSomething(ftmp)
+        
+        If IsSomething(ftmp) Then
+            Debug.Print "Tipo: "; ftmp.Tipo.Id
+            Debug.Print "Numero: "; ftmp.numero
+            Debug.Print "Punto de venta: "; ftmp.Tipo.PuntoVenta.PuntoVenta
+            Debug.Print "Aprobada ARCA: "; ftmp.AprobadaAFIP
+            Debug.Print "Es MiPyME original: "; ftmp.esCredito
+        End If
 
         '23-8 NB: no puedo informar un comprobante asociado que no esté previamente informado.
         'en caso que sea crédito o débito mipyme
@@ -452,18 +465,23 @@ Public Function CreateFECaeSolicitarRequest(F As Factura) As CAESolicitar
         ' Para NC y ND sin comprobante asociado
         '-------------------------------------------------
         
-        If Not IsSomething(ftmp) Then
-        
-            'Primer dia del mes de emision
+    If Not IsSomething(ftmp) Then
+    
+        If F.esCredito Then
+            Err.Raise 22212, "ERPHelper", _
+                "La nota de credito o debito MiPyME requiere " & _
+                "un comprobante asociado."
+        Else
+            'Periodo asociado solo para comprobantes comunes
             req.PeriodoAsocDesde = _
                 Format$(DateSerial(Year(F.FechaEmision), _
                 Month(F.FechaEmision), 1), "yyyymmdd")
-        
-            'Fecha de emision del comprobante
+    
             req.PeriodoAsocHasta = _
                 Format$(F.FechaEmision, "yyyymmdd")
-        
         End If
+    
+    End If
 
         If IsSomething(ftmp) Then
             Dim cbt As CbteAsoc

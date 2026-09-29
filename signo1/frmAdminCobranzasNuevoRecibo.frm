@@ -75,10 +75,19 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   7095
-      Left            =   120
+      Left            =   0
       TabIndex        =   6
       Top             =   960
       Width           =   19245
+      Begin VB.TextBox Text1 
+         Alignment       =   1  'Right Justify
+         Height          =   285
+         Left            =   7320
+         TabIndex        =   40
+         Text            =   "0"
+         Top             =   4770
+         Width           =   1215
+      End
       Begin XtremeSuiteControls.TabControl TabFacturasRetenciones 
          Height          =   4335
          Left            =   120
@@ -229,7 +238,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       End
       Begin VB.ComboBox cboMonedas 
          Height          =   315
-         Left            =   4200
+         Left            =   3840
          Style           =   2  'Dropdown List
          TabIndex        =   21
          Top             =   4755
@@ -449,6 +458,24 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             End
          End
       End
+      Begin VB.Label Label1 
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Valor U$S"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Left            =   6360
+         TabIndex        =   39
+         Top             =   4800
+         Width           =   975
+      End
       Begin VB.Label lblTotalCTACTE 
          AutoSize        =   -1  'True
          BackColor       =   &H00C0C0C0&
@@ -463,7 +490,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   3000
+         Left            =   2640
          TabIndex        =   32
          Top             =   6045
          Width           =   1200
@@ -498,10 +525,10 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   3000
+         Left            =   2640
          TabIndex        =   27
          Tag             =   "Diferencia entre Recibido y Recibo: "
-         Top             =   6495
+         Top             =   6480
          Width           =   3060
       End
       Begin VB.Label lblTotalRecibido 
@@ -518,7 +545,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   3000
+         Left            =   2640
          TabIndex        =   26
          Top             =   5460
          Width           =   1320
@@ -557,7 +584,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   3000
+         Left            =   2640
          TabIndex        =   23
          Top             =   4815
          Width           =   1170
@@ -577,7 +604,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   270
-         Left            =   5175
+         Left            =   4800
          TabIndex        =   22
          Top             =   4770
          Width           =   1410
@@ -713,7 +740,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   16777217
+         Format          =   16646145
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
