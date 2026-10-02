@@ -436,10 +436,11 @@ End Function
 
 
 Public Function FindAll( _
-            Optional ByVal FechaDesde As Variant, _
-            Optional ByVal FechaHasta As Variant, _
-            Optional ByVal numeroBoleta As Long = 0, _
-            Optional ByVal idCuenta As Long = 0) As Collection
+        Optional ByVal FechaDesde As Variant, _
+        Optional ByVal FechaHasta As Variant, _
+        Optional ByVal idBoleta As Long = 0, _
+        Optional ByVal numeroBoleta As Long = 0, _
+        Optional ByVal idCuenta As Long = 0) As Collection
 
     On Error GoTo err1
 
@@ -466,6 +467,16 @@ Public Function FindAll( _
         "ON cd.id_boleta = b.id " & _
         "WHERE b.numero_boleta IS NOT NULL "
 
+
+    '---------------------------------------------------
+    ' FILTRO POR ID
+    '---------------------------------------------------
+    
+    If idBoleta > 0 Then
+    
+        q = q & " AND b.id = " & idBoleta
+    
+    End If
 
     '---------------------------------------------------
     ' FECHA DESDE
@@ -682,7 +693,7 @@ Private Function PuedeGuardarDeposito( _
 
     On Error GoTo err1
 
-    Dim IdConciliacion As Long
+    Dim idConciliacion As Long
 
     PuedeGuardarDeposito = False
 
@@ -690,12 +701,12 @@ Private Function PuedeGuardarDeposito( _
     If cuenta.Id <= 0 Then Exit Function
     If CDbl(fechaDeposito) <= 0 Then Exit Function
 
-    IdConciliacion = _
+    idConciliacion = _
         DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
             cuenta.Id, _
             fechaDeposito)
 
-    If IdConciliacion > 0 Then
+    If idConciliacion > 0 Then
 
         UltimoError = _
             "No se puede registrar la boleta de depósito." & _
@@ -706,7 +717,7 @@ Private Function PuedeGuardarDeposito( _
             vbCrLf & vbCrLf & _
             "La cuenta se encuentra cerrada por la " & _
             "Conciliación Bancaria Nro " & _
-            IdConciliacion & "."
+            idConciliacion & "."
 
         Exit Function
 
@@ -726,3 +737,665 @@ err1:
 
 End Function
 
+
+Public Function FindById( _
+        ByVal idBoleta As Long) As BoletaDeposito
+
+    On Error GoTo err1
+
+    Dim rs As ADODB.Recordset
+    Dim b As BoletaDeposito
+    Dim q As String
+
+    UltimoError = vbNullString
+
+    If idBoleta <= 0 Then
+        UltimoError = "El ID de la boleta no es válido."
+        Exit Function
+    End If
+
+    q = "SELECT id, monto, fecha_deposito, " & _
+        "tipo_deposito, numero_boleta, id_cuenta " & _
+        "FROM boleta_deposito " & _
+        "WHERE id = " & idBoleta & " LIMIT 1"
+
+    Set rs = conectar.RSFactory(q)
+
+    If rs.EOF Then
+        UltimoError = "No se encontró la boleta."
+        Exit Function
+    End If
+
+    If IsNull(rs!numero_boleta) Or _
+       IsNull(rs!fecha_deposito) Or _
+       IsNull(rs!tipo_deposito) Or _
+       IsNull(rs!id_cuenta) Then
+
+        UltimoError = "La boleta tiene datos incompletos."
+        Exit Function
+
+    End If
+
+    Set b = New BoletaDeposito
+
+    b.Id = CLng(rs!Id)
+    b.numero = CLng(rs!numero_boleta)
+    b.fechaDeposito = CDate(rs!fecha_deposito)
+    b.TipoDeposito = CLng(rs!tipo_deposito)
+
+    If Not IsNull(rs!Monto) Then
+        b.Monto = CDbl(rs!Monto)
+    End If
+
+    Set b.CuentaDestino = _
+        DAOCuentaBancaria.FindById(CLng(rs!id_cuenta))
+
+    If b.CuentaDestino Is Nothing Then
+        UltimoError = "No se encontró la cuenta bancaria."
+        Exit Function
+    End If
+
+    Set FindById = b
+    Exit Function
+
+err1:
+
+    UltimoError = Err.Description
+    Set FindById = Nothing
+
+End Function
+
+
+Private Function PuedeEditarBoleta( _
+    ByVal idBoleta As Long) As Boolean
+
+    On Error GoTo err1
+
+    Dim rs As ADODB.Recordset
+    Dim q As String
+    Dim idCuenta As Long
+    Dim fechaOriginal As Date
+    Dim idConciliacion As Long
+
+    PuedeEditarBoleta = False
+    UltimoError = vbNullString
+
+    If idBoleta <= 0 Then
+        UltimoError = "El ID de la boleta no es válido."
+        Exit Function
+    End If
+
+    'Obtener los datos actuales de la boleta.
+    q = "SELECT id_cuenta, fecha_deposito " & _
+        "FROM boleta_deposito " & _
+        "WHERE id = " & idBoleta
+
+    Set rs = conectar.RSFactory(q)
+
+    If rs.EOF Then
+        UltimoError = "La boleta ya no existe."
+        Exit Function
+    End If
+
+    If IsNull(rs!id_cuenta) Or _
+       IsNull(rs!fecha_deposito) Then
+
+        UltimoError = "La boleta tiene datos incompletos."
+        Exit Function
+
+    End If
+
+    idCuenta = CLng(rs!id_cuenta)
+    fechaOriginal = CDate(rs!fecha_deposito)
+
+    rs.Close
+    Set rs = Nothing
+
+    'Comprobar el período original.
+    idConciliacion = _
+        DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
+            idCuenta, fechaOriginal)
+
+    If idConciliacion > 0 Then
+
+        UltimoError = _
+            "No se puede modificar esta boleta." & vbCrLf & _
+            "El período original pertenece a la " & _
+            "conciliación bancaria Nº " & idConciliacion & "."
+
+        Exit Function
+
+    End If
+
+    'Comprobar si alguno de sus movimientos
+    'ya aparece en el detalle de una conciliación.
+    q = "SELECT d.id_operacion " & _
+        "FROM conciliaciones_bancarias_detalles d " & _
+        "INNER JOIN cheques_depositos cd " & _
+        "ON cd.id_operacion = d.id_operacion " & _
+        "WHERE cd.id_boleta = " & idBoleta & " " & _
+        "LIMIT 1"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+
+        UltimoError = _
+            "No se puede modificar esta boleta porque " & _
+            "uno de sus movimientos ya figura en " & _
+            "el detalle de una conciliación bancaria."
+
+        Exit Function
+
+    End If
+
+    PuedeEditarBoleta = True
+    Exit Function
+
+err1:
+
+    UltimoError = "Error al validar la boleta: " & _
+                  Err.Description
+
+    PuedeEditarBoleta = False
+
+End Function
+
+
+Private Function ContieneId( _
+    ByVal ids As Collection, _
+    ByVal Id As Long) As Boolean
+
+    On Error GoTo noExiste
+
+    Dim valor As Variant
+
+    valor = ids.item(CStr(Id))
+    ContieneId = True
+    Exit Function
+
+noExiste:
+    ContieneId = False
+
+End Function
+
+
+Public Function Update( _
+    ByVal boleta As BoletaDeposito, _
+    ByVal original As BoletaDeposito) As Boolean
+
+    On Error GoTo err1
+
+    Dim rs As ADODB.Recordset
+    Dim q As String
+
+    Dim idsActuales As New Collection
+    Dim operacionesActuales As New Collection
+    Dim idsSeleccionados As New Collection
+    Dim chequesNuevos As New Collection
+
+    Dim ch As cheque
+    Dim chActual As cheque
+    Dim chOriginal As cheque
+    Dim v As Variant
+
+    Dim idCuentaOriginal As Long
+    Dim fechaOriginal As Date
+    Dim numeroOriginal As Long
+    Dim idOperacion As Long
+    Dim idConciliacion As Long
+
+    Dim montoTotal As Double
+    Dim fechaNueva As Date
+    Dim transaccionIniciada As Boolean
+
+    Update = False
+    UltimoError = vbNullString
+
+    '-------------------------------------------------
+    ' VALIDACIONES GENERALES
+    '-------------------------------------------------
+
+    If boleta Is Nothing Or original Is Nothing Then
+        UltimoError = "Faltan los datos de la boleta."
+        Exit Function
+    End If
+
+    If boleta.Id <= 0 Or boleta.Id <> original.Id Then
+        UltimoError = "El ID de la boleta no coincide."
+        Exit Function
+    End If
+
+    If boleta.CuentaDestino Is Nothing Then
+        UltimoError = "Debe seleccionar una cuenta bancaria."
+        Exit Function
+    End If
+
+    If boleta.CuentaDestino.moneda Is Nothing Then
+        UltimoError = "La cuenta no tiene moneda definida."
+        Exit Function
+    End If
+
+    If original.CuentaDestino Is Nothing Then
+        UltimoError = "No se conoce la cuenta original."
+        Exit Function
+    End If
+
+    If boleta.numero <= 0 Or boleta.Cheques.count = 0 Then
+        UltimoError = "La boleta debe tener número y cheques."
+        Exit Function
+    End If
+
+    If CDbl(boleta.fechaDeposito) <= 0 Then
+        UltimoError = "La fecha no es válida."
+        Exit Function
+    End If
+
+    fechaNueva = DateValue(boleta.fechaDeposito)
+
+    '-------------------------------------------------
+    ' INICIAR TRANSACCIÓN
+    '-------------------------------------------------
+
+    conectar.BeginTransaction
+    transaccionIniciada = True
+
+    'Bloquear la cabecera.
+    q = "SELECT numero_boleta, fecha_deposito, " & _
+        "id_cuenta, tipo_deposito, monto " & _
+        "FROM boleta_deposito " & _
+        "WHERE id = " & boleta.Id & " FOR UPDATE"
+
+    Set rs = conectar.RSFactory(q)
+
+    If rs.EOF Then
+        Err.Raise vbObjectError + 3401, , _
+                  "La boleta ya no existe."
+    End If
+
+    If IsNull(rs!numero_boleta) Or _
+       IsNull(rs!fecha_deposito) Or _
+       IsNull(rs!id_cuenta) Or _
+       IsNull(rs!tipo_deposito) Or _
+       IsNull(rs!Monto) Then
+
+        Err.Raise vbObjectError + 3402, , _
+                  "La boleta tiene datos incompletos."
+    End If
+
+    numeroOriginal = CLng(rs!numero_boleta)
+    fechaOriginal = CDate(rs!fecha_deposito)
+    idCuentaOriginal = CLng(rs!id_cuenta)
+
+    If CLng(rs!tipo_deposito) <> DepositoCheque Then
+        Err.Raise vbObjectError + 3403, , _
+                  "Solamente se pueden editar depósitos de cheques."
+    End If
+
+    'Detectar cambios realizados desde otra sesión.
+    If original.numero <> numeroOriginal Or _
+       DateValue(original.fechaDeposito) <> fechaOriginal Or _
+       original.CuentaDestino.Id <> idCuentaOriginal Or _
+       Abs(original.Monto - CDbl(rs!Monto)) > 0.01 Then
+
+        Err.Raise vbObjectError + 3404, , _
+                  "La boleta fue modificada. Vuelva a abrirla."
+    End If
+
+    rs.Close
+    Set rs = Nothing
+
+    '-------------------------------------------------
+    ' VALIDAR CONCILIACIONES
+    '-------------------------------------------------
+
+    idConciliacion = _
+        DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
+            idCuentaOriginal, fechaOriginal)
+
+    If idConciliacion > 0 Then
+        Err.Raise vbObjectError + 3405, , _
+                  "El período bancario original está cerrado."
+    End If
+
+    idConciliacion = _
+        DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
+            boleta.CuentaDestino.Id, fechaNueva)
+
+    If idConciliacion > 0 Then
+        Err.Raise vbObjectError + 3406, , _
+                  "El nuevo período bancario está cerrado."
+    End If
+
+    q = "SELECT d.id_operacion " & _
+        "FROM conciliaciones_bancarias_detalles d " & _
+        "INNER JOIN cheques_depositos cd " & _
+        "ON cd.id_operacion = d.id_operacion " & _
+        "WHERE cd.id_boleta = " & boleta.Id & " LIMIT 1"
+
+    Set rs = conectar.RSFactory(q)
+
+    If Not rs.EOF Then
+        Err.Raise vbObjectError + 3407, , _
+                  "La boleta tiene operaciones conciliadas."
+    End If
+
+    rs.Close
+    Set rs = Nothing
+
+    '-------------------------------------------------
+    ' BLOQUEAR Y VALIDAR DETALLE ORIGINAL
+    '-------------------------------------------------
+
+    q = "SELECT cd.id_cheque, cd.id_operacion, " & _
+        "c.depositado, c.en_cartera, " & _
+        "c.monto AS monto_cheque, " & _
+        "o.monto AS monto_operacion, " & _
+        "o.cuentabanc_o_caja_id, " & _
+        "o.fecha_operacion, o.comprobante " & _
+        "FROM cheques_depositos cd " & _
+        "INNER JOIN Cheques c ON c.id = cd.id_cheque " & _
+        "INNER JOIN operaciones o ON o.id = cd.id_operacion " & _
+        "WHERE cd.id_boleta = " & boleta.Id & _
+        " FOR UPDATE"
+
+    Set rs = conectar.RSFactory(q)
+
+    Do While Not rs.EOF
+
+        If Not CBool(rs!Depositado) Or _
+           CBool(rs!en_cartera) Or _
+           CLng(rs!cuentabanc_o_caja_id) <> idCuentaOriginal Or _
+           DateValue(CDate(rs!fecha_operacion)) <> fechaOriginal Or _
+           Abs(CDbl(rs!monto_cheque) - _
+               CDbl(rs!monto_operacion)) > 0.01 Then
+
+            Err.Raise vbObjectError + 3408, , _
+                      "Se detectó un movimiento inconsistente."
+        End If
+
+        idsActuales.Add CLng(rs!id_cheque), _
+                         CStr(rs!id_cheque)
+
+        operacionesActuales.Add CLng(rs!id_operacion), _
+                               CStr(rs!id_cheque)
+
+        rs.MoveNext
+    Loop
+
+    rs.Close
+    Set rs = Nothing
+
+    'Comprobar que ningún vínculo haya desaparecido.
+    q = "SELECT COUNT(*) AS cantidad " & _
+        "FROM cheques_depositos " & _
+        "WHERE id_boleta = " & boleta.Id
+
+    Set rs = conectar.RSFactory(q)
+
+    If CLng(rs!Cantidad) <> idsActuales.count Then
+        Err.Raise vbObjectError + 3409, , _
+                  "Existen vínculos incompletos en la boleta."
+    End If
+
+    rs.Close
+    Set rs = Nothing
+
+    'Comparar el detalle actual contra el original.
+    If idsActuales.count <> original.Cheques.count Then
+        Err.Raise vbObjectError + 3410, , _
+                  "El detalle cambió. Vuelva a abrir la boleta."
+    End If
+
+    For Each chOriginal In original.Cheques
+
+        If Not ContieneId(idsActuales, chOriginal.Id) Then
+            Err.Raise vbObjectError + 3411, , _
+                      "El detalle fue modificado por otro usuario."
+        End If
+
+    Next chOriginal
+
+    '-------------------------------------------------
+    ' VALIDAR LOS CHEQUES SELECCIONADOS
+    '-------------------------------------------------
+
+    montoTotal = 0
+
+    For Each ch In boleta.Cheques
+
+        If ContieneId(idsSeleccionados, ch.Id) Then
+            Err.Raise vbObjectError + 3412, , _
+                      "Hay un cheque duplicado."
+        End If
+
+        idsSeleccionados.Add True, CStr(ch.Id)
+
+        'Bloquear también los cheques nuevos.
+        If Not ContieneId(idsActuales, ch.Id) Then
+
+            q = "SELECT id FROM Cheques " & _
+                "WHERE id = " & ch.Id & " FOR UPDATE"
+
+            Set rs = conectar.RSFactory(q)
+
+            If rs.EOF Then
+                Err.Raise vbObjectError + 3413, , _
+                          "No se encontró uno de los cheques."
+            End If
+
+            rs.Close
+            Set rs = Nothing
+
+        End If
+
+        Set chActual = DAOCheques.FindById(ch.Id)
+
+        If chActual Is Nothing Then
+            Err.Raise vbObjectError + 3414, , _
+                      "No se pudo recuperar un cheque."
+        End If
+
+        If chActual.moneda Is Nothing Then
+            Err.Raise vbObjectError + 3415, , _
+                      "Uno de los cheques no tiene moneda."
+        End If
+
+        If chActual.moneda.Id <> _
+           boleta.CuentaDestino.moneda.Id Then
+
+            Err.Raise vbObjectError + 3416, , _
+                      "Hay cheques cuya moneda no coincide."
+        End If
+
+        If Not ContieneId(idsActuales, ch.Id) Then
+
+            If Not chActual.EnCartera Or _
+               chActual.Depositado Then
+
+                Err.Raise vbObjectError + 3417, , _
+                          "Un cheque nuevo ya no está disponible."
+            End If
+
+            'Impedir que un cheque esté en dos depósitos.
+            q = "SELECT id FROM cheques_depositos " & _
+                "WHERE id_cheque = " & ch.Id & " LIMIT 1"
+
+            Set rs = conectar.RSFactory(q)
+
+            If Not rs.EOF Then
+                Err.Raise vbObjectError + 3418, , _
+                          "Un cheque ya pertenece a otro depósito."
+            End If
+
+            rs.Close
+            Set rs = Nothing
+
+            chequesNuevos.Add chActual, CStr(chActual.Id)
+
+        End If
+
+        montoTotal = montoTotal + chActual.Monto
+
+    Next ch
+
+    '-------------------------------------------------
+    ' QUITAR CHEQUES Y ACTUALIZAR LOS EXISTENTES
+    '-------------------------------------------------
+
+    For Each v In idsActuales
+
+        idOperacion = CLng(operacionesActuales.item(CStr(v)))
+
+        If Not ContieneId(idsSeleccionados, CLng(v)) Then
+
+            'Comprobar que no tenga otra vinculación.
+            q = "SELECT id FROM cheques_depositos " & _
+                "WHERE id_cheque = " & CLng(v) & _
+                " AND (id_boleta <> " & boleta.Id & _
+                " OR id_boleta IS NULL) LIMIT 1"
+
+            Set rs = conectar.RSFactory(q)
+
+            If Not rs.EOF Then
+                Err.Raise vbObjectError + 3419, , _
+                          "Un cheque tiene otra vinculación."
+            End If
+
+            rs.Close
+            Set rs = Nothing
+
+            'Devolverlo a cartera.
+            q = "UPDATE Cheques SET " & _
+                "depositado = 0, en_cartera = 1 " & _
+                "WHERE id = " & CLng(v)
+
+            If Not conectar.execute(q) Then
+                Err.Raise vbObjectError + 3420, , _
+                          "No se pudo liberar un cheque."
+            End If
+
+            'Eliminar vínculo y operación exclusivamente
+            'de esta boleta.
+            q = "DELETE FROM cheques_depositos " & _
+                "WHERE id_boleta = " & boleta.Id & _
+                " AND id_cheque = " & CLng(v) & _
+                " AND id_operacion = " & idOperacion
+
+            If Not conectar.execute(q) Then
+                Err.Raise vbObjectError + 3421, , _
+                          "No se pudo eliminar una relación."
+            End If
+
+            q = "DELETE FROM operaciones " & _
+                "WHERE id = " & idOperacion
+
+            If Not conectar.execute(q) Then
+                Err.Raise vbObjectError + 3422, , _
+                          "No se pudo eliminar una operación."
+            End If
+
+        Else
+
+            'Conservar el ID del movimiento existente.
+            q = "UPDATE operaciones SET " & _
+                "fecha_operacion = " & _
+                conectar.Escape(fechaNueva) & ", " & _
+                "cuentabanc_o_caja_id = " & _
+                boleta.CuentaDestino.Id & ", " & _
+                "comprobante = " & _
+                conectar.Escape(CStr(boleta.numero)) & _
+                " WHERE id = " & idOperacion
+
+            If Not conectar.execute(q) Then
+                Err.Raise vbObjectError + 3423, , _
+                          "No se pudo actualizar un movimiento."
+            End If
+
+        End If
+
+    Next v
+
+    '-------------------------------------------------
+    ' AGREGAR CHEQUES NUEVOS
+    '-------------------------------------------------
+
+    For Each chActual In chequesNuevos
+
+        If Not DepositarChequeInterno( _
+            chActual, _
+            boleta.CuentaDestino, _
+            fechaNueva, _
+            CStr(boleta.numero), _
+            boleta.Id) Then
+
+            Err.Raise vbObjectError + 3424, , _
+                      "No se pudo agregar un cheque nuevo."
+        End If
+
+    Next chActual
+
+    '-------------------------------------------------
+    ' ACTUALIZAR CABECERA
+    '-------------------------------------------------
+
+    q = "UPDATE boleta_deposito SET " & _
+        "numero_boleta = " & boleta.numero & ", " & _
+        "fecha_deposito = " & _
+        conectar.Escape(fechaNueva) & ", " & _
+        "id_cuenta = " & boleta.CuentaDestino.Id & ", " & _
+        "monto = " & conectar.Escape(montoTotal) & _
+        " WHERE id = " & boleta.Id
+
+    If Not conectar.execute(q) Then
+        Err.Raise vbObjectError + 3425, , _
+                  "No se pudo actualizar la cabecera."
+    End If
+
+    '-------------------------------------------------
+    ' COMPROBACIÓN FINAL
+    '-------------------------------------------------
+
+    q = "SELECT COUNT(*) AS cantidad, " & _
+        "COALESCE(SUM(c.monto), 0) AS total " & _
+        "FROM cheques_depositos cd " & _
+        "INNER JOIN Cheques c ON c.id = cd.id_cheque " & _
+        "WHERE cd.id_boleta = " & boleta.Id
+
+    Set rs = conectar.RSFactory(q)
+
+    If CLng(rs!Cantidad) <> boleta.Cheques.count Or _
+       Abs(CDbl(rs!total) - montoTotal) > 0.01 Then
+
+        Err.Raise vbObjectError + 3426, , _
+                  "El detalle no coincide con el total."
+    End If
+
+    rs.Close
+    Set rs = Nothing
+
+    conectar.CommitTransaction
+    transaccionIniciada = False
+
+    boleta.Monto = montoTotal
+    Update = True
+
+    Exit Function
+
+err1:
+
+    UltimoError = Err.Description
+
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        If rs.State = adStateOpen Then rs.Close
+    End If
+
+    If transaccionIniciada Then
+        conectar.RollBackTransaction
+    End If
+
+    Update = False
+
+End Function

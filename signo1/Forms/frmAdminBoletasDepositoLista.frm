@@ -34,6 +34,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
       EndProperty
       UseVisualStyle  =   -1  'True
       Begin VB.TextBox txtID 
+         Alignment       =   1  'Right Justify
          Height          =   285
          Left            =   960
          TabIndex        =   25
@@ -47,6 +48,19 @@ Begin VB.Form frmAdminBoletasDepositoLista
          TabIndex        =   6
          Top             =   960
          Width           =   5055
+         Begin XtremeSuiteControls.PushButton cmdRestablecer 
+            Height          =   450
+            Left            =   3600
+            TabIndex        =   27
+            Top             =   240
+            Width           =   1350
+            _Version        =   786432
+            _ExtentX        =   2381
+            _ExtentY        =   794
+            _StockProps     =   79
+            Caption         =   "Reestablecer"
+            UseVisualStyle  =   -1  'True
+         End
          Begin XtremeSuiteControls.PushButton cmdBuscar 
             Default         =   -1  'True
             Height          =   450
@@ -271,7 +285,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Height          =   255
          Left            =   240
          TabIndex        =   26
-         Top             =   460
+         Top             =   400
          Width           =   615
       End
       Begin XtremeSuiteControls.Label Label1 
@@ -437,6 +451,16 @@ Begin VB.Form frmAdminBoletasDepositoLista
       Top             =   2160
       Width           =   6375
    End
+   Begin VB.Menu mnuBoletaContextual 
+      Caption         =   "mnuBoletaContextual"
+      Visible         =   0   'False
+      Begin VB.Menu mnuBoletaEditar 
+         Caption         =   "Editar boleta"
+      End
+      Begin VB.Menu mnuBoletaImprimir 
+         Caption         =   "Imprimir boleta"
+      End
+   End
 End
 Attribute VB_Name = "frmAdminBoletasDepositoLista"
 Attribute VB_GlobalNameSpace = False
@@ -448,6 +472,7 @@ Private desde
 Private mBoletas As Collection
 Private mCheques As Collection
 Private mCargando As Boolean
+Private mBoletaContexto As BoletaDeposito
 Dim i As Integer
 
 
@@ -559,6 +584,34 @@ Private Sub CargarHistorial()
     Dim Id As Long
 
     mCargando = True
+    
+    '---------------------------------------------------
+    ' VALIDAR ID
+    '---------------------------------------------------
+    
+    Id = 0
+    
+    If LenB(Trim$(Me.txtID.Text)) > 0 Then
+    
+        If Not IsNumeric(Me.txtID.Text) Then
+            MsgBox "El ID debe ser numérico.", _
+                   vbExclamation, "Boletas de depósito"
+            GoTo salir
+        End If
+    
+        If CDbl(Me.txtID.Text) <= 0 Or _
+           CDbl(Me.txtID.Text) > 2147483647# Or _
+           CDbl(Me.txtID.Text) <> Fix(CDbl(Me.txtID.Text)) Then
+    
+            MsgBox "Ingrese un ID válido.", _
+                   vbExclamation, "Boletas de depósito"
+            GoTo salir
+    
+        End If
+    
+        Id = CLng(Me.txtID.Text)
+    
+    End If
 
 
     '-------------------------------------------------------
@@ -682,7 +735,7 @@ Private Sub gridBoletas_UnboundReadData( _
             ByVal Bookmark As Variant, _
             ByVal Values As GridEX20.JSRowData)
 
-    Dim B As BoletaDeposito
+    Dim b As BoletaDeposito
 
 
     If RowIndex <= 0 Then Exit Sub
@@ -690,31 +743,31 @@ Private Sub gridBoletas_UnboundReadData( _
     If RowIndex > mBoletas.count Then Exit Sub
 
 
-    Set B = mBoletas.item(RowIndex)
+    Set b = mBoletas.item(RowIndex)
 
-    Values(1) = B.Id
-    Values(2) = B.numero
-    Values(3) = B.fechaDeposito
+    Values(1) = b.Id
+    Values(2) = b.numero
+    Values(3) = b.fechaDeposito
 
 
-    If Not B.CuentaDestino Is Nothing Then
+    If Not b.CuentaDestino Is Nothing Then
 
-        If Not B.CuentaDestino.Banco Is Nothing Then
-            Values(4) = B.CuentaDestino.Banco.nombre
+        If Not b.CuentaDestino.Banco Is Nothing Then
+            Values(4) = b.CuentaDestino.Banco.nombre
         End If
 
-        Values(5) = B.CuentaDestino.numero
+        Values(5) = b.CuentaDestino.numero
 
 
-        If Not B.CuentaDestino.moneda Is Nothing Then
-            Values(6) = B.CuentaDestino.moneda.NombreCorto
+        If Not b.CuentaDestino.moneda Is Nothing Then
+            Values(6) = b.CuentaDestino.moneda.NombreCorto
         End If
 
     End If
 
 
-    Values(7) = B.CantidadCheques
-    Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(B.Monto)), "$", "")
+    Values(7) = b.CantidadCheques
+    Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(b.Monto)), "$", "")
 
 End Sub
 
@@ -744,6 +797,8 @@ Private Sub cmdRestablecer_Click()
 
     Me.dtpDesde(1).value = _
         DateSerial(Year(Date), Month(Date), 1)
+
+    Me.txtID.Text = vbNullString
 
     Me.dtpHasta(1).value = Date
 
@@ -820,11 +875,11 @@ Private Sub CargarDetalleBoletaSeleccionada()
     On Error GoTo err1
 
     Dim idx As Long
-    Dim B As BoletaDeposito
+    Dim b As BoletaDeposito
     Dim ch As cheque
     Dim total As Double
 
-    Dim NombreBanco As String
+    Dim nombreBanco As String
     Dim numeroCuenta As String
     Dim nombreMoneda As String
 
@@ -837,14 +892,14 @@ Private Sub CargarDetalleBoletaSeleccionada()
     If idx <= 0 Then Exit Sub
     If idx > mBoletas.count Then Exit Sub
 
-    Set B = mBoletas.item(idx)
+    Set b = mBoletas.item(idx)
 
     '-------------------------------------------------------
     ' CARGAR CHEQUES DE LA BOLETA
     '-------------------------------------------------------
 
     Set mCheques = _
-        DAOBoletaDeposito.FindChequesByBoleta(B.Id)
+        DAOBoletaDeposito.FindChequesByBoleta(b.Id)
 
     If mCheques Is Nothing Then
 
@@ -872,20 +927,20 @@ Private Sub CargarDetalleBoletaSeleccionada()
     ' DATOS CUENTA
     '-------------------------------------------------------
 
-    NombreBanco = vbNullString
+    nombreBanco = vbNullString
     numeroCuenta = vbNullString
     nombreMoneda = vbNullString
 
-    If Not B.CuentaDestino Is Nothing Then
+    If Not b.CuentaDestino Is Nothing Then
 
-        numeroCuenta = B.CuentaDestino.numero
+        numeroCuenta = b.CuentaDestino.numero
 
-        If Not B.CuentaDestino.Banco Is Nothing Then
-            NombreBanco = B.CuentaDestino.Banco.nombre
+        If Not b.CuentaDestino.Banco Is Nothing Then
+            nombreBanco = b.CuentaDestino.Banco.nombre
         End If
 
-        If Not B.CuentaDestino.moneda Is Nothing Then
-            nombreMoneda = B.CuentaDestino.moneda.NombreCorto
+        If Not b.CuentaDestino.moneda Is Nothing Then
+            nombreMoneda = b.CuentaDestino.moneda.NombreCorto
         End If
 
     End If
@@ -912,4 +967,250 @@ err1:
 End Sub
 
 
+Private Sub gridBoletas_MouseDown( _
+    Button As Integer, _
+    Shift As Integer, _
+    X As Single, _
+    Y As Single)
+
+    Dim idx As Long
+
+    If Button <> vbRightButton Then Exit Sub
+    If mCargando Then Exit Sub
+    If mBoletas Is Nothing Then Exit Sub
+
+    Set mBoletaContexto = Nothing
+
+    idx = Me.gridBoletas.RowIndex(Me.gridBoletas.row)
+
+    If idx <= 0 Then Exit Sub
+    If idx > mBoletas.count Then Exit Sub
+
+    Set mBoletaContexto = mBoletas.item(idx)
+
+    Me.PopupMenu Me.mnuBoletaContextual
+
+End Sub
+
+
+Private Sub mnuBoletaImprimir_Click()
+
+    On Error GoTo err1
+
+    Dim b As BoletaDeposito
+    Dim detalle As Collection
+    Dim ch As cheque
+
+    Dim nombreBanco As String
+    Dim moneda As String
+    Dim bancoCheque As String
+    Dim vencimiento As String
+    Dim linea As String
+    Dim total As Double
+    Dim iniciado As Boolean
+
+    If mBoletaContexto Is Nothing Then Exit Sub
+
+    Set b = mBoletaContexto
+
+    Set detalle = DAOBoletaDeposito.FindChequesByBoleta(b.Id)
+
+    If detalle Is Nothing Then
+        MsgBox DAOBoletaDeposito.UltimoError, vbCritical
+        Exit Sub
+    End If
+
+    If detalle.count = 0 Then
+        MsgBox "La boleta no tiene cheques asociados.", vbExclamation
+        Exit Sub
+    End If
+
+    nombreBanco = ""
+    moneda = ""
+
+    If Not b.CuentaDestino Is Nothing Then
+
+        If Not b.CuentaDestino.Banco Is Nothing Then
+            nombreBanco = b.CuentaDestino.Banco.nombre
+        End If
+
+        If Not b.CuentaDestino.moneda Is Nothing Then
+            moneda = b.CuentaDestino.moneda.NombreCorto
+        End If
+
+    End If
+
+    'Verificar el total antes de imprimir.
+    total = 0
+
+    For Each ch In detalle
+        total = total + ch.Monto
+    Next ch
+
+    If Abs(total - b.Monto) > 0.01 Then
+        MsgBox "El total de la boleta no coincide " & _
+               "con el detalle de cheques." & vbCrLf & _
+               "Revise el depósito antes de imprimir.", _
+               vbExclamation
+        Exit Sub
+    End If
+
+    'Configuración de impresión.
+    Printer.Font.Name = "Courier New"
+    Printer.Font.Size = 11
+    Printer.Font.Bold = True
+
+    iniciado = True
+
+    Printer.Print
+    Printer.Print "SIGNO PLAST S.A."
+    Printer.Print "BOLETA DE DEPOSITO"
+    Printer.Print
+
+    Printer.Font.Size = 9
+    Printer.Font.Bold = False
+
+    Printer.Print "ID: " & b.Id
+    Printer.Print "Numero: " & b.numero
+
+    Printer.Print "Fecha: " & _
+                  Format$(b.fechaDeposito, "dd/mm/yyyy")
+
+    Printer.Print "Banco: " & nombreBanco
+
+    If Not b.CuentaDestino Is Nothing Then
+        Printer.Print "Cuenta: " & b.CuentaDestino.numero
+    End If
+
+    Printer.Print
+    Printer.Print "DETALLE DE CHEQUES"
+
+    Printer.Print String$(82, "-")
+
+    Printer.Print _
+        Left$("Cheque" & Space$(12), 12) & _
+        Left$("Vencimiento" & Space$(12), 12) & _
+        Left$("Banco" & Space$(19), 19) & _
+        Left$("Origen" & Space$(16), 16) & _
+        Left$("Moneda" & Space$(7), 7) & _
+        "Importe"
+
+    Printer.Print String$(82, "-")
+
+    For Each ch In detalle
+
+        bancoCheque = ""
+        vencimiento = ""
+        moneda = ""
+
+        If Not ch.Banco Is Nothing Then
+            bancoCheque = ch.Banco.nombre
+        End If
+
+        If Not ch.moneda Is Nothing Then
+            moneda = ch.moneda.NombreCorto
+        End If
+
+        If ch.FechaVencimiento > 0 Then
+            vencimiento = _
+                Format$(ch.FechaVencimiento, "dd/mm/yyyy")
+        End If
+
+        linea = _
+            Left$(ch.numero & Space$(12), 12) & _
+            Left$(vencimiento & Space$(12), 12) & _
+            Left$(bancoCheque & Space$(19), 19) & _
+            Left$(ch.OrigenCheque & Space$(16), 16) & _
+            Left$(moneda & Space$(7), 7) & _
+            Format$(ch.Monto, "#,##0.00")
+
+        If Printer.CurrentY > Printer.ScaleHeight - 1400 Then
+            Printer.NewPage
+            Printer.Print "Boleta " & b.numero & _
+                          " - Continuacion"
+            Printer.Print String$(82, "-")
+        End If
+
+        Printer.Print linea
+
+    Next ch
+
+    Printer.Print String$(82, "-")
+    Printer.Print
+    Printer.Print "TOTAL BOLETA: " & _
+                  Format$(b.Monto, "#,##0.00")
+
+    Printer.EndDoc
+    iniciado = False
+
+    Exit Sub
+
+err1:
+
+    If iniciado Then Printer.KillDoc
+
+    MsgBox "No se pudo imprimir la boleta." & vbCrLf & _
+           Err.Description, vbCritical
+
+End Sub
+
+
+Private Sub mnuBoletaEditar_Click()
+
+    Dim f As frmDepositarCheque
+
+    If mBoletaContexto Is Nothing Then Exit Sub
+
+    Set f = New frmDepositarCheque
+
+    f.Show
+    f.CargarParaEditar mBoletaContexto.Id
+
+End Sub
+
+
+Private Sub cmdQuitarCheque_Click()
+
+    On Error GoTo err1
+
+    Dim idx As Long
+    Dim ch As cheque
+
+    If Cheques.count = 0 Then Exit Sub
+
+    idx = Me.gridCheques.RowIndex(Me.gridCheques.row)
+
+    If idx <= 0 Then Exit Sub
+    If idx > Cheques.count Then Exit Sub
+
+    Set ch = Cheques.item(idx)
+
+    If MsgBox( _
+        "¿Quitar el cheque Nº " & ch.numero & _
+        " de la boleta?", _
+        vbQuestion + vbYesNo, _
+        "Boleta de depósito") <> vbYes Then
+
+        Exit Sub
+
+    End If
+
+    'Solamente se elimina de la colección del formulario.
+    'Todavía no se modifica la base de datos.
+    Cheques.remove CStr(ch.Id)
+
+    Me.gridCheques.ItemCount = 0
+    Me.gridCheques.ItemCount = Cheques.count
+    Me.gridCheques.Update
+
+    ActualizarTotalBoleta
+
+    Exit Sub
+
+err1:
+
+    MsgBox "No se pudo quitar el cheque." & vbCrLf & _
+           Err.Description, vbCritical
+
+End Sub
 

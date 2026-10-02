@@ -15,6 +15,19 @@ Begin VB.Form frmDepositarCheque
    ScaleHeight     =   7110
    ScaleWidth      =   9795
    ShowInTaskbar   =   0   'False
+   Begin XtremeSuiteControls.PushButton cmdQuitarCheque 
+      Height          =   465
+      Left            =   4320
+      TabIndex        =   26
+      Top             =   6480
+      Width           =   1620
+      _Version        =   786432
+      _ExtentX        =   2857
+      _ExtentY        =   820
+      _StockProps     =   79
+      Caption         =   "Quitar cheque"
+      UseVisualStyle  =   -1  'True
+   End
    Begin XtremeSuiteControls.GroupBox GroupBox3 
       Height          =   2610
       Left            =   60
@@ -409,6 +422,9 @@ Public cheque As cheque
 Dim Cheques As New Collection
 Dim Cajas As New Collection
 Dim OpCaja As operacion
+Private mModoEdicion As Boolean
+Private mIdBoletaEdicion As Long
+Private mBoletaOriginal As BoletaDeposito
 
 
 Private Sub cmdAgregarCaja_Click()
@@ -721,6 +737,10 @@ Private Sub PushButton1_Click()
     '-------------------------------------------------------
 
     Set boleta = New BoletaDeposito
+    
+    If mModoEdicion Then
+        boleta.Id = mIdBoletaEdicion
+    End If
 
     boleta.numero = CLng(numeroBoleta)
 
@@ -743,30 +763,39 @@ Private Sub PushButton1_Click()
     ' GUARDAR
     '-------------------------------------------------------
 
-    If DAOBoletaDeposito.Save(boleta) Then
-
-        MsgBox "El depósito se registró correctamente.", _
-               vbInformation, "Boleta de depósito"
-
-        'Se cierra para no permitir volver a depositar
-        'los mismos cheques desde la colección que quedó cargada.
-        Unload Me
-
-    Else
-
-        detalleError = DAOBoletaDeposito.UltimoError
-
-        If LenB(detalleError) > 0 Then
-            detalleError = vbCrLf & vbCrLf & detalleError
+    Dim guardado As Boolean
+    
+    If mModoEdicion Then
+    
+        If mBoletaOriginal Is Nothing Then
+            MsgBox "No están disponibles los datos originales.", _
+                   vbCritical
+            Exit Sub
         End If
-
-
-        MsgBox "No se pudo efectuar el depósito." & _
-               detalleError, _
-               vbCritical, "Boleta de depósito"
-
+    
+        guardado = DAOBoletaDeposito.Update( _
+                        boleta, mBoletaOriginal)
+    
+    Else
+    
+        guardado = DAOBoletaDeposito.Save(boleta)
+    
     End If
-
+    
+    If guardado Then
+    
+        MsgBox "La boleta se guardó correctamente.", _
+               vbInformation
+    
+        Unload Me
+    
+    Else
+    
+        MsgBox "No se pudo guardar la boleta." & vbCrLf & _
+               DAOBoletaDeposito.UltimoError, _
+               vbCritical
+    
+    End If
 
     Exit Sub
 
@@ -862,3 +891,159 @@ Private Sub LimpiarBusquedaCheque()
 
 End Sub
 
+
+Public Sub CargarParaEditar(ByVal idBoleta As Long)
+
+    On Error GoTo err1
+
+    Dim b As BoletaDeposito
+    Dim nuevos As Collection
+    Dim i As Long
+    Dim encontroCuenta As Boolean
+
+    Set b = DAOBoletaDeposito.FindById(idBoleta)
+
+    Dim chOriginal As cheque
+    
+    Set mBoletaOriginal = b
+    
+    For Each chOriginal In nuevos
+        mBoletaOriginal.Cheques.Add chOriginal, CStr(chOriginal.Id)
+    Next chOriginal
+
+
+    If b Is Nothing Then
+        MsgBox DAOBoletaDeposito.UltimoError, vbCritical
+        Unload Me
+        Exit Sub
+    End If
+
+    If b.TipoDeposito <> DepositoCheque Then
+        MsgBox "Por ahora solamente se pueden editar " & _
+               "boletas de depósito de cheques.", vbExclamation
+        Unload Me
+        Exit Sub
+    End If
+
+    Set nuevos = _
+        DAOBoletaDeposito.FindChequesByBoleta(b.Id)
+
+    If nuevos Is Nothing Then
+        MsgBox DAOBoletaDeposito.UltimoError, vbCritical
+        Unload Me
+        Exit Sub
+    End If
+
+    If nuevos.count = 0 Then
+        MsgBox "Esta boleta no tiene cheques asociados.", _
+               vbExclamation
+        Unload Me
+        Exit Sub
+    End If
+
+    'Conservar el ID original.
+    mIdBoletaEdicion = b.Id
+
+    'Cargar los datos existentes.
+    Me.txtBoletaDeposito.Text = CStr(b.numero)
+    Me.DateTimePicker1.value = b.fechaDeposito
+
+    'Seleccionar la cuenta bancaria.
+    encontroCuenta = False
+
+    For i = 0 To Me.cboCuentasBancarias.ListCount - 1
+
+        If Me.cboCuentasBancarias.ItemData(i) = _
+           b.CuentaDestino.Id Then
+
+            Me.cboCuentasBancarias.ListIndex = i
+            encontroCuenta = True
+            Exit For
+
+        End If
+
+    Next i
+
+    If Not encontroCuenta Then
+        MsgBox "La cuenta bancaria no está disponible.", _
+               vbExclamation
+        Unload Me
+        Exit Sub
+    End If
+
+    'Cargar los cheques originales.
+    Set Cheques = nuevos
+
+    Me.gridCheques.ItemCount = 0
+    Me.gridCheques.ItemCount = Cheques.count
+    Me.gridCheques.Update
+
+    ActualizarTotalBoleta
+
+    mModoEdicion = True
+
+    Me.caption = "Editar boleta de depósito - ID " & _
+                 mIdBoletaEdicion
+
+    Me.PushButton1.caption = "Guardar cambios"
+
+    'Temporalmente deshabilitado hasta implementar
+    'la actualización transaccional.
+    Me.PushButton1.Enabled = False
+
+    Exit Sub
+
+err1:
+
+    MsgBox "No se pudo cargar la boleta." & vbCrLf & _
+           Err.Description, vbCritical
+
+    Unload Me
+
+End Sub
+
+
+Private Sub cmdQuitarCheque_Click()
+
+    On Error GoTo err1
+
+    Dim idx As Long
+    Dim ch As cheque
+
+    If Cheques.count = 0 Then Exit Sub
+
+    idx = Me.gridCheques.RowIndex(Me.gridCheques.row)
+
+    If idx <= 0 Then Exit Sub
+    If idx > Cheques.count Then Exit Sub
+
+    Set ch = Cheques.item(idx)
+
+    If MsgBox( _
+        "¿Quitar el cheque Nº " & ch.numero & _
+        " de la boleta?", _
+        vbQuestion + vbYesNo, _
+        "Boleta de depósito") <> vbYes Then
+
+        Exit Sub
+
+    End If
+
+    'Solamente se elimina de la colección del formulario.
+    'Todavía no se modifica la base de datos.
+    Cheques.remove CStr(ch.Id)
+
+    Me.gridCheques.ItemCount = 0
+    Me.gridCheques.ItemCount = Cheques.count
+    Me.gridCheques.Update
+
+    ActualizarTotalBoleta
+
+    Exit Sub
+
+err1:
+
+    MsgBox "No se pudo quitar el cheque." & vbCrLf & _
+           Err.Description, vbCritical
+
+End Sub
