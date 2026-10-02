@@ -480,6 +480,7 @@ Private Sub btnClearCtaBcaria_Click()
     Me.cboCuenta(1).ListIndex = -1
 End Sub
 
+
 Private Sub Form_Load()
 
     On Error GoTo err1
@@ -735,7 +736,7 @@ Private Sub gridBoletas_UnboundReadData( _
             ByVal Bookmark As Variant, _
             ByVal Values As GridEX20.JSRowData)
 
-    Dim b As BoletaDeposito
+    Dim B As BoletaDeposito
 
 
     If RowIndex <= 0 Then Exit Sub
@@ -743,31 +744,31 @@ Private Sub gridBoletas_UnboundReadData( _
     If RowIndex > mBoletas.count Then Exit Sub
 
 
-    Set b = mBoletas.item(RowIndex)
+    Set B = mBoletas.item(RowIndex)
 
-    Values(1) = b.Id
-    Values(2) = b.numero
-    Values(3) = b.fechaDeposito
+    Values(1) = B.Id
+    Values(2) = B.numero
+    Values(3) = B.fechaDeposito
 
 
-    If Not b.CuentaDestino Is Nothing Then
+    If Not B.CuentaDestino Is Nothing Then
 
-        If Not b.CuentaDestino.Banco Is Nothing Then
-            Values(4) = b.CuentaDestino.Banco.nombre
+        If Not B.CuentaDestino.Banco Is Nothing Then
+            Values(4) = B.CuentaDestino.Banco.nombre
         End If
 
-        Values(5) = b.CuentaDestino.numero
+        Values(5) = B.CuentaDestino.numero
 
 
-        If Not b.CuentaDestino.moneda Is Nothing Then
-            Values(6) = b.CuentaDestino.moneda.NombreCorto
+        If Not B.CuentaDestino.moneda Is Nothing Then
+            Values(6) = B.CuentaDestino.moneda.NombreCorto
         End If
 
     End If
 
 
-    Values(7) = b.CantidadCheques
-    Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(b.Monto)), "$", "")
+    Values(7) = B.CantidadCheques
+    Values(8) = Replace(FormatCurrency(funciones.FormatearDecimales(B.monto)), "$", "")
 
 End Sub
 
@@ -858,11 +859,11 @@ Private Sub gridDetalle_UnboundReadData( _
     End If
 
     '7 - Monto
-    Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(ch.Monto)), "$", "")
+    Values(7) = Replace(FormatCurrency(funciones.FormatearDecimales(ch.monto)), "$", "")
 
     '8 - Fecha recibido
     If ch.FechaRecibido > 0 Then
-        Values(8) = ch.FechaVencimiento
+        Values(8) = ch.FechaRecibido
     Else
         Values(8) = Null
     End If
@@ -875,11 +876,11 @@ Private Sub CargarDetalleBoletaSeleccionada()
     On Error GoTo err1
 
     Dim idx As Long
-    Dim b As BoletaDeposito
+    Dim B As BoletaDeposito
     Dim ch As cheque
     Dim total As Double
 
-    Dim nombreBanco As String
+    Dim NombreBanco As String
     Dim numeroCuenta As String
     Dim nombreMoneda As String
 
@@ -892,14 +893,14 @@ Private Sub CargarDetalleBoletaSeleccionada()
     If idx <= 0 Then Exit Sub
     If idx > mBoletas.count Then Exit Sub
 
-    Set b = mBoletas.item(idx)
+    Set B = mBoletas.item(idx)
 
     '-------------------------------------------------------
     ' CARGAR CHEQUES DE LA BOLETA
     '-------------------------------------------------------
 
     Set mCheques = _
-        DAOBoletaDeposito.FindChequesByBoleta(b.Id)
+        DAOBoletaDeposito.FindChequesByBoleta(B.Id)
 
     If mCheques Is Nothing Then
 
@@ -913,9 +914,6 @@ Private Sub CargarDetalleBoletaSeleccionada()
 
     End If
 
-    'DEBUG TEMPORAL
-    'MsgBox "Boleta ID: " & b.Id & vbCrLf & _
-    '       "Cheques encontrados: " & mCheques.count
 
     Me.gridDetalle.ItemCount = 0
     Me.gridDetalle.ItemCount = mCheques.count
@@ -927,20 +925,20 @@ Private Sub CargarDetalleBoletaSeleccionada()
     ' DATOS CUENTA
     '-------------------------------------------------------
 
-    nombreBanco = vbNullString
+    NombreBanco = vbNullString
     numeroCuenta = vbNullString
     nombreMoneda = vbNullString
 
-    If Not b.CuentaDestino Is Nothing Then
+    If Not B.CuentaDestino Is Nothing Then
 
-        numeroCuenta = b.CuentaDestino.numero
+        numeroCuenta = B.CuentaDestino.numero
 
-        If Not b.CuentaDestino.Banco Is Nothing Then
-            nombreBanco = b.CuentaDestino.Banco.nombre
+        If Not B.CuentaDestino.Banco Is Nothing Then
+            NombreBanco = B.CuentaDestino.Banco.nombre
         End If
 
-        If Not b.CuentaDestino.moneda Is Nothing Then
-            nombreMoneda = b.CuentaDestino.moneda.NombreCorto
+        If Not B.CuentaDestino.moneda Is Nothing Then
+            nombreMoneda = B.CuentaDestino.moneda.NombreCorto
         End If
 
     End If
@@ -952,7 +950,7 @@ Private Sub CargarDetalleBoletaSeleccionada()
     total = 0
 
     For Each ch In mCheques
-        total = total + ch.Monto
+        total = total + ch.monto
     Next ch
 
 
@@ -967,11 +965,11 @@ err1:
 End Sub
 
 
-Private Sub gridBoletas_MouseDown( _
+Private Sub gridBoletas_MouseUp( _
     Button As Integer, _
     Shift As Integer, _
-    X As Single, _
-    Y As Single)
+    x As Single, _
+    y As Single)
 
     Dim idx As Long
 
@@ -997,23 +995,23 @@ Private Sub mnuBoletaImprimir_Click()
 
     On Error GoTo err1
 
-    Dim b As BoletaDeposito
+    Dim B As BoletaDeposito
     Dim detalle As Collection
     Dim ch As cheque
 
-    Dim nombreBanco As String
+    Dim NombreBanco As String
     Dim moneda As String
     Dim bancoCheque As String
-    Dim vencimiento As String
+    Dim Vencimiento As String
     Dim linea As String
     Dim total As Double
     Dim iniciado As Boolean
 
     If mBoletaContexto Is Nothing Then Exit Sub
 
-    Set b = mBoletaContexto
+    Set B = mBoletaContexto
 
-    Set detalle = DAOBoletaDeposito.FindChequesByBoleta(b.Id)
+    Set detalle = DAOBoletaDeposito.FindChequesByBoleta(B.Id)
 
     If detalle Is Nothing Then
         MsgBox DAOBoletaDeposito.UltimoError, vbCritical
@@ -1025,17 +1023,17 @@ Private Sub mnuBoletaImprimir_Click()
         Exit Sub
     End If
 
-    nombreBanco = ""
+    NombreBanco = ""
     moneda = ""
 
-    If Not b.CuentaDestino Is Nothing Then
+    If Not B.CuentaDestino Is Nothing Then
 
-        If Not b.CuentaDestino.Banco Is Nothing Then
-            nombreBanco = b.CuentaDestino.Banco.nombre
+        If Not B.CuentaDestino.Banco Is Nothing Then
+            NombreBanco = B.CuentaDestino.Banco.nombre
         End If
 
-        If Not b.CuentaDestino.moneda Is Nothing Then
-            moneda = b.CuentaDestino.moneda.NombreCorto
+        If Not B.CuentaDestino.moneda Is Nothing Then
+            moneda = B.CuentaDestino.moneda.NombreCorto
         End If
 
     End If
@@ -1044,10 +1042,10 @@ Private Sub mnuBoletaImprimir_Click()
     total = 0
 
     For Each ch In detalle
-        total = total + ch.Monto
+        total = total + ch.monto
     Next ch
 
-    If Abs(total - b.Monto) > 0.01 Then
+    If Abs(total - B.monto) > 0.01 Then
         MsgBox "El total de la boleta no coincide " & _
                "con el detalle de cheques." & vbCrLf & _
                "Revise el depósito antes de imprimir.", _
@@ -1070,16 +1068,16 @@ Private Sub mnuBoletaImprimir_Click()
     Printer.Font.Size = 9
     Printer.Font.Bold = False
 
-    Printer.Print "ID: " & b.Id
-    Printer.Print "Numero: " & b.numero
+    Printer.Print "ID: " & B.Id
+    Printer.Print "Numero: " & B.numero
 
     Printer.Print "Fecha: " & _
-                  Format$(b.fechaDeposito, "dd/mm/yyyy")
+                  Format$(B.fechaDeposito, "dd/mm/yyyy")
 
-    Printer.Print "Banco: " & nombreBanco
+    Printer.Print "Banco: " & NombreBanco
 
-    If Not b.CuentaDestino Is Nothing Then
-        Printer.Print "Cuenta: " & b.CuentaDestino.numero
+    If Not B.CuentaDestino Is Nothing Then
+        Printer.Print "Cuenta: " & B.CuentaDestino.numero
     End If
 
     Printer.Print
@@ -1100,7 +1098,7 @@ Private Sub mnuBoletaImprimir_Click()
     For Each ch In detalle
 
         bancoCheque = ""
-        vencimiento = ""
+        Vencimiento = ""
         moneda = ""
 
         If Not ch.Banco Is Nothing Then
@@ -1112,21 +1110,21 @@ Private Sub mnuBoletaImprimir_Click()
         End If
 
         If ch.FechaVencimiento > 0 Then
-            vencimiento = _
+            Vencimiento = _
                 Format$(ch.FechaVencimiento, "dd/mm/yyyy")
         End If
 
         linea = _
             Left$(ch.numero & Space$(12), 12) & _
-            Left$(vencimiento & Space$(12), 12) & _
+            Left$(Vencimiento & Space$(12), 12) & _
             Left$(bancoCheque & Space$(19), 19) & _
             Left$(ch.OrigenCheque & Space$(16), 16) & _
             Left$(moneda & Space$(7), 7) & _
-            Format$(ch.Monto, "#,##0.00")
+            FormatearMontoImpresion(ch.monto)
 
         If Printer.CurrentY > Printer.ScaleHeight - 1400 Then
             Printer.NewPage
-            Printer.Print "Boleta " & b.numero & _
+            Printer.Print "Boleta " & B.numero & _
                           " - Continuacion"
             Printer.Print String$(82, "-")
         End If
@@ -1138,7 +1136,7 @@ Private Sub mnuBoletaImprimir_Click()
     Printer.Print String$(82, "-")
     Printer.Print
     Printer.Print "TOTAL BOLETA: " & _
-                  Format$(b.Monto, "#,##0.00")
+                  FormatearMontoImpresion(B.monto)
 
     Printer.EndDoc
     iniciado = False
@@ -1157,60 +1155,30 @@ End Sub
 
 Private Sub mnuBoletaEditar_Click()
 
-    Dim f As frmDepositarCheque
+    Dim F As frmDepositarCheque
 
     If mBoletaContexto Is Nothing Then Exit Sub
 
-    Set f = New frmDepositarCheque
+    Set F = New frmDepositarCheque
 
-    f.Show
-    f.CargarParaEditar mBoletaContexto.Id
-
-End Sub
-
-
-Private Sub cmdQuitarCheque_Click()
-
-    On Error GoTo err1
-
-    Dim idx As Long
-    Dim ch As cheque
-
-    If Cheques.count = 0 Then Exit Sub
-
-    idx = Me.gridCheques.RowIndex(Me.gridCheques.row)
-
-    If idx <= 0 Then Exit Sub
-    If idx > Cheques.count Then Exit Sub
-
-    Set ch = Cheques.item(idx)
-
-    If MsgBox( _
-        "¿Quitar el cheque Nº " & ch.numero & _
-        " de la boleta?", _
-        vbQuestion + vbYesNo, _
-        "Boleta de depósito") <> vbYes Then
-
-        Exit Sub
-
-    End If
-
-    'Solamente se elimina de la colección del formulario.
-    'Todavía no se modifica la base de datos.
-    Cheques.remove CStr(ch.Id)
-
-    Me.gridCheques.ItemCount = 0
-    Me.gridCheques.ItemCount = Cheques.count
-    Me.gridCheques.Update
-
-    ActualizarTotalBoleta
-
-    Exit Sub
-
-err1:
-
-    MsgBox "No se pudo quitar el cheque." & vbCrLf & _
-           Err.Description, vbCritical
+    F.Show
+    F.CargarParaEditar mBoletaContexto.Id
 
 End Sub
+
+
+Private Function FormatearMontoImpresion( _
+    ByVal monto As Double) As String
+
+    Dim s As String
+
+    s = Format$(monto, "#,##0.00")
+
+    'Evitar caracteres especiales usados como
+    'separadores de miles por Windows.
+    s = Replace$(s, Chr$(160), ",")
+
+    FormatearMontoImpresion = s
+
+End Function
 

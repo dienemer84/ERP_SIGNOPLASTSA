@@ -763,7 +763,7 @@ Private Sub PushButton1_Click()
     ' GUARDAR
     '-------------------------------------------------------
 
-    Dim guardado As Boolean
+    Dim Guardado As Boolean
     
     If mModoEdicion Then
     
@@ -773,16 +773,16 @@ Private Sub PushButton1_Click()
             Exit Sub
         End If
     
-        guardado = DAOBoletaDeposito.Update( _
+        Guardado = DAOBoletaDeposito.Update( _
                         boleta, mBoletaOriginal)
     
     Else
     
-        guardado = DAOBoletaDeposito.Save(boleta)
+        Guardado = DAOBoletaDeposito.Save(boleta)
     
     End If
     
-    If guardado Then
+    If Guardado Then
     
         MsgBox "La boleta se guardó correctamente.", _
                vbInformation
@@ -896,57 +896,73 @@ Public Sub CargarParaEditar(ByVal idBoleta As Long)
 
     On Error GoTo err1
 
-    Dim b As BoletaDeposito
+    Dim B As BoletaDeposito
     Dim nuevos As Collection
     Dim i As Long
     Dim encontroCuenta As Boolean
-
-    Set b = DAOBoletaDeposito.FindById(idBoleta)
-
-    Dim chOriginal As cheque
     
-    Set mBoletaOriginal = b
+    If Not DAOBoletaDeposito.PuedeEditarBoleta(idBoleta) Then
     
-    For Each chOriginal In nuevos
-        mBoletaOriginal.Cheques.Add chOriginal, CStr(chOriginal.Id)
-    Next chOriginal
+        MsgBox DAOBoletaDeposito.UltimoError, _
+               vbExclamation, _
+               "Editar boleta de depósito"
+    
+        Unload Me
+        Exit Sub
+    
+    End If
 
-
-    If b Is Nothing Then
+    Set B = DAOBoletaDeposito.FindById(idBoleta)
+    
+    If B Is Nothing Then
         MsgBox DAOBoletaDeposito.UltimoError, vbCritical
         Unload Me
         Exit Sub
     End If
-
-    If b.TipoDeposito <> DepositoCheque Then
+    
+    If B.TipoDeposito <> DepositoCheque Then
         MsgBox "Por ahora solamente se pueden editar " & _
                "boletas de depósito de cheques.", vbExclamation
         Unload Me
         Exit Sub
     End If
-
+    
     Set nuevos = _
-        DAOBoletaDeposito.FindChequesByBoleta(b.Id)
-
+        DAOBoletaDeposito.FindChequesByBoleta(B.Id)
+    
     If nuevos Is Nothing Then
         MsgBox DAOBoletaDeposito.UltimoError, vbCritical
         Unload Me
         Exit Sub
     End If
-
+    
     If nuevos.count = 0 Then
         MsgBox "Esta boleta no tiene cheques asociados.", _
                vbExclamation
         Unload Me
         Exit Sub
     End If
-
-    'Conservar el ID original.
-    mIdBoletaEdicion = b.Id
+    
+    
+    'Guardar estado ORIGINAL de la boleta
+    Dim chOriginal As cheque
+    
+    Set mBoletaOriginal = B
+    
+    For Each chOriginal In nuevos
+    
+        mBoletaOriginal.Cheques.Add _
+            chOriginal, CStr(chOriginal.Id)
+    
+    Next chOriginal
+    
+    
+    'Conservar el ID original
+    mIdBoletaEdicion = B.Id
 
     'Cargar los datos existentes.
-    Me.txtBoletaDeposito.Text = CStr(b.numero)
-    Me.DateTimePicker1.value = b.fechaDeposito
+    Me.txtBoletaDeposito.Text = CStr(B.numero)
+    Me.DateTimePicker1.value = B.fechaDeposito
 
     'Seleccionar la cuenta bancaria.
     encontroCuenta = False
@@ -954,7 +970,7 @@ Public Sub CargarParaEditar(ByVal idBoleta As Long)
     For i = 0 To Me.cboCuentasBancarias.ListCount - 1
 
         If Me.cboCuentasBancarias.ItemData(i) = _
-           b.CuentaDestino.Id Then
+           B.CuentaDestino.Id Then
 
             Me.cboCuentasBancarias.ListIndex = i
             encontroCuenta = True
@@ -989,7 +1005,7 @@ Public Sub CargarParaEditar(ByVal idBoleta As Long)
 
     'Temporalmente deshabilitado hasta implementar
     'la actualización transaccional.
-    Me.PushButton1.Enabled = False
+    Me.PushButton1.Enabled = True
 
     Exit Sub
 

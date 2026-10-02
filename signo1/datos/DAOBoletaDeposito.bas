@@ -482,7 +482,7 @@ Public Function FindAll( _
     ' FECHA DESDE
     '---------------------------------------------------
 
-    If Not IsEmpty(FechaDesde) Then
+    If Not IsEmpty(FechaDesde) And idBoleta = 0 Then
 
         If Not IsNull(FechaDesde) Then
 
@@ -499,7 +499,7 @@ Public Function FindAll( _
     ' FECHA HASTA
     '---------------------------------------------------
 
-    If Not IsEmpty(FechaHasta) Then
+    If Not IsEmpty(FechaHasta) And idBoleta = 0 Then
 
         If Not IsNull(FechaHasta) Then
 
@@ -693,7 +693,7 @@ Private Function PuedeGuardarDeposito( _
 
     On Error GoTo err1
 
-    Dim idConciliacion As Long
+    Dim IdConciliacion As Long
 
     PuedeGuardarDeposito = False
 
@@ -701,12 +701,12 @@ Private Function PuedeGuardarDeposito( _
     If cuenta.Id <= 0 Then Exit Function
     If CDbl(fechaDeposito) <= 0 Then Exit Function
 
-    idConciliacion = _
+    IdConciliacion = _
         DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
             cuenta.Id, _
             fechaDeposito)
 
-    If idConciliacion > 0 Then
+    If IdConciliacion > 0 Then
 
         UltimoError = _
             "No se puede registrar la boleta de depósito." & _
@@ -717,7 +717,7 @@ Private Function PuedeGuardarDeposito( _
             vbCrLf & vbCrLf & _
             "La cuenta se encuentra cerrada por la " & _
             "Conciliación Bancaria Nro " & _
-            idConciliacion & "."
+            IdConciliacion & "."
 
         Exit Function
 
@@ -744,7 +744,7 @@ Public Function FindById( _
     On Error GoTo err1
 
     Dim rs As ADODB.Recordset
-    Dim b As BoletaDeposito
+    Dim B As BoletaDeposito
     Dim q As String
 
     UltimoError = vbNullString
@@ -776,26 +776,26 @@ Public Function FindById( _
 
     End If
 
-    Set b = New BoletaDeposito
+    Set B = New BoletaDeposito
 
-    b.Id = CLng(rs!Id)
-    b.numero = CLng(rs!numero_boleta)
-    b.fechaDeposito = CDate(rs!fecha_deposito)
-    b.TipoDeposito = CLng(rs!tipo_deposito)
+    B.Id = CLng(rs!Id)
+    B.numero = CLng(rs!numero_boleta)
+    B.fechaDeposito = CDate(rs!fecha_deposito)
+    B.TipoDeposito = CLng(rs!tipo_deposito)
 
     If Not IsNull(rs!Monto) Then
-        b.Monto = CDbl(rs!Monto)
+        B.Monto = CDbl(rs!Monto)
     End If
 
-    Set b.CuentaDestino = _
+    Set B.CuentaDestino = _
         DAOCuentaBancaria.FindById(CLng(rs!id_cuenta))
 
-    If b.CuentaDestino Is Nothing Then
+    If B.CuentaDestino Is Nothing Then
         UltimoError = "No se encontró la cuenta bancaria."
         Exit Function
     End If
 
-    Set FindById = b
+    Set FindById = B
     Exit Function
 
 err1:
@@ -806,7 +806,7 @@ err1:
 End Function
 
 
-Private Function PuedeEditarBoleta( _
+Public Function PuedeEditarBoleta( _
     ByVal idBoleta As Long) As Boolean
 
     On Error GoTo err1
@@ -815,7 +815,7 @@ Private Function PuedeEditarBoleta( _
     Dim q As String
     Dim idCuenta As Long
     Dim fechaOriginal As Date
-    Dim idConciliacion As Long
+    Dim IdConciliacion As Long
 
     PuedeEditarBoleta = False
     UltimoError = vbNullString
@@ -852,16 +852,16 @@ Private Function PuedeEditarBoleta( _
     Set rs = Nothing
 
     'Comprobar el período original.
-    idConciliacion = _
+    IdConciliacion = _
         DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
             idCuenta, fechaOriginal)
 
-    If idConciliacion > 0 Then
+    If IdConciliacion > 0 Then
 
         UltimoError = _
             "No se puede modificar esta boleta." & vbCrLf & _
             "El período original pertenece a la " & _
-            "conciliación bancaria Nº " & idConciliacion & "."
+            "conciliación bancaria Nº " & IdConciliacion & "."
 
         Exit Function
 
@@ -942,11 +942,11 @@ Public Function Update( _
     Dim idCuentaOriginal As Long
     Dim fechaOriginal As Date
     Dim numeroOriginal As Long
-    Dim idOperacion As Long
-    Dim idConciliacion As Long
+    Dim IdOperacion As Long
+    Dim IdConciliacion As Long
 
     Dim montoTotal As Double
-    Dim fechaNueva As Date
+    Dim FechaNueva As Date
     Dim transaccionIniciada As Boolean
 
     Update = False
@@ -991,7 +991,7 @@ Public Function Update( _
         Exit Function
     End If
 
-    fechaNueva = DateValue(boleta.fechaDeposito)
+    FechaNueva = DateValue(boleta.fechaDeposito)
 
     '-------------------------------------------------
     ' INICIAR TRANSACCIÓN
@@ -1034,7 +1034,7 @@ Public Function Update( _
 
     'Detectar cambios realizados desde otra sesión.
     If original.numero <> numeroOriginal Or _
-       DateValue(original.fechaDeposito) <> fechaOriginal Or _
+       DateValue(original.fechaDeposito) <> DateValue(fechaOriginal) Or _
        original.CuentaDestino.Id <> idCuentaOriginal Or _
        Abs(original.Monto - CDbl(rs!Monto)) > 0.01 Then
 
@@ -1049,20 +1049,20 @@ Public Function Update( _
     ' VALIDAR CONCILIACIONES
     '-------------------------------------------------
 
-    idConciliacion = _
+    IdConciliacion = _
         DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
             idCuentaOriginal, fechaOriginal)
 
-    If idConciliacion > 0 Then
+    If IdConciliacion > 0 Then
         Err.Raise vbObjectError + 3405, , _
                   "El período bancario original está cerrado."
     End If
 
-    idConciliacion = _
+    IdConciliacion = _
         DAOConciliacionBancaria.ObtenerIdConciliacionCerrada( _
-            boleta.CuentaDestino.Id, fechaNueva)
+            boleta.CuentaDestino.Id, FechaNueva)
 
-    If idConciliacion > 0 Then
+    If IdConciliacion > 0 Then
         Err.Raise vbObjectError + 3406, , _
                   "El nuevo período bancario está cerrado."
     End If
@@ -1090,9 +1090,12 @@ Public Function Update( _
     q = "SELECT cd.id_cheque, cd.id_operacion, " & _
         "c.depositado, c.en_cartera, " & _
         "c.monto AS monto_cheque, " & _
+        "c.id_moneda AS moneda_cheque, " & _
         "o.monto AS monto_operacion, " & _
         "o.cuentabanc_o_caja_id, " & _
-        "o.fecha_operacion, o.comprobante " & _
+        "o.fecha_operacion, o.comprobante, " & _
+        "o.pertenencia, o.entrada_salida, " & _
+        "o.moneda_id " & _
         "FROM cheques_depositos cd " & _
         "INNER JOIN Cheques c ON c.id = cd.id_cheque " & _
         "INNER JOIN operaciones o ON o.id = cd.id_operacion " & _
@@ -1102,11 +1105,31 @@ Public Function Update( _
     Set rs = conectar.RSFactory(q)
 
     Do While Not rs.EOF
+    
+    
+    If CLng(rs!Pertenencia) <> Banco Or _
+       CLng(rs!entrada_salida) <> OPEntrada Then
+    
+        Err.Raise vbObjectError + 3427, , _
+                  "La boleta contiene una operación " & _
+                  "que no corresponde a un depósito bancario."
+    
+    End If
+    
+    
+    If CLng(rs!moneda_id) <> _
+       CLng(rs!moneda_cheque) Then
+    
+        Err.Raise vbObjectError + 3428, , _
+                  "La moneda de una operación no coincide " & _
+                  "con la moneda de su cheque."
+    
+    End If
 
         If Not CBool(rs!Depositado) Or _
            CBool(rs!en_cartera) Or _
            CLng(rs!cuentabanc_o_caja_id) <> idCuentaOriginal Or _
-           DateValue(CDate(rs!fecha_operacion)) <> fechaOriginal Or _
+           DateValue(CDate(rs!fecha_operacion)) <> DateValue(fechaOriginal) Or _
            Abs(CDbl(rs!monto_cheque) - _
                CDbl(rs!monto_operacion)) > 0.01 Then
 
@@ -1245,7 +1268,7 @@ Public Function Update( _
 
     For Each v In idsActuales
 
-        idOperacion = CLng(operacionesActuales.item(CStr(v)))
+        IdOperacion = CLng(operacionesActuales.item(CStr(v)))
 
         If Not ContieneId(idsSeleccionados, CLng(v)) Then
 
@@ -1264,6 +1287,28 @@ Public Function Update( _
 
             rs.Close
             Set rs = Nothing
+    
+        '-------------------------------------------------
+        ' VERIFICAR QUE LA OPERACION SEA EXCLUSIVA
+        ' DE ESTE CHEQUE / DEPOSITO
+        '-------------------------------------------------
+        
+        q = "SELECT COUNT(*) AS cantidad " & _
+            "FROM cheques_depositos " & _
+            "WHERE id_operacion = " & IdOperacion
+        
+        Set rs = conectar.RSFactory(q)
+        
+        If CLng(rs!Cantidad) <> 1 Then
+        
+            Err.Raise vbObjectError + 3429, , _
+                      "La operación bancaria del cheque " & _
+                      "tiene más de una vinculación."
+        
+        End If
+        
+        rs.Close
+        Set rs = Nothing
 
             'Devolverlo a cartera.
             q = "UPDATE Cheques SET " & _
@@ -1280,7 +1325,7 @@ Public Function Update( _
             q = "DELETE FROM cheques_depositos " & _
                 "WHERE id_boleta = " & boleta.Id & _
                 " AND id_cheque = " & CLng(v) & _
-                " AND id_operacion = " & idOperacion
+                " AND id_operacion = " & IdOperacion
 
             If Not conectar.execute(q) Then
                 Err.Raise vbObjectError + 3421, , _
@@ -1288,7 +1333,7 @@ Public Function Update( _
             End If
 
             q = "DELETE FROM operaciones " & _
-                "WHERE id = " & idOperacion
+                "WHERE id = " & IdOperacion
 
             If Not conectar.execute(q) Then
                 Err.Raise vbObjectError + 3422, , _
@@ -1300,12 +1345,12 @@ Public Function Update( _
             'Conservar el ID del movimiento existente.
             q = "UPDATE operaciones SET " & _
                 "fecha_operacion = " & _
-                conectar.Escape(fechaNueva) & ", " & _
+                conectar.Escape(FechaNueva) & ", " & _
                 "cuentabanc_o_caja_id = " & _
                 boleta.CuentaDestino.Id & ", " & _
                 "comprobante = " & _
                 conectar.Escape(CStr(boleta.numero)) & _
-                " WHERE id = " & idOperacion
+                " WHERE id = " & IdOperacion
 
             If Not conectar.execute(q) Then
                 Err.Raise vbObjectError + 3423, , _
@@ -1325,7 +1370,7 @@ Public Function Update( _
         If Not DepositarChequeInterno( _
             chActual, _
             boleta.CuentaDestino, _
-            fechaNueva, _
+            FechaNueva, _
             CStr(boleta.numero), _
             boleta.Id) Then
 
@@ -1342,7 +1387,7 @@ Public Function Update( _
     q = "UPDATE boleta_deposito SET " & _
         "numero_boleta = " & boleta.numero & ", " & _
         "fecha_deposito = " & _
-        conectar.Escape(fechaNueva) & ", " & _
+        conectar.Escape(FechaNueva) & ", " & _
         "id_cuenta = " & boleta.CuentaDestino.Id & ", " & _
         "monto = " & conectar.Escape(montoTotal) & _
         " WHERE id = " & boleta.Id
