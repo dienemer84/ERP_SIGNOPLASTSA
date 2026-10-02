@@ -9,7 +9,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
    ClientHeight    =   8130
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   19530
+   ClientWidth     =   21285
    ClipControls    =   0   'False
    Icon            =   "frmAdminCobranzasNuevoRecibo.frx":0000
    LinkTopic       =   "Form1"
@@ -17,7 +17,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
    MDIChild        =   -1  'True
    MinButton       =   0   'False
    ScaleHeight     =   8130
-   ScaleWidth      =   19530
+   ScaleWidth      =   21285
    Begin XtremeSuiteControls.PushButton cmdCerrar 
       Height          =   405
       Left            =   10200
@@ -75,27 +75,29 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          Strikethrough   =   0   'False
       EndProperty
       Height          =   7095
-      Left            =   0
+      Left            =   120
       TabIndex        =   6
       Top             =   960
-      Width           =   19245
-      Begin VB.TextBox Text1 
+      Width           =   21165
+      Begin VB.TextBox txtTipoCambio 
          Alignment       =   1  'Right Justify
+         BackColor       =   &H0080FFFF&
          Height          =   285
-         Left            =   7320
+         Left            =   9360
          TabIndex        =   40
          Text            =   "0"
          Top             =   4770
-         Width           =   1215
+         Visible         =   0   'False
+         Width           =   1095
       End
       Begin XtremeSuiteControls.TabControl TabFacturasRetenciones 
          Height          =   4335
          Left            =   120
          TabIndex        =   28
          Top             =   300
-         Width           =   8505
+         Width           =   10425
          _Version        =   786432
-         _ExtentX        =   15002
+         _ExtentX        =   18389
          _ExtentY        =   7646
          _StockProps     =   68
          Appearance      =   10
@@ -152,8 +154,8 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Left            =   120
             TabIndex        =   29
             Top             =   360
-            Width           =   8250
-            _ExtentX        =   14552
+            Width           =   10170
+            _ExtentX        =   17939
             _ExtentY        =   6826
             Version         =   "2.0"
             BoundColumnIndex=   ""
@@ -238,7 +240,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       End
       Begin VB.ComboBox cboMonedas 
          Height          =   315
-         Left            =   3840
+         Left            =   4800
          Style           =   2  'Dropdown List
          TabIndex        =   21
          Top             =   4755
@@ -257,7 +259,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   6705
-         Left            =   8760
+         Left            =   10680
          TabIndex        =   7
          Top             =   240
          Width           =   10320
@@ -265,7 +267,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Height          =   2625
             Left            =   120
             TabIndex        =   8
-            Top             =   3840
+            Top             =   3960
             Width           =   10050
             _Version        =   786432
             _ExtentX        =   17727
@@ -358,7 +360,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Height          =   1920
             Left            =   120
             TabIndex        =   12
-            Top             =   1860
+            Top             =   2040
             Width           =   10050
             _Version        =   786432
             _ExtentX        =   17727
@@ -410,7 +412,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Height          =   1635
             Left            =   120
             TabIndex        =   14
-            Top             =   240
+            Top             =   360
             Width           =   10050
             _Version        =   786432
             _ExtentX        =   17727
@@ -458,7 +460,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             End
          End
       End
-      Begin VB.Label Label1 
+      Begin VB.Label lblTipoCambio 
          BackColor       =   &H00C0C0C0&
          Caption         =   "Valor U$S"
          BeginProperty Font 
@@ -471,9 +473,10 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   6360
+         Left            =   8280
          TabIndex        =   39
          Top             =   4800
+         Visible         =   0   'False
          Width           =   975
       End
       Begin VB.Label lblTotalCTACTE 
@@ -490,7 +493,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   2640
+         Left            =   3600
          TabIndex        =   32
          Top             =   6045
          Width           =   1200
@@ -498,8 +501,8 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
       Begin VB.Line Line1 
          BorderColor     =   &H00FFDBBF&
          DrawMode        =   9  'Not Mask Pen
-         X1              =   7710
-         X2              =   135
+         X1              =   7695
+         X2              =   120
          Y1              =   6360
          Y2              =   6360
       End
@@ -525,7 +528,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   2640
+         Left            =   3600
          TabIndex        =   27
          Tag             =   "Diferencia entre Recibido y Recibo: "
          Top             =   6480
@@ -545,7 +548,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   2640
+         Left            =   3600
          TabIndex        =   26
          Top             =   5460
          Width           =   1320
@@ -584,7 +587,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   195
-         Left            =   2640
+         Left            =   3600
          TabIndex        =   23
          Top             =   4815
          Width           =   1170
@@ -604,10 +607,10 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
             Strikethrough   =   0   'False
          EndProperty
          Height          =   270
-         Left            =   4800
+         Left            =   5880
          TabIndex        =   22
          Top             =   4770
-         Width           =   1410
+         Width           =   2130
       End
       Begin VB.Label lblTotalCaja 
          AutoSize        =   -1  'True
@@ -740,7 +743,7 @@ Begin VB.Form frmAdminCobranzasNuevoRecibo
          _ExtentX        =   2566
          _ExtentY        =   529
          _Version        =   393216
-         Format          =   16646145
+         Format          =   65142785
          CurrentDate     =   39199
       End
       Begin VB.Label Label3 
@@ -1000,7 +1003,7 @@ Public Property Let ReciboID(nIdRecibo As Long)
     Me.txtRedondeo.Text = Recibo.redondeo
 
     Set Cajas = DAOCaja.FindAll()
-    Me.GridCajas.ItemCount = Cajas.count
+    Me.gridCajas.ItemCount = Cajas.count
 
     Set Monedas = DAOMoneda.GetAll()
     Me.gridMonedas.ItemCount = Monedas.count
@@ -1021,7 +1024,7 @@ Public Property Let ReciboID(nIdRecibo As Long)
     Set Me.gridDepositosOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
     Set Me.gridDepositosOperaciones.Columns("cuenta").DropDownControl = Me.gridCuentasBancarias
 
-    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.GridCajas
+    Set Me.gridCajaOperaciones.Columns("caja").DropDownControl = Me.gridCajas
     Set Me.gridCajaOperaciones.Columns("moneda").DropDownControl = Me.gridMonedas
 
     Set retenciones = DAORetenciones.FindAll()
@@ -1032,6 +1035,18 @@ Public Property Let ReciboID(nIdRecibo As Long)
 
     DAOMoneda.LlenarCombo Me.cboMonedas
     Me.cboMonedas.ListIndex = PosIndexCbo(Recibo.moneda.Id, Me.cboMonedas)
+    
+    If Recibo.TipoCambio > 0 Then
+    Me.txtTipoCambio.Text = CStr(Recibo.TipoCambio)
+    Else
+        Me.txtTipoCambio.Text = ""
+    End If
+    
+    ActualizarCampoTipoCambio
+    
+    Me.txtTipoCambio.Enabled = Editar_
+
+
     DAOCliente.LlenarCombo Me.cboClientes, True, True
     Me.cboClientes.ListIndex = PosIndexCbo(Recibo.Cliente.Id, Me.cboClientes)
 
@@ -1111,12 +1126,19 @@ Private Sub cboClientes_Click()
 End Sub
 
 
-
 Private Sub cboMonedas_Click()
+
     If Me.cboMonedas.ListIndex <> -1 And dataLoaded Then
-        Set Recibo.moneda = DAOMoneda.GetById(Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+
+        Set Recibo.moneda = DAOMoneda.GetById( _
+            Me.cboMonedas.ItemData(Me.cboMonedas.ListIndex))
+
+        ActualizarCampoTipoCambio
+
         Totalizar
+
     End If
+
 End Sub
 
 
@@ -1132,6 +1154,9 @@ End Sub
 
 
 Private Sub cmdActualizar_Click()
+
+
+    
     If Not Recibo.IsValid Then
         MsgBox Recibo.ValidationMessages, vbExclamation
         Exit Sub
@@ -1147,18 +1172,6 @@ Private Sub cmdActualizar_Click()
 
     End If
 
-    'Dim idRecibo As Long
-    '   'If MsgBox("¿Está seguro de aprobar este recibo?", vbYesNo, "Confirmación") = vbYes Then
-    '
-    '        Set recibo = DAORecibo.FindById(recibo.id, True, True, True, True, True)
-    '
-    '        If DAORecibo.aprobar(recibo) Then
-    '            MsgBox "Aprobación actualizada!", vbInformation, "Información"
-    '        Else
-    '            MsgBox "Error, no se pudo actualizar el recibo nuevamente!", vbCritical, "Error"
-    '        End If
-    'End If
-
 End Sub
 
 
@@ -1168,6 +1181,9 @@ End Sub
 
 
 Private Sub cmdGuardar_Click()
+
+    If Not GuardarTipoCambio() Then Exit Sub
+
     If Not Recibo.IsValid Then
         MsgBox Recibo.ValidationMessages, vbExclamation
         Exit Sub
@@ -1177,7 +1193,8 @@ Private Sub cmdGuardar_Click()
         MsgBox "Recibo guardado.", vbInformation
         Unload Me
     Else
-        MsgBox "Hubo un error al intentar guardar el recibo.", vbCritical
+        MsgBox "Hubo un error al intentar guardar el recibo.", _
+               vbCritical
     End If
 
 End Sub
@@ -1209,7 +1226,14 @@ Private Sub Totalizar()
         lblTotalRecibo.backColor = vbGreen
     End If
 
-    Me.lblDiferencia.caption = Me.lblDiferencia.Tag & Replace(FormatCurrency(funciones.FormatearDecimales(totalCancelado - MonedaConverter.Convertir(totalRecibo, Recibo.moneda.Id, DAOMoneda.MONEDA_PESO_ID))), "$", "")
+    Me.lblDiferencia.caption = _
+    Me.lblDiferencia.Tag & _
+    Replace( _
+        FormatCurrency( _
+            funciones.FormatearDecimales( _
+                totalCancelado - totalRecibo)), _
+        "$", "")
+        
     'Debug.Print MonedaConverter.Convertir(totalRecibo, recibo.moneda.id, DAOMoneda.MONEDA_PESO_ID)
     Recibo.aCuenta = (totalCancelado - totalRecibo)
 End Sub
@@ -1250,7 +1274,7 @@ Private Sub Form_Load()
 
     GridEXHelper.CustomizeGrid Me.gridCuentasBancarias, False, False
     GridEXHelper.CustomizeGrid Me.gridMonedas, False, False
-    GridEXHelper.CustomizeGrid Me.GridCajas, False, False
+    GridEXHelper.CustomizeGrid Me.gridCajas, False, False
 
     GridEXHelper.CustomizeGrid Me.gridDepositosOperaciones, False, True
     GridEXHelper.CustomizeGrid Me.gridCajaOperaciones, False, True
@@ -1723,3 +1747,68 @@ Private Sub txtRedondeo_Change()
     Recibo.redondeo = val(Me.txtRedondeo.Text)
     Totalizar
 End Sub
+
+
+Private Sub ActualizarCampoTipoCambio()
+
+    Dim IdMoneda As Long
+    Dim esDolar As Boolean
+
+    If Me.cboMonedas.ListIndex = -1 Then
+        esDolar = False
+    Else
+        IdMoneda = Me.cboMonedas.ItemData( _
+            Me.cboMonedas.ListIndex)
+
+        esDolar = (IdMoneda = 1 Or IdMoneda = 3)
+    End If
+
+    Me.lblTipoCambio.Visible = esDolar
+    Me.txtTipoCambio.Visible = esDolar
+
+End Sub
+
+Private Function GuardarTipoCambio() As Boolean
+
+    Dim IdMoneda As Long
+    Dim valor As String
+
+    GuardarTipoCambio = False
+
+    If Me.cboMonedas.ListIndex = -1 Then
+        MsgBox "Debe seleccionar una moneda.", vbExclamation
+        Exit Function
+    End If
+
+    IdMoneda = Me.cboMonedas.ItemData( _
+                    Me.cboMonedas.ListIndex)
+
+    If IdMoneda = 1 Or IdMoneda = 3 Then
+
+        valor = Trim$(Me.txtTipoCambio.Text)
+
+        If Len(valor) = 0 Or Not IsNumeric(valor) Then
+            MsgBox "Ingrese un tipo de cambio valido.", _
+                   vbExclamation
+            Me.txtTipoCambio.SetFocus
+            Exit Function
+        End If
+
+        If CCur(valor) <= 0 Then
+            MsgBox "El tipo de cambio debe ser mayor a cero.", _
+                   vbExclamation
+            Me.txtTipoCambio.SetFocus
+            Exit Function
+        End If
+
+        Recibo.TipoCambio = CCur(valor)
+
+    Else
+
+        Recibo.TipoCambio = 0
+
+    End If
+
+    GuardarTipoCambio = True
+
+End Function

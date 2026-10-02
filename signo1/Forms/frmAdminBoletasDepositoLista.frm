@@ -33,6 +33,13 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Strikethrough   =   0   'False
       EndProperty
       UseVisualStyle  =   -1  'True
+      Begin VB.TextBox txtID 
+         Height          =   285
+         Left            =   960
+         TabIndex        =   25
+         Top             =   360
+         Width           =   1095
+      End
       Begin VB.Frame Frame1 
          Height          =   865
          Index           =   0
@@ -87,20 +94,20 @@ Begin VB.Form frmAdminBoletasDepositoLista
       Begin VB.TextBox txtNumeroBoleta 
          Alignment       =   1  'Right Justify
          Height          =   285
-         Left            =   945
+         Left            =   960
          TabIndex        =   3
-         Top             =   285
+         Top             =   795
          Width           =   2280
       End
       Begin XtremeSuiteControls.PushButton btnClearCtaBcaria 
-         Height          =   360
-         Left            =   4530
+         Height          =   345
+         Left            =   4560
          TabIndex        =   1
-         Top             =   577
+         Top             =   1185
          Width           =   420
          _Version        =   786432
          _ExtentX        =   741
-         _ExtentY        =   635
+         _ExtentY        =   609
          _StockProps     =   79
          Caption         =   "X"
          UseVisualStyle  =   -1  'True
@@ -110,7 +117,7 @@ Begin VB.Form frmAdminBoletasDepositoLista
          Index           =   1
          Left            =   960
          TabIndex        =   2
-         Top             =   600
+         Top             =   1200
          Width           =   3495
          _Version        =   786432
          _ExtentX        =   6165
@@ -258,11 +265,20 @@ Begin VB.Form frmAdminBoletasDepositoLista
             AutoSize        =   -1  'True
          End
       End
+      Begin VB.Label Label3 
+         Alignment       =   1  'Right Justify
+         Caption         =   "ID"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   26
+         Top             =   460
+         Width           =   615
+      End
       Begin XtremeSuiteControls.Label Label1 
          Height          =   195
-         Left            =   150
+         Left            =   195
          TabIndex        =   20
-         Top             =   360
+         Top             =   840
          Width           =   675
          _Version        =   786432
          _ExtentX        =   1191
@@ -273,9 +289,9 @@ Begin VB.Form frmAdminBoletasDepositoLista
       End
       Begin XtremeSuiteControls.Label lbl 
          Height          =   195
-         Left            =   315
+         Left            =   360
          TabIndex        =   19
-         Top             =   660
+         Top             =   1260
          Width           =   510
          _Version        =   786432
          _ExtentX        =   900
@@ -540,7 +556,7 @@ Private Sub CargarHistorial()
 
     Dim numeroBoleta As Long
     Dim idCuenta As Long
-
+    Dim Id As Long
 
     mCargando = True
 
@@ -593,6 +609,7 @@ Private Sub CargarHistorial()
     Set mBoletas = DAOBoletaDeposito.FindAll( _
                         Me.dtpDesde(1).value, _
                         Me.dtpHasta(1).value, _
+                        Id, _
                         numeroBoleta, _
                         idCuenta)
     

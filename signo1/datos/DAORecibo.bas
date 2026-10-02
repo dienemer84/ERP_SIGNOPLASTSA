@@ -432,6 +432,15 @@ Public Function Map(rs As Recordset, indice As Dictionary, tabla As String, _
         r.fechaModificacion = GetValue(rs, indice, tabla, "fechaModificacion")
         'r.PagoACuenta = GetValue(rs, indice, tabla, "pagoACuenta")
         r.redondeo = GetValue(rs, indice, tabla, "redondeo")
+        If Not IsNull(GetValue(rs, indice, tabla, "TipoCambio")) Then
+        
+            r.TipoCambio = GetValue(rs, indice, tabla, "TipoCambio")
+        
+        Else
+        
+            r.TipoCambio = 0
+        
+        End If
         r.aCuenta = GetValue(rs, indice, tabla, "a_cuenta")
         r.aCuentaUsado = GetValue(rs, indice, tabla, "a_cuenta_usado")
         r.FEcha = GetValue(rs, indice, tabla, "fecha")
@@ -670,6 +679,7 @@ Public Function Guardar(rec As Recibo) As Boolean
           & "             idUsuarioAprobador," _
           & "             estado," _
           & "             idMoneda," _
+          & "             TipoCambio," _
           & "             redondeo," _
           & "             pagoACuenta," _
           & "             totalAplicadoCuenta," _
@@ -685,6 +695,7 @@ Public Function Guardar(rec As Recibo) As Boolean
           & "        'idUsuarioAprobador'," _
           & "        'estado'," _
           & "        'idMoneda'," _
+          & "        'TipoCambio'," _
           & "        'redondeo'," _
           & "        'pagoACuenta'," _
           & "        'totalAplicadoCuenta'," _
@@ -694,7 +705,7 @@ Public Function Guardar(rec As Recibo) As Boolean
         rec.fechaCreacion = Now
     Else
 
-        q = "Update AdminRecibos" _
+        q = "UPDATE AdminRecibos" _
           & " SET " _
           & " idCliente = 'idCliente' ," _
           & " fechaCreacion = 'fechaCreacion' ," _
@@ -705,6 +716,7 @@ Public Function Guardar(rec As Recibo) As Boolean
           & " fechaAprobacion = 'fechaAprobacion' ," _
           & " estado = 'estado' ," _
           & " idMoneda = 'idMoneda' ," _
+          & " TipoCambio = 'TipoCambio' ," _
           & " redondeo = 'redondeo' ," _
           & " pagoACuenta = 'pagoACuenta' ," _
           & " fecha = 'fecha', a_cuenta = 'a_cuenta'," _
@@ -743,6 +755,18 @@ Public Function Guardar(rec As Recibo) As Boolean
     q = Replace(q, "'fechaModificacion'", conectar.Escape(rec.fechaModificacion))
     q = Replace(q, "'estado'", conectar.Escape(rec.estado))
     q = Replace(q, "'idMoneda'", conectar.GetEntityId(rec.moneda))
+    
+    If rec.moneda.Id = 1 Or rec.moneda.Id = 3 Then
+    
+        q = Replace(q, "'TipoCambio'", _
+                    conectar.Escape(rec.TipoCambio))
+    
+    Else
+    
+        q = Replace(q, "'TipoCambio'", "NULL")
+    
+    End If
+    
     q = Replace(q, "'redondeo'", conectar.Escape(rec.redondeo))
     'q = Replace(q, "'pagoACuenta'", conectar.Escape(rec.PagoACuenta))
     q = Replace(q, "'fecha'", conectar.Escape(rec.FEcha))

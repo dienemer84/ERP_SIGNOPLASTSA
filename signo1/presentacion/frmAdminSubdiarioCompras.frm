@@ -268,6 +268,19 @@ Begin VB.Form frmAdminSubdiarioCompras
       _StockProps     =   79
       Caption         =   "Parámetros de búsqueda"
       UseVisualStyle  =   -1  'True
+      Begin XtremeSuiteControls.CheckBox chkAgruparReporte 
+         Height          =   255
+         Left            =   11760
+         TabIndex        =   38
+         Top             =   240
+         Width           =   3495
+         _Version        =   786432
+         _ExtentX        =   6165
+         _ExtentY        =   450
+         _StockProps     =   79
+         Caption         =   "Agrupar percepciones"
+         UseVisualStyle  =   -1  'True
+      End
       Begin XtremeSuiteControls.ProgressBar progreso 
          Height          =   420
          Left            =   13560
@@ -286,7 +299,7 @@ Begin VB.Form frmAdminSubdiarioCompras
          Height          =   255
          Left            =   8865
          TabIndex        =   33
-         Top             =   270
+         Top             =   240
          Width           =   2730
          _Version        =   786432
          _ExtentX        =   4815
@@ -319,6 +332,15 @@ Begin VB.Form frmAdminSubdiarioCompras
          _ExtentY        =   635
          _StockProps     =   79
          Caption         =   "Mostrar"
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          UseVisualStyle  =   -1  'True
       End
       Begin XtremeSuiteControls.PushButton PushButton2 
@@ -587,7 +609,7 @@ Dim item As SubdiarioVentasDetalle
 Private liqui As LiquidacionSubdiarioVenta
 Private liquidaciones As Collection
 Private desdeAbsoluto As Date
-Private totales As New Dictionary
+Private Totales As New Dictionary
 Private totalesIva As Collection
 Dim Factura As clsFacturaProveedor
 Private dataFiltered As Boolean
@@ -595,8 +617,6 @@ Private alicuotas As Collection
 Dim percepciones As New Collection
 Dim totalesper As New Collection
 Private Enum PosicionTotales
-
-
     TotNetoGravado = 0
     totIva = 1
     totPercep = 2
@@ -605,6 +625,7 @@ Private Enum PosicionTotales
     TotImpuestoInterno = 6
     TotRedondeo = 7
 End Enum
+
 Private Sub Totalizar()
     Dim sumNeto As Double: sumNeto = 0
     Dim sumIVA As Double: sumIVA = 0
@@ -619,7 +640,7 @@ Private Sub Totalizar()
     Dim ali As Variant
     Dim per As clsPercepciones
 
-    Set totales = New Dictionary
+    Set Totales = New Dictionary
     Set totalesIva = New Collection
 
     For Each ali In alicuotas
@@ -635,7 +656,7 @@ Private Sub Totalizar()
     Set totalesper = New Collection
     For Each per In percepciones
         Set dtOP = New DTOPercepcionImporte
-        dtOP.importe = 0
+        dtOP.Importe = 0
         Set dtOP.Percepcion = per
         totalesper.Add dtOP, CStr(per.Id)
     Next
@@ -651,7 +672,7 @@ Private Sub Totalizar()
 
         sumTot = sumTot + i.total
         sumImpuestoInterno = sumImpuestoInterno + i.ImpuestoInterno
-        sumRedondeo = sumRedondeo + i.Redondeo
+        sumRedondeo = sumRedondeo + i.redondeo
 
         'NB: error al mostrarl iquidaciones, revisar. Este fix es par aq no se cierre, pero no se si est? bien
         '18.1.2021
@@ -666,13 +687,9 @@ Private Sub Totalizar()
             totalesper.remove CStr(pera.Percepcion.Id)
 
 
-            dtOP.importe = funciones.RedondearDecimales(dtOP.importe + pera.Monto)
+            dtOP.Importe = funciones.RedondearDecimales(dtOP.Importe + pera.Monto)
             totalesper.Add dtOP, CStr(pera.Percepcion.Id)
         Next
-
-
-
-
 
         For Each ali In alicuotas
             'If ali = 10.5 Then ali = 11
@@ -682,31 +699,43 @@ Private Sub Totalizar()
         Next ali
     Next i
 
-    totales.Add PosicionTotales.TotNetoGravado, sumNeto
-    totales.Add PosicionTotales.totIva, sumIVA
-    totales.Add PosicionTotales.totPercep, sumPercep
-    totales.Add PosicionTotales.TotExento, sumExento
-    totales.Add PosicionTotales.TotTot, sumTot
-    totales.Add PosicionTotales.TotImpuestoInterno, sumImpuestoInterno
-    totales.Add PosicionTotales.TotRedondeo, sumRedondeo
+    Totales.Add PosicionTotales.TotNetoGravado, sumNeto
+    Totales.Add PosicionTotales.totIva, sumIVA
+    Totales.Add PosicionTotales.totPercep, sumPercep
+    Totales.Add PosicionTotales.TotExento, sumExento
+    Totales.Add PosicionTotales.TotTot, sumTot
+    Totales.Add PosicionTotales.TotImpuestoInterno, sumImpuestoInterno
+    Totales.Add PosicionTotales.TotRedondeo, sumRedondeo
 
-    Me.lblNetoGravadoTotal.caption = funciones.FormatearDecimales(totales.item(PosicionTotales.TotNetoGravado))
-    Me.lblIVATotal.caption = funciones.FormatearDecimales(totales.item(PosicionTotales.totIva))
-    Me.lblPercepcionesTotal.caption = funciones.FormatearDecimales(totales.item(PosicionTotales.totPercep))
+    Me.lblNetoGravadoTotal.caption = funciones.FormatearDecimales(Totales.item(PosicionTotales.TotNetoGravado))
+    Me.lblIVATotal.caption = funciones.FormatearDecimales(Totales.item(PosicionTotales.totIva))
+    Me.lblPercepcionesTotal.caption = funciones.FormatearDecimales(Totales.item(PosicionTotales.totPercep))
     'Me.lblPercepcionesIVA.caption = funciones.FormatearDecimales(totales.item(PosicionTotales.TotPercepIVA))
-    Me.lblImpuestoInterno.caption = funciones.FormatearDecimales(totales.item(PosicionTotales.TotImpuestoInterno))
+    Me.lblImpuestoInterno.caption = funciones.FormatearDecimales(Totales.item(PosicionTotales.TotImpuestoInterno))
     Me.lblExento.caption = funciones.FormatearDecimales(totalesIva(CStr(0)))
-    Me.lblTotalTotal.caption = funciones.FormatearDecimales(totales.item(PosicionTotales.TotTot))
-    Me.lblRedondeo.caption = funciones.FormatearDecimales(totales.item(PosicionTotales.TotRedondeo))
+    Me.lblTotalTotal.caption = funciones.FormatearDecimales(Totales.item(PosicionTotales.TotTot))
+    Me.lblRedondeo.caption = funciones.FormatearDecimales(Totales.item(PosicionTotales.TotRedondeo))
 
 End Sub
 
 Private Sub btnExportar_Click()
-    If Me.rdoRangoFechas.value Then
-        ExportaSubDiarioComprasFechas
+
+    If Me.chkAgruparReporte.value = xtpChecked Then
+
+        ' Nueva exportacion resumida
+        ExportaSubDiarioComprasResumido
+
     Else
-        ExportaSubDiarioComprasLiquidacion
+
+        ' Exportacion original
+        If Me.rdoRangoFechas.value Then
+            ExportaSubDiarioComprasFechas
+        Else
+            ExportaSubDiarioComprasLiquidacion
+        End If
+
     End If
+
 End Sub
 
 
@@ -733,7 +762,7 @@ Private Sub btnGuardarLiquidacion_Click()
         l.desde = Me.dtpDesde.value
         l.hasta = Me.dtpHasta.value
         l.EsDeVenta = False
-        Set l.detalles = col
+        Set l.Detalles = col
         If DAOSubdiarios.Guardar(l) Then
             SetearMaxDesde
             MsgBox "La liquidacion se guard? con ?xito", vbInformation + vbOKOnly
@@ -748,8 +777,6 @@ Private Sub btnGuardarLiquidacion_Click()
         End If
     End If
 End Sub
-
-
 
 
 Private Sub Form_Load()
@@ -780,11 +807,6 @@ Private Sub Form_Load()
             col.TotalRowFormat = "0.00"
         Else
 
-            '            If ali = 10.5 Then ali = 11
-
-
-
-            'Set col = Me.GridEX1.Columns.Add("NG " & ali & "%", jgexText, jgexEditNone, "NG_" & ali )
             Set col = Me.GridEX1.Columns.Add("NG", jgexText, jgexEditNone, "NG_" & ali)
             col.TextAlignment = jgexAlignRight
             col.AggregateFunction = jgexSum
@@ -801,19 +823,6 @@ Private Sub Form_Load()
 
     Next
 
-    '    Set col = Me.GridEX1.Columns.Add("Per IIBB", jgexText, jgexEditNone, "percepcionesiibb")
-    '    col.TextAlignment = jgexAlignRight
-    '    col.AggregateFunction = jgexSum
-    '    col.GroupFormat = "0.00"
-    '    col.TotalRowFormat = "0.00"
-    '
-    '    Set col = Me.GridEX1.Columns.Add("Percep IVA", jgexText, jgexEditNone, "percepcionesiva")
-    '    col.TextAlignment = jgexAlignRight
-    '    col.AggregateFunction = jgexSum
-    '    col.GroupFormat = "0.00"
-    '    col.TotalRowFormat = "0.00"
-
-
     Dim cole As New Collection
     Set cole = DAOPercepciones.GetAll
     Dim per As clsPercepciones
@@ -827,10 +836,6 @@ Private Sub Form_Load()
         col.Tag = per.Id
 
     Next per
-
-
-
-
 
     Set col = Me.GridEX1.Columns.Add("Imp. Int.", jgexText, jgexEditNone, "impuestointerno")
     col.TextAlignment = jgexAlignRight
@@ -903,7 +908,7 @@ Private Sub llenarLista()
     Else
         If Me.cboLiquidaciones.ListIndex <> -1 Then
             Set liqui = liquidaciones.item(CStr(Me.cboLiquidaciones.ItemData(Me.cboLiquidaciones.ListIndex)))
-            Set col = liqui.detalles
+            Set col = liqui.Detalles
         Else
             Set col = New Collection
         End If
@@ -946,7 +951,7 @@ End Sub
 Private Sub GridEX1_DblClick()
     If col.count > 0 Then
 
-        Set Factura = DAOFacturaProveedor.FindById(col(Me.GridEX1.rowIndex(Me.GridEX1.row)).FacturaId)
+        Set Factura = DAOFacturaProveedor.FindById(col(Me.GridEX1.RowIndex(Me.GridEX1.row)).FacturaId)
 
         Dim frm As frmAdminComprasNuevaFCProveedor
         Set frm = New frmAdminComprasNuevaFCProveedor
@@ -966,33 +971,23 @@ Private Sub GridEX1_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 
-
-Private Sub GridEX1_RowFormat(RowBuffer As GridEX20.JSRowData)
-'    If RowBuffer.RowIndex > 0 And col.count > 0 Then
-'        Set Item = col.Item(RowBuffer.RowIndex)
-'        If Item.estado = Anulada Then
-'            RowBuffer.RowStyle = "anulada"
-'        End If
-'    End If
-End Sub
-
 Private Sub GridEX1_SelectionChange()
     If Me.GridEX1.row <> -1 Then
-        If Me.GridEX1.rowIndex(Me.GridEX1.row) <> 0 Then
-            Set item = col.item(Me.GridEX1.rowIndex(Me.GridEX1.row))
+        If Me.GridEX1.RowIndex(Me.GridEX1.row) <> 0 Then
+            Set item = col.item(Me.GridEX1.RowIndex(Me.GridEX1.row))
         End If
     End If
 End Sub
-Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub GridEX1_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
 'On Error Resume Next
     If col.count > 0 Then
-        Set item = col.item(rowIndex)
+        Set item = col.item(RowIndex)
 
         Values(1) = item.FEcha
         Values(2) = item.Comprobante
         Values(3) = funciones.RazonSocialFormateada(item.RazonSocial)
-        Values(4) = item.Cuit
-        Values(5) = item.CondicionIva
+        Values(4) = item.cuit
+        Values(5) = item.CondicionIVA
         Values(6) = funciones.FormatearDecimales(item.NetoGravado)
 
         Values(7) = " "
@@ -1008,12 +1003,6 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
             Values(Me.GridEX1.Columns.item("IVA_" & ali).Index) = funciones.FormatearDecimales(funciones.RedondearDecimales(item.AlicuotasIva.item(CStr(ali))))
 
         Next
-
-        '        Values(Me.GridEX1.Columns.Item("percepcionesiibb").index) = funciones.FormatearDecimales(IIf(Item.estado = Anulada, 0, Item.PercepcionesIB))
-        '        Values(Me.GridEX1.Columns.Item("percepcionesiva").index) = funciones.FormatearDecimales(IIf(Item.estado = Anulada, 0, Item.PercepcionesIVA))
-        '        Values(Me.GridEX1.Columns.Item("impuestointerno").index) = funciones.FormatearDecimales(IIf(Item.estado = Anulada, 0, Item.ImpuestoInterno))
-        '        Values(Me.GridEX1.Columns.Item("total").index) = funciones.FormatearDecimales(IIf(Item.estado = Anulada, 0, (Item.Total)))
-
 
         ' PERCEPCIONES POR CADA COMPROBANTE
 
@@ -1041,7 +1030,7 @@ Private Sub GridEX1_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Va
 
 
         Values(Me.GridEX1.Columns.item("impuestointerno").Index) = funciones.FormatearDecimales(item.ImpuestoInterno)
-        Values(Me.GridEX1.Columns.item("redondeo").Index) = funciones.FormatearDecimales(item.Redondeo)
+        Values(Me.GridEX1.Columns.item("redondeo").Index) = funciones.FormatearDecimales(item.redondeo)
         Values(Me.GridEX1.Columns.item("total").Index) = funciones.FormatearDecimales(item.total)
     End If
 
@@ -1051,11 +1040,11 @@ Private Sub btnMostrar_Click()
 End Sub
 
 
-Private Sub GridEX1_UnboundUpdate(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    If rowIndex > 0 Then
+Private Sub GridEX1_UnboundUpdate(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    If RowIndex > 0 Then
         '   If Item.estado = Anulada Then
         If MsgBox("?Desea realmente actualizar los valores del item?", vbYesNo + vbQuestion) = vbYes Then
-            Set item = col.item(rowIndex)
+            Set item = col.item(RowIndex)
             item.NetoGravado = Values(6)
             item.Iva = Values(7)
             item.percepciones = Values(8)
@@ -1071,24 +1060,24 @@ End Sub
 
 
 
-Private Sub GridEX2_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
-    Values(2) = funciones.FormatearDecimales(totalesper(rowIndex).importe)    '/ (va / 100))
-    If IsSomething(totalesper(rowIndex).Percepcion) Then
-        Values(1) = totalesper(rowIndex).Percepcion.Percepcion
+Private Sub GridEX2_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+    Values(2) = funciones.FormatearDecimales(totalesper(RowIndex).Importe)    '/ (va / 100))
+    If IsSomething(totalesper(RowIndex).Percepcion) Then
+        Values(1) = totalesper(RowIndex).Percepcion.Percepcion
     Else
         Values(1) = funciones.FormatearDecimales(0)
     End If
 
 End Sub
 
-Private Sub gridTotalesIVA_UnboundReadData(ByVal rowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
+Private Sub gridTotalesIVA_UnboundReadData(ByVal RowIndex As Long, ByVal Bookmark As Variant, ByVal Values As GridEX20.JSRowData)
     Dim va As Variant
-    va = alicuotas(rowIndex)
+    va = alicuotas(RowIndex)
 
-    Values(1) = funciones.FormatearDecimales(totalesIva(rowIndex) / (va / 100))
+    Values(1) = funciones.FormatearDecimales(totalesIva(RowIndex) / (va / 100))
     Values(2) = va & "%"
 
-    Values(3) = totalesIva(rowIndex)
+    Values(3) = totalesIva(RowIndex)
 
 End Sub
 
@@ -1276,14 +1265,44 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
         .Range("A3:AQ3").Interior.Color = &HC0C0C0
 
-        Dim Column As JSColumn
-        Dim x As Integer
-        
-        For Each Column In Me.GridEX1.Columns
-            x = x + 1
-            .Cells(3, x).value = Column.caption
 
-        Next Column
+    Dim x As Integer
+    Dim encabezados As Variant
+    Dim i As Integer
+    
+    ' DATOS GENERALES
+    encabezados = Split( _
+        "Fecha|Comprobante|Razon Social|CUIT|Cond. IVA|" & _
+        "Neto Gravado|NG 27%|IVA 27%|NG 21%|IVA 21%|" & _
+        "NG 10,5%|IVA 10,5%|NG 5%|IVA 5%|Exento", "|")
+
+    For i = 0 To UBound(encabezados)
+        .Cells(3, i + 1).value = encabezados(i)
+    Next i
+    
+    ' PERCEPCIONES
+    encabezados = Split( _
+        "IIBB CABA|IVA|IIBB SANTA FE|IIBB SALTA|" & _
+        "IIBB BUENOS AIRES|IIBB MISIONES|" & _
+        "IIBB TUCUMAN|IIBB SAN LUIS|" & _
+        "IIBB CORRIENTES|IIBB RIO NEGRO|" & _
+        "IIBB ENTRE RIOS|IIBB CORDOBA|" & _
+        "IIBB CATAMARCA|IIBB NEUQUEN|" & _
+        "IIBB LA PAMPA|IIBB MENDOZA|" & _
+        "IIBB SAN JUAN|IIBB SANTA CRUZ|" & _
+        "IIBB CHUBUT|IIBB LA RIOJA|" & _
+        "IIBB SANTIAGO DEL ESTERO|" & _
+        "IIBB CHACO|IIBB FORMOSA|" & _
+        "IIBB JUJUY|IIBB TIERRA DEL FUEGO", "|")
+    
+    For i = 0 To UBound(encabezados)
+        .Cells(3, i + 16).value = encabezados(i)
+    Next i
+    
+    ' COLUMNAS FINALES
+    .Cells(3, 41).value = "Imp. Interno"
+    .Cells(3, 42).value = "Redondeo"
+    .Cells(3, 43).value = "Total"
 
         .Columns("f").HorizontalAlignment = xlHAlignRight
         .Columns("g").HorizontalAlignment = xlHAlignRight
@@ -1364,8 +1383,8 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
             .Cells(x + 3, 2).value = item.Comprobante
             .Cells(x + 3, 3).value = item.RazonSocial
-            .Cells(x + 3, 4).value = item.Cuit
-            .Cells(x + 3, 5).value = item.CondicionIva
+            .Cells(x + 3, 4).value = item.cuit
+            .Cells(x + 3, 5).value = item.CondicionIVA
             .Cells(x + 3, 6).value = item.NetoGravado
 
 
@@ -1414,7 +1433,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
             If item.ListaPercepciones.count <> 0 Then
 
-                Dim i
+
                 For i = 1 To item.ListaPercepciones.count Step 1
 
                     Select Case item.ListaPercepciones.item(i).Percepcion.Percepcion
@@ -1477,7 +1496,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
             End If
 
             .Cells(x + 3, 41).value = item.ImpuestoInterno
-            .Cells(x + 3, 42).value = item.Redondeo
+            .Cells(x + 3, 42).value = item.redondeo
             .Cells(x + 3, 43).value = item.total
 
             x = x + 1
@@ -1545,7 +1564,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -1559,7 +1578,7 @@ Public Function ExportaSubDiarioComprasFechas() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -1632,9 +1651,6 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
     progreso.min = 0
     progreso.max = col.count
 
-    '    Dim xlb As New Excel.Workbook
-    '    Dim xla As New Excel.Worksheet
-    '    Dim xls As New Excel.Application
 
     'Dim xlApplication As New Excel.Application
     Dim xls As Object
@@ -1677,14 +1693,44 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
         .Range("A3:an3").Interior.Color = &HC0C0C0
 
-        Dim Column As JSColumn
+
         Dim x As Integer
+        Dim encabezados As Variant
+        Dim iEnc As Integer
+        
+        ' DATOS GENERALES E IVA
+        encabezados = Split( _
+            "Fecha|Comprobante|Razon Social|CUIT|Cond. IVA|" & _
+            "Neto Gravado|NG 27%|IVA 27%|NG 21%|IVA 21%|" & _
+            "NG 10,5%|IVA 10,5%|Exento", "|")
+        
+        For iEnc = 0 To UBound(encabezados)
+            .Cells(3, iEnc + 1).value = encabezados(iEnc)
+        Next iEnc
+        
+        ' PERCEPCIONES POR JURISDICCION
+        encabezados = Split( _
+            "IIBB CABA|IVA|IIBB SANTA FE|IIBB SALTA|" & _
+            "IIBB BUENOS AIRES|IIBB MISIONES|" & _
+            "IIBB TUCUMAN|IIBB SAN LUIS|" & _
+            "IIBB CORRIENTES|IIBB RIO NEGRO|" & _
+            "IIBB ENTRE RIOS|IIBB CORDOBA|" & _
+            "IIBB CATAMARCA|IIBB NEUQUEN|" & _
+            "IIBB LA PAMPA|IIBB MENDOZA|" & _
+            "IIBB SAN JUAN|IIBB SANTA CRUZ|" & _
+            "IIBB CHUBUT|IIBB LA RIOJA|" & _
+            "IIBB SANTIAGO DEL ESTERO|" & _
+            "IIBB CHACO|IIBB FORMOSA|" & _
+            "IIBB JUJUY|IIBB TIERRA DEL FUEGO", "|")
+        
+        For iEnc = 0 To UBound(encabezados)
+            .Cells(3, iEnc + 14).value = encabezados(iEnc)
+        Next iEnc
+        
+        ' COLUMNAS FINALES
+        .Cells(3, 39).value = "Imp. Interno"
+        .Cells(3, 40).value = "Total"
 
-        For Each Column In Me.GridEX1.Columns
-            x = x + 1
-            .Cells(3, x).value = Column.caption
-
-        Next Column
 
         .Columns("f").HorizontalAlignment = xlHAlignRight
         .Columns("g").HorizontalAlignment = xlHAlignRight
@@ -1765,8 +1811,8 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
             .Cells(x + 3, 2).value = item.Comprobante
             .Cells(x + 3, 3).value = item.RazonSocial
-            .Cells(x + 3, 4).value = item.Cuit
-            .Cells(x + 3, 5).value = item.CondicionIva
+            .Cells(x + 3, 4).value = item.cuit
+            .Cells(x + 3, 5).value = item.CondicionIVA
             .Cells(x + 3, 6).value = item.NetoGravado
 
             'IVA
@@ -1935,7 +1981,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
         strMsg = strMsg & vbCrLf & "a una hoja de calculo de Excel."
         strMsg = strMsg & vbCrLf & vbCrLf
         strMsg = strMsg & "¿Desea guardar la hoja de calculo de Excel?"
-        Set CDLGMAIN = frmPrincipal.CD
+        Set CDLGMAIN = frmPrincipal.cd
 
 
 
@@ -1949,7 +1995,7 @@ Public Function ExportaSubDiarioComprasLiquidacion() As Boolean
 
         Dim archi As String
         archi = "SUBDIARIO_COMPRAS_" & Periodo & ".xls"
-        frmPrincipal.CD.CancelError = True
+        frmPrincipal.cd.CancelError = True
         CDLGMAIN.filename = archi
         CDLGMAIN.ShowSave
 
@@ -2002,5 +2048,331 @@ errEXCEL:
 End Function
 
 
+
+Public Function ExportaSubDiarioComprasResumido() As Boolean
+
+    On Error GoTo ErrExportar
+
+    Dim xls As Object
+    Dim xlb As Object
+    Dim xla As Object
+    Dim registro As Variant
+    Dim Percepcion As Variant
+    Dim alicuota As Variant
+    Dim CDLGMAIN As CommonDialog
+
+    Dim fila As Long
+    Dim columna As Long
+    Dim ultimaColumna As Long
+    Dim ultimaFila As Long
+    Dim c As Long
+
+    Dim colIIBB As Long
+    Dim colIVA As Long
+    Dim colOtras As Long
+
+    Dim totalIIBB As Double
+    Dim TotalIVA As Double
+    Dim totalOtras As Double
+    Dim nombrePercepcion As String
+
+    Dim desde As Date
+    Dim hasta As Date
+    Dim archivo As String
+
+    ExportaSubDiarioComprasResumido = False
+
+    If col.count = 0 Then
+        MsgBox "No hay comprobantes para exportar.", vbExclamation
+        Exit Function
+    End If
+
+    If Me.rdoRangoFechas.value Then
+        desde = Me.dtpDesde.value
+        hasta = Me.dtpHasta.value
+    Else
+        desde = liqui.desde
+        hasta = liqui.hasta
+    End If
+
+    Me.progreso.Visible = True
+    Me.progreso.min = 0
+    Me.progreso.max = col.count
+    Me.progreso.value = 0
+
+    Set xls = CreateObject("Excel.Application")
+    Set xlb = xls.Workbooks.Add
+    Set xla = xlb.Worksheets(1)
+
+    xla.Name = "IVA Compras Resumido"
+
+    With xla
+
+        .Cells(1, 1).value = _
+            "SIGNOPLAST S.A. - SUBDIARIO IVA COMPRAS RESUMIDO"
+
+        .Cells(2, 1).value = "Periodo: " & _
+            Format(desde, "dd/mm/yyyy") & " - " & _
+            Format(hasta, "dd/mm/yyyy")
+
+        ' ENCABEZADOS FIJOS
+
+        .Cells(3, 1).value = "Fecha"
+        .Cells(3, 2).value = "Comprobante"
+        .Cells(3, 3).value = "Razon Social"
+        .Cells(3, 4).value = "CUIT"
+        .Cells(3, 5).value = "Cond. IVA"
+        .Cells(3, 6).value = "Neto Gravado"
+
+        ' ENCABEZADOS DINAMICOS DE IVA
+
+        columna = 7
+
+        For Each alicuota In alicuotas
+
+            If CDbl(alicuota) = 0 Then
+                .Cells(3, columna).value = "Exento"
+                columna = columna + 1
+            Else
+                .Cells(3, columna).value = _
+                    "NG " & CStr(alicuota) & "%"
+
+                columna = columna + 1
+
+                .Cells(3, columna).value = _
+                    "IVA " & CStr(alicuota) & "%"
+
+                columna = columna + 1
+            End If
+
+        Next alicuota
+
+        ' COLUMNAS DE PERCEPCIONES AGRUPADAS
+
+        colIIBB = columna
+        .Cells(3, columna).value = "Percepciones IIBB"
+        columna = columna + 1
+
+        colIVA = columna
+        .Cells(3, columna).value = "Percepciones IVA"
+        columna = columna + 1
+
+        colOtras = columna
+        .Cells(3, columna).value = "Otras percepciones"
+        columna = columna + 1
+
+        .Cells(3, columna).value = "Imp. Interno"
+        columna = columna + 1
+
+        .Cells(3, columna).value = "Redondeo"
+        columna = columna + 1
+
+        .Cells(3, columna).value = "Total"
+
+        ultimaColumna = columna
+
+        ' RECORRER COMPROBANTES
+
+        fila = 4
+
+        For Each registro In col
+
+            .Cells(fila, 1).Value2 = CDbl(CDate(registro.FEcha))
+            .Cells(fila, 1).NumberFormat = "dd/mm/yyyy"
+
+            .Cells(fila, 2).value = registro.Comprobante
+            .Cells(fila, 3).value = registro.RazonSocial
+            .Cells(fila, 4).value = CStr(registro.cuit)
+            .Cells(fila, 5).value = registro.CondicionIVA
+            .Cells(fila, 6).value = registro.NetoGravado
+
+            columna = 7
+
+            ' IMPORTES POR ALICUOTA
+
+            For Each alicuota In alicuotas
+
+                If CDbl(alicuota) = 0 Then
+
+                    .Cells(fila, columna).value = _
+                        registro.AlicuotasIva.item(CStr(alicuota))
+
+                    columna = columna + 1
+
+                Else
+
+                    .Cells(fila, columna).value = _
+                        registro.NetosGravado.item(CStr(alicuota))
+
+                    columna = columna + 1
+
+                    .Cells(fila, columna).value = _
+                        registro.AlicuotasIva.item(CStr(alicuota))
+
+                    columna = columna + 1
+
+                End If
+
+            Next alicuota
+
+            ' ACUMULAR PERCEPCIONES POR TIPO
+
+            totalIIBB = 0
+            TotalIVA = 0
+            totalOtras = 0
+
+            If Not registro.ListaPercepciones Is Nothing Then
+
+                For Each Percepcion In registro.ListaPercepciones
+
+                    nombrePercepcion = UCase$(Trim$( _
+                        Percepcion.Percepcion.Percepcion))
+
+                    If InStr(1, nombrePercepcion, _
+                            "IIBB", vbTextCompare) > 0 Then
+
+                        totalIIBB = totalIIBB + Percepcion.Monto
+
+                    ElseIf nombrePercepcion = "IVA" Then
+
+                        TotalIVA = TotalIVA + Percepcion.Monto
+
+                    Else
+
+                        totalOtras = totalOtras + Percepcion.Monto
+
+                    End If
+
+                Next Percepcion
+
+            End If
+
+            .Cells(fila, colIIBB).value = totalIIBB
+            .Cells(fila, colIVA).value = TotalIVA
+            .Cells(fila, colOtras).value = totalOtras
+
+            .Cells(fila, ultimaColumna - 2).value = _
+                registro.ImpuestoInterno
+
+            .Cells(fila, ultimaColumna - 1).value = _
+                registro.redondeo
+
+            .Cells(fila, ultimaColumna).value = registro.total
+
+            fila = fila + 1
+
+            Me.progreso.value = Me.progreso.value + 1
+
+        Next registro
+
+        ' TOTALES GENERALES
+
+        ultimaFila = fila
+
+        .Cells(ultimaFila, 5).value = "TOTALES"
+
+        For c = 6 To ultimaColumna
+
+            .Cells(ultimaFila, c).Formula = _
+                "=SUM(" & _
+                .Range(.Cells(4, c), _
+                       .Cells(ultimaFila - 1, c)).Address(False, False) _
+                & ")"
+
+        Next c
+
+        ' FORMATO
+
+        .Range(.Cells(1, 1), _
+               .Cells(1, ultimaColumna)).Merge
+
+        .Range(.Cells(2, 1), _
+               .Cells(2, ultimaColumna)).Merge
+
+        .Range(.Cells(1, 1), _
+               .Cells(2, ultimaColumna)).Font.Bold = True
+
+        .Range(.Cells(3, 1), _
+               .Cells(3, ultimaColumna)).Font.Bold = True
+
+        .Range(.Cells(3, 1), _
+               .Cells(3, ultimaColumna)).Interior.Color = &HC0C0C0
+
+        .Range(.Cells(ultimaFila, 1), _
+               .Cells(ultimaFila, ultimaColumna)).Font.Bold = True
+
+        .Range(.Cells(ultimaFila, 1), _
+               .Cells(ultimaFila, ultimaColumna)).Interior.Color = &HC0C0C0
+
+        .Range(.Cells(4, 6), _
+               .Cells(ultimaFila, ultimaColumna)).NumberFormat = _
+               "#,##0.00"
+
+        .Range(.Cells(3, 1), _
+               .Cells(ultimaFila, ultimaColumna)).Borders.LineStyle = 1
+
+        .Columns.AutoFit
+
+    End With
+
+    ' GUARDAR ARCHIVO
+
+    Set CDLGMAIN = frmPrincipal.cd
+
+    CDLGMAIN.CancelError = True
+    CDLGMAIN.filter = "Excel 97-2003 (*.xls)|*.xls"
+
+    archivo = "SUBDIARIO_COMPRAS_RESUMIDO_" & _
+              Format(desde, "ddmmyyyy") & "-" & _
+              Format(hasta, "ddmmyyyy") & ".xls"
+
+    CDLGMAIN.filename = archivo
+    CDLGMAIN.ShowSave
+
+    If Len(Trim$(CDLGMAIN.filename)) = 0 Then GoTo Cancelar
+
+    xlb.SaveAs CDLGMAIN.filename, 56
+
+    ExportaSubDiarioComprasResumido = True
+
+    Me.progreso.Visible = False
+    Me.progreso.value = 0
+
+    xls.Visible = True
+
+    Set xla = Nothing
+    Set xlb = Nothing
+    Set xls = Nothing
+
+    MsgBox "Reporte resumido exportado correctamente.", _
+           vbInformation
+
+    Exit Function
+
+Cancelar:
+
+    On Error Resume Next
+
+    Me.progreso.Visible = False
+    Me.progreso.value = 0
+
+    If Not xlb Is Nothing Then xlb.Close False
+    If Not xls Is Nothing Then xls.Quit
+
+    Set xla = Nothing
+    Set xlb = Nothing
+    Set xls = Nothing
+
+    Exit Function
+
+ErrExportar:
+
+    If Err.Number <> 32755 Then
+        MsgBox "Error al exportar: " & Err.Description, vbCritical
+    End If
+
+    Resume Cancelar
+
+End Function
 
 

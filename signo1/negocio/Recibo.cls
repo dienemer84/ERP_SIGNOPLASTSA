@@ -15,15 +15,16 @@ Option Explicit
 
 Public Id As Long
 Public Cliente As clsCliente
-Public FechaCreacion As Date
-Public FechaModificacion As Date
+Public fechaCreacion As Date
+Public fechaModificacion As Date
 Public FechaAprobacion As Date
 Public usuarioCreador As clsUsuario
 Public usuarioAprobador As clsUsuario
 Public estado As EstadoRecibo
-Public Redondeo As Double
+Public redondeo As Double
 'Public PagoACuenta As Boolean NO VA MAS
 Public moneda As clsMoneda
+Public TipoCambio As Currency
 
 Public FEcha As Date
 
@@ -32,61 +33,79 @@ Public facturas As New Collection
 'valores
 Public Cheques As New Collection
 Public OperacionesCaja As New Collection
-Public OperacionesBanco As New Collection
+Public operacionesBanco As New Collection
 
 Public retenciones As New Collection
 
-Public ACuenta As Double
-Public ACuentaUsado As Double
+Public aCuenta As Double
+Public aCuentaUsado As Double
 
 
 
 Private m_validationMessages As String
 
-Public PagosDeFacturas As New Dictionary    'tiene id factura y el monto pagado de la misma
+Public pagosDeFacturas As New Dictionary    'tiene id factura y el monto pagado de la misma
 
 
 Public TotalEstatico As New TotalEstaticoRecibo
 
 Public Property Get ACuentaDisponible()
-    If Me.estado = ReciboAnulado Then
+    If Me.estado = Reciboanulado Then
     ACuentaDisponible = 0
     Else
-        ACuentaDisponible = ACuenta - ACuentaUsado
+        ACuentaDisponible = aCuenta - aCuentaUsado
     End If
 
 End Property
 
+
 Public Property Get TotalFacturas() As Double
+
     Dim F As Factura
     Dim tot As Double
     Dim negativo As Integer
+    Dim importe As Double
 
     For Each F In Me.facturas
+
         If F.TipoDocumento = tipoDocumentoContable.NotaCredito Then
             negativo = -1
         Else
             negativo = 1
         End If
 
-        If Me.PagosDeFacturas.Exists(CStr(F.Id)) Then
-
-            'tot = tot + MonedaConverter.Convertir(Me.PagosDeFacturas.Item(CStr(F.Id)) * negativo, F.Moneda.Id, Me.Moneda.Id)
-            tot = tot + (Me.PagosDeFacturas.item(CStr(F.Id)) * negativo * F.CambioAPatron)
+        If Me.pagosDeFacturas.Exists(CStr(F.Id)) Then
+            importe = Me.pagosDeFacturas.item(CStr(F.Id))
         Else
-            tot = tot + F.total * negativo * F.CambioAPatron
+            importe = F.total
         End If
 
+        'Si factura y recibo tienen la misma moneda,
+        'no corresponde aplicar ninguna conversion.
+        If F.moneda.Id = Me.moneda.Id Then
+
+            tot = tot + (importe * negativo)
+
+        Else
+
+            'Se conserva provisionalmente la conversion
+            'anterior para operaciones en distintas monedas.
+            tot = tot + _
+                  (importe * negativo * F.CambioAPatron)
+
+        End If
 
     Next F
+
     TotalFacturas = tot
+
 End Property
 
 Public Property Get TotalRetenciones() As Double
     Dim r As retencionRecibo
     Dim tot As Double
     For Each r In Me.retenciones
-        tot = tot + MonedaConverter.Convertir(r.Valor, 0, Me.moneda.Id)
+        tot = tot + MonedaConverter.Convertir(r.valor, 0, Me.moneda.Id)
     Next r
     TotalRetenciones = tot
 End Property
@@ -116,7 +135,7 @@ Public Property Get TotalOperacionesBanco() As Double
     Dim op As operacion
     Dim tot As Double
 
-    For Each op In Me.OperacionesBanco
+    For Each op In Me.operacionesBanco
         tot = tot + MonedaConverter.Convertir(op.Monto, op.moneda.Id, Me.moneda.Id)
     Next op
     TotalOperacionesBanco = tot
@@ -124,9 +143,28 @@ End Property
 Public Property Get total() As Double
     total = funciones.RedondearDecimales(Me.TotalFacturas - Me.TotalRetenciones, 2)
 End Property
+
+
 Public Property Get TotalRecibido() As Double
-    TotalRecibido = funciones.RedondearDecimales(MonedaConverter.Convertir(Me.TotalCheques + Me.TotalOperacionesBanco + Me.TotalOperacionesCaja, Me.moneda.Id, DAOMoneda.MONEDA_PESO_ID) + MonedaConverter.Convertir(Me.Redondeo, DAOMoneda.MONEDA_PESO_ID, Me.moneda.Id), 2)
+
+    Dim importe As Double
+
+    importe = Me.TotalCheques + _
+              Me.TotalOperacionesBanco + _
+              Me.TotalOperacionesCaja
+
+    importe = importe + _
+              MonedaConverter.Convertir( _
+                  Me.redondeo, _
+                  DAOMoneda.MONEDA_PESO_ID, _
+                  Me.moneda.Id)
+
+    TotalRecibido = _
+        funciones.RedondearDecimales(importe, 2)
+
 End Property
+
+
 Private Sub AddValidationMessage(msg As String)
     If LenB(m_validationMessages) > 0 Then m_validationMessages = m_validationMessages & vbNewLine
     m_validationMessages = m_validationMessages & msg
@@ -147,7 +185,17 @@ Public Property Get IsValid() As Boolean
         AddValidationMessage "Los valores recibidos no igualan o superan al total del recibo."
     End If
 
+    If Not Me.moneda Is Nothing Then
+        If Me.moneda.Id = 1 Or Me.moneda.Id = 3 Then
+            If Me.TipoCambio <= 0 Then
+                AddValidationMessage _
+                    "Debe ingresar un tipo de cambio mayor a cero."
+            End If
+        End If
+    End If
+
     IsValid = (LenB(m_validationMessages) = 0)
+    
 End Property
 
 Public Property Get ValidationMessages() As String
